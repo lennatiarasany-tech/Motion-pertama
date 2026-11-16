@@ -119,7 +119,7 @@
    Gerak HALUS: tanpa guncangan; semua masuk/keluar dengan ease in-out. Semua dihitung dari t.
    ===================================================================================== */
 const PI=Math.PI;
-const WAKTU={judul:.1,tarik:1.15,lenc:1.35,keluar:2.4,buku:2.45,rak:3.85,ne:4.75,tanya:5.75,tutup:7.3,dur:8.0};
+const WAKTU={judul:.25,tarik:1.1,lenc:1.3,keluar:2.05,buku:2.15,rak:3.05,ne:3.88,tanya:5.2,tutup:6.45,dur:7.2};
 const NOTIF=[['!','Paracetamol habis','Rak 2 · baru ketahuan',''],['!','Amoxicillin hampir ED','Gudang · cek manual','k'],
   ['!','Selisih kas kemarin','Tutup shift',''],['!','Faktur numpuk','Belum diinput','k']];
 const T_NOT=[.15,.55,.95,1.35];
@@ -166,7 +166,9 @@ function tutup(t){const k=E.io(seg(t,WAKTU.tutup,WAKTU.dur));st($('#tutup'),{tra
    ADEGAN 2-12 · satu timeline. Durasi tiap adegan = durasi klip VO (DUR). Klip yang belum ada
    memakai perkiraan; setelah klip jadi, cukup ganti angkanya di DUR dan tandai ADA.
    ===================================================================================== */
-const DUR={1:8.0,2:10.37,3:7.86,4:6.6,5:11.65,6:9.6,7:8.8,8:7.6,9:8.15,10:5.6,11:7.6,12:6.45};
+/* waktu mulai tiap adegan = awal kalimat di suara CapCut (vo-capcut.mp3) */
+const S={1:0,2:7.28,3:18.11,4:28.2,5:35.81,6:47.85,7:57.63,8:67.67,9:76.08,10:84.82,11:89.67,12:98.38};
+const DUR={1:7.2,12:7.0};for(let n=2;n<12;n++)DUR[n]=S[n+1]-S[n]-.35;
 const ADA={2:1,3:1,5:1,9:1,12:1};
 const TEKS={2:'Jujur aja, nyatat stok pakai buku atau Excel itu rawan banget. Stok selisih, nota numpuk, obat mau kedaluwarsa nggak ketahuan, kas juga nggak cocok.',
 3:'Ujung-ujungnya? Pembeli balik kanan karena obatnya kosong, obat kebuang karena lewat tanggal, dan kamu lembur rekap tiap malam.',
@@ -179,7 +181,6 @@ const TEKS={2:'Jujur aja, nyatat stok pakai buku atau Excel itu rawan banget. St
 10:'Data karyawan dan pelanggan juga terkelola di satu tempat, jadi kerja tim makin rapi.',
 11:'Semuanya dalam satu aplikasi. Kamu nggak lagi sibuk ngurus catatan, tapi bisa fokus melayani pasien dan mengembangkan apotek.',
 12:'Jadi, masih mau catat manual? Coba gratis Apotek Digital sekarang. Kunjungi apotek digital titik com.'};
-const GAP=.35,S={1:0,2:8.3};for(let n=3;n<=12;n++)S[n]=S[n-1]+DUR[n-1]+GAP;
 const AKHIR=S[12]+DUR[12]+1.8;
 const A=n=>S[n]-.2,B=n=>n<12?S[n+1]-.4:AKHIR+9,P=(n,p)=>S[n]+p*DUR[n];
 const pad=n=>String(n).padStart(2,'0');
@@ -263,7 +264,7 @@ const kartu6=(ik,judul,tanda)=>`<div style="position:absolute;inset:0;display:fl
 const silang='<svg class="coret" viewBox="0 0 100 100" style="position:absolute;left:-10px;top:-10px;width:170px;height:170px"><path d="M14 14l72 72M86 14L14 86" fill="none" stroke="#EF5B67" stroke-width="10" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/></svg>';
 const k6=[bb(kartu6('server','Tanpa server<br>mahal di awal',silang),'left:80px;top:330px;width:400px;height:400px',DN,'win'),bb(kartu6('kalender','Cukup bayar<br>rutin',''),'left:540px;top:330px;width:390px;height:400px',DN,'win')];
 // lencana fitur (bertahap 7-11, posisi seperti gambar referensi)
-const LF=[['stok','Stok',380,430,7,.2,'c'],['penjualan','Penjualan',190,1050,8,.35,'l'],['keu','Keuangan',700,430,8,.62,'c'],['pengadaan','Pengadaan',190,700,9,.3,'l'],['karyawan','Karyawan',880,770,10,.12,'r'],['pelanggan','Pelanggan',880,1090,10,.45,'r']];
+const LF=[['stok','Stok',380,430,7,.27,'c'],['penjualan','Penjualan',190,1050,8,.35,'l'],['keu','Keuangan',700,430,8,.62,'c'],['pengadaan','Pengadaan',190,700,9,.3,'l'],['karyawan','Karyawan',880,770,10,.12,'r'],['pelanggan','Pelanggan',880,1090,10,.25,'r']];
 const lencF=LF.map(([k,s,x,y,n,p,al])=>{const e=bb(`<div class="cir"></div>${svg(k)}<div class="lbl ${al==='c'?'c':''}" style="${al==='c'?'left:0;transform:translateX(-50%)':al==='l'?'left:-120px':'right:-50px'}"><small>Manajemen</small>${s}</div>`,`left:${x}px;top:${y}px`,DN,'lenc');e.dataset.n=n;e.dataset.p=p;return e;});
 const garis11=bb(`<svg viewBox="0 0 1080 1920" style="width:1080px;height:1920px;overflow:visible">${LF.map(([,,x,y])=>`<path class="g11" d="M${x} ${y}L540 995" stroke="#8FCFD9" stroke-width="8" stroke-dasharray="16 14" stroke-linecap="round"/>`).join('')}</svg>`,'left:0;top:0;width:1080px;height:1920px');
 DN.insertBefore(garis11,lap);
@@ -300,7 +301,7 @@ function babak(t){
   // A3 + malam
   const mlm=.85*E.io(seg(t,S[3],P(3,.9)))*(1-E.io(seg(t,A(4),A(4)+.9)));malam.style.opacity=mlm;bulan.style.opacity=mlm;
   tp(jam,t,A(3)+.1,B(3));[...jam.querySelectorAll('.jr')].forEach((h,i)=>h.style.transform=`rotate(${(t-S[3])*(i?40:480)}deg)`);
-  dampak.forEach((e,i)=>tp(e,t,P(3,[.08,.42,.68][i]),B(3),{dy:40}));
+  dampak.forEach((e,i)=>tp(e,t,P(3,[.17,.48,.77][i]),B(3),{dy:40}));
   // laptop A4..A11
   const kL=tp(lap,t,S[4]+.1,B(11),{dy:140,d:.8});
   $('#lapScr').style.transform=`scaleY(${.04+.96*E.out(seg(t,S[4]+.35,S[4]+1.05))})`;
@@ -321,7 +322,7 @@ function babak(t){
   PN.upd.querySelector('.ut').innerHTML=selesai?'<span style="color:#5DAD72">✓</span> Versi terbaru':'Memperbarui…';
   // A7 stok: transaksi mengurangi stok
   const q=PN.stok.querySelector('.q');q.textContent=t>P(7,.4)?'12':'13';
-  [...PN.stok.querySelectorAll('.row')].forEach((r,i)=>{const hi=(i===0&&t>P(7,.62)&&t<P(7,.82))||(i===1&&t>P(7,.82));r.style.boxShadow=hi?'0 0 0 4px #3163D1':'0 3px 0 #E3E8F5';});
+  [...PN.stok.querySelectorAll('.row')].forEach((r,i)=>{const hi=(i===0&&t>P(7,.76)&&t<P(7,.87))||(i===1&&t>P(7,.87));r.style.boxShadow=hi?'0 0 0 4px #3163D1':'0 3px 0 #E3E8F5';});
   // A8 kasir
   tp(scan,t,A(8)+.1,B(8));scan.querySelector('.sinar').style.opacity=t>P(8,.08)&&t<P(8,.3)?.4+.6*Math.abs(Math.sin(t*12)):0;
   tp(prn,t,A(8)+.2,B(8));prn.querySelector('.struk').style.height=(20+150*E.io(seg(t,P(8,.28),P(8,.5))))+'px';
@@ -331,26 +332,28 @@ function babak(t){
   // lencana fitur
   lencF.forEach((e,i)=>{const n=+e.dataset.n;tp(e,t,P(n,+e.dataset.p),B(11),{dy:50,y:Math.sin(t*1.5+i)*6});});
   [...garis11.querySelectorAll('.g11')].forEach(p=>p.style.strokeDashoffset=-t*50);tp(garis11,t,P(11,.05),B(11));
-  tp(p11,t,P(11,.55),B(11));
+  tp(p11,t,P(11,.65),B(11));
   // A12
-  k12.forEach((e,i)=>tp(e,t,P(12,[.0,.12][i]),AKHIR+9,{dy:60}));tp(sama,t,P(12,.25),AKHIR+9,{dy:0});
-  tp(logo12,t,P(12,.45),AKHIR+9);tp(tombol,t,P(12,.55),AKHIR+9);
+  k12.forEach((e,i)=>tp(e,t,P(12,[.0,.12][i]),AKHIR+9,{dy:60}));tp(sama,t,P(12,.2),AKHIR+9,{dy:0});
+  tp(logo12,t,P(12,.3),AKHIR+9);tp(tombol,t,P(12,.4),AKHIR+9);
   const tap=seg(t,P(12,.72),P(12,.72)+.5);tp(jari,t,P(12,.66),P(12,.72)+.5,{dy:30,s:1-.25*Math.sin(PI*tap)});
   $('.tombol').style.background=tap>.4?'#3163D1':'#1F2D3D';
-  tp(url,t,P(12,.8),AKHIR+9);
+  tp(url,t,P(12,.78),AKHIR+9);
 }
 function sembunyiAdegan1(t){const on=t<WAKTU.dur+.05;['#hp','#L0','#L1','#L2','#L3','#kBuku','#kRak','#ne','#judul','#tanya'].forEach(s=>vis($(s),on));}
 function kameraGlobal(t){if(t<WAKTU.dur)return kamera(t);const z=1.03+.015*Math.sin(t*.21);const cx=540+nz(t*.2,3)*5,cy=965+nz(t*.2,8)*5;
   st($('#dunia'),{transform:`translate(${W/2}px,${H/2}px) scale(${z}) translate(${-cx}px,${-cy}px)`});}
 const VO_LAIN=Object.keys(ADA).map(n=>({src:`assets/audio/vp-${pad(n)}.mp3`,at:S[n],teks:TEKS[n]}));
 
+/* efek suara: dibuat dengan sintesis, ditaruh di jeda kalimat */
+const fx=(n,at,vol)=>({src:`assets/audio/sfx-${n}.mp3`,at,vol});
+const SFX=[fx('notif',.12,.35),fx('pop',1.3,.3),fx('boop',4.3,.3),fx('whoosh',6.45,.35),fx('whoosh',17.3,.22),fx('pop',27.5,.35),
+  fx('ding',38.38,.3),fx('pop',52.45,.3),fx('beep',69.22,.3),fx('printer',69.9,.18),fx('shimmer',89.4,.3),fx('klik',P(12,.72),.45),fx('ding',P(12,.72)+.2,.3)];
 const SCENE={
   dur:AKHIR,
   kata:null,
   sub:{gaya:'pil',font:"800 56px 'Plus Jakarta Sans'",warna:'#1F2D3D',aksen:'#3163D1',kunci:['habis','nol','manual','online','berlangganan','otomatis','cloud','gratis','apotek digital'],maks:3,y:.8},
-  audio:{vo:[{src:'assets/audio/vo-01a.mp3',at:.1,teks:'Stok habis lagi?'},
-            {src:'assets/audio/vo-01b.mp3',at:2.35,teks:'Di buku dua puluh, di rak... nol.'},
-            {src:'assets/audio/vo-01c.mp3',at:5.7,teks:'Masih mau catat manual?'},...VO_LAIN],sfx:[],music:null},
+  audio:{vo:[{src:'assets/audio/vo-capcut.mp3',at:0,teks:'Stok habis lagi? Di buku dua puluh, di rak... nol. Masih mau catat manual? Jujur aja, nyatat stok pakai buku atau Excel itu rawan banget. Stok selisih, nota numpuk, obat mau kedaluwarsa nggak ketahuan, kas juga nggak cocok. Ujung-ujungnya? Pembeli balik kanan karena obatnya kosong, obat kebuang karena lewat tanggal, dan kamu lembur rekap tiap malam. Nah, di sinilah apotek butuh aplikasi online yang berlangganan. Kenapa harus online, dan kenapa berlangganan? Online artinya datamu tersimpan aman di cloud. Kamu bisa pantau apotek dari laptop, tablet, atau HP, kapan aja, dari mana aja. Lagi di luar kota pun tetap bisa cek. Berlangganan artinya kamu nggak perlu beli server atau software mahal di awal. Cukup bayar rutin, dan aplikasinya terus diperbarui tanpa ribet instal ulang. Contohnya Apotek Digital. Stok tercatat otomatis setiap ada transaksi, jadi kamu langsung tahu obat mana yang kurang dan mana yang numpuk. Di kasir, tinggal scan barcode, struk langsung tercetak. Laporan penjualan dan keuangan pun rapi sendiri, tanpa rekap manual. Mau belanja ke PBF? Fitur analisis pembelian bantu kamu tahu obat apa yang perlu dipesan, biar nggak kelebihan atau kekurangan. Data karyawan dan pelanggan juga terkelola di satu tempat, jadi kerja tim makin rapi. Semuanya dalam satu aplikasi. Kamu nggak lagi sibuk ngurus catatan, tapi bisa fokus melayani pasien dan mengembangkan apotek. Jadi, masih mau catat manual? Coba gratis Apotek Digital sekarang.'}],sfx:SFX,music:{src:'assets/audio/musik.mp3',vol:1}},
   muat(){return Promise.all([...[...document.querySelectorAll('.logoimg')].map(i=>i.decode().catch(()=>0)),document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
   frame(t){kameraGlobal(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);sembunyiAdegan1(t);babak(t);}
 };
