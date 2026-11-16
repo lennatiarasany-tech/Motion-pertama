@@ -196,7 +196,7 @@ function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEa
    Gerak HALUS: tanpa guncangan; semua masuk/keluar dengan ease in-out. Semua dihitung dari t.
    ===================================================================================== */
 const PI=Math.PI;
-const WAKTU={judul:.1,tarik:1.6,lenc:2.2,keluar:3.55,buku:3.95,rak:5.5,ne:6.45,tanya:7.05,tutup:8.75,dur:9.6};
+const WAKTU={judul:.1,tarik:1.15,lenc:1.35,keluar:2.4,buku:2.45,rak:3.85,ne:4.75,tanya:5.75,tutup:7.3,dur:8.0};
 const NOTIF=[['!','Paracetamol habis','Rak 2 · baru ketahuan',''],['!','Amoxicillin hampir ED','Gudang · cek manual','k'],
   ['!','Selisih kas kemarin','Tutup shift',''],['!','Faktur numpuk','Belum diinput','k']];
 const T_NOT=[.15,.55,.95,1.35];
@@ -212,8 +212,8 @@ function muncul(el,t,t0,t1=99,dy=50,d=.6){const k=E.out(seg(t,t0,t0+d)),o=E.io(s
   st(el,{opacity:(t<t0?0:k)*(1-o),transform:`translateY(${(1-k)*dy-o*60}px) scale(${.92+.08*k})`});return k*(1-o);}
 function kata(el,t,t0,t1,st0=.2){[...el.querySelectorAll('.w')].forEach((w,i)=>muncul(w,t,t0+i*st0,t1+i*.06,60,.55));}
 
-function kamera(t){const tr=E.io(seg(t,WAKTU.tarik,WAKTU.tarik+1.2)),tc=E.io(seg(t,WAKTU.tutup-.3,WAKTU.dur));
-  const z=lerp(1.42,1.0,tr)*(1+.03*seg(t,WAKTU.tarik+1.2,WAKTU.tutup))+tc*.08;
+function kamera(t){const tr=E.io(seg(t,WAKTU.tarik,WAKTU.tarik+.9)),tc=E.io(seg(t,WAKTU.tutup-.3,WAKTU.dur));
+  const z=lerp(1.42,1.0,tr)*(1+.03*seg(t,WAKTU.tarik+.9,WAKTU.tutup))+tc*.08;
   const cx=540+nz(t*.25,3)*4,cy=lerp(940,960,tr)+tc*80+nz(t*.25,8)*4;
   st($('#dunia'),{transform:`translate(${W/2}px,${H/2}px) scale(${z}) translate(${-cx}px,${-cy}px)`});}
 
@@ -226,7 +226,7 @@ function hp(t){const out=E.io(seg(t,WAKTU.keluar,WAKTU.keluar+.8));
     st(e,{top:(134+yy*128)+'px',opacity:k,transform:`translateY(${(1-k)*-30}px) scale(${.94+.06*k})`});});
   $('#badge').textContent=n;}
 
-function lencana(t){['#L0','#L2','#L1','#L3'].forEach((id,i)=>{const el=$(id),t0=WAKTU.lenc+i*.28,k=E.out(seg(t,t0,t0+.7)),o=E.io(seg(t,WAKTU.keluar-.1+i*.08,WAKTU.keluar+.5+i*.08));
+function lencana(t){['#L0','#L2','#L1','#L3'].forEach((id,i)=>{const el=$(id),t0=WAKTU.lenc+i*.15,k=E.out(seg(t,t0,t0+.5)),o=E.io(seg(t,WAKTU.keluar-.1+i*.08,WAKTU.keluar+.5+i*.08));
   const ap=Math.sin(t*1.6+i*1.3)*6;st(el,{opacity:t<t0?0:k*(1-o),transform:`translateY(${(1-k)*50+ap-o*80}px) scale(${.85+.15*k})`});});}
 
 function meja(t){[...$('#tanaman').querySelectorAll('.dn')].forEach((g,i)=>{const r=+g.dataset.r+Math.sin(t*1.1+i)*2.2;g.setAttribute('transform',`translate(180 400) rotate(${r}) scale(${g.dataset.s})`);});}
@@ -244,8 +244,8 @@ const SCENE={
   kata:null,
   sub:{gaya:'pil',font:"800 56px 'Plus Jakarta Sans'",warna:'#1F2D3D',aksen:'#3163D1',kunci:['habis','nol','manual'],maks:3,y:.8},
   audio:{vo:[{src:'assets/audio/vo-01a.mp3',at:.1,teks:'Stok habis lagi?'},
-            {src:'assets/audio/vo-01b.mp3',at:3.95,teks:'Di buku dua puluh, di rak... nol.'},
-            {src:'assets/audio/vo-01c.mp3',at:7.15,teks:'Masih mau catat manual?'}],sfx:[],music:null},
+            {src:'assets/audio/vo-01b.mp3',at:2.35,teks:'Di buku dua puluh, di rak... nol.'},
+            {src:'assets/audio/vo-01c.mp3',at:5.7,teks:'Masih mau catat manual?'}],sfx:[],music:null},
   muat(){return Promise.all([document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
   frame(t){kamera(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);}
 };
