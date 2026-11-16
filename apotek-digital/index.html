@@ -346,7 +346,7 @@ lap.innerHTML=`<svg id="lapBase" viewBox="0 0 780 110"><path d="M70 0h640l70 74H
 const LI=$('#lapIn');const pane=h=>mk('div','pane',LI,h);
 const PN={};
 PN.logo=pane(`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
-  <div style="width:170px;height:110px">${LOGO}</div><div style="font:800 46px/1 Poppins;color:#2C5AAE;letter-spacing:.02em">APOTEK DIGITAL</div></div>`);
+  <img class="logoimg" src="assets/gambar/logo-apotekdigital.png" style="width:470px"></div>`);
 const side='<div class="side"><i></i><i></i><i></i><i></i><i></i></div>';
 PN.dash=pane(`${side}<div class="ptop">Dashboard</div><div class="pbody">
   <div style="display:flex;gap:10px">${['Penjualan','Stok aman','Pesanan'].map((s,i)=>`<div style="flex:1;height:84px;border-radius:12px;background:#fff;box-shadow:0 3px 0 #E3E8F5;padding:10px 12px;font:700 20px 'Plus Jakarta Sans';color:#6B7A99">${s}<div style="height:12px;border-radius:6px;margin-top:14px;background:${['#3163D1','#5DAD72','#4DA39A'][i]};width:${[80,65,50][i]}%"></div></div>`).join('')}</div>
@@ -395,10 +395,10 @@ const kartuS=(id,lb,ik)=>`<div class="ikb">${ik}</div><div class="lb">${lb}</div
 const k12=[bb(kartuS('a','Di buku',$('#kBuku .ikb').innerHTML),'left:70px;top:470px',DN,'kartu'),bb(kartuS('b','Di rak',$('#kRak .ikb').innerHTML.replace('fill="none" stroke="#EF5B67" stroke-width="5" stroke-dasharray="6 5"','fill="#8FCFD9"')),'left:560px;top:470px',DN,'kartu')];
 k12.forEach(k=>k.style.top='470px');
 const sama=bb('=','left:510px;top:730px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:#5DAD72;color:#fff;font:800 80px/116px Poppins;text-align:center;box-shadow:0 0 0 9px #fff,10px 12px 0 9px #C2CBE6');
-const logo12=bb(`<div style="display:flex;align-items:center;gap:22px"><div style="width:150px;height:98px">${LOGO}</div><div style="font:800 64px/1 Poppins;color:#2C5AAE">APOTEK<br>DIGITAL</div></div>`,'left:250px;top:250px');
+const logo12=bb(`<img class="logoimg" src="assets/gambar/logo-lengkap.png" style="width:820px;display:block">`,'left:130px;top:280px');
 const tombol=bb(`<div class="tombol"><svg viewBox="0 0 40 40" style="width:46px;height:46px"><path d="M23 3L8 23h11l-3 14 16-21H21z" fill="#fff"/></svg>Coba Gratis</div>`,'left:270px;top:1050px');
 const jari=bb('','left:640px;top:1110px',DN);jari.id='jari';
-const url=bb('Kunjungi <b style="color:#3163D1">apotekdigital.com</b>','left:0;top:1230px;width:1080px;text-align:center;font:700 52px Poppins;color:#1F2D3D');
+const url=bb('Kunjungi <b style="color:#3163D1">apotekdigital.com</b>','left:140px;top:1215px;width:800px;text-align:center;font:700 50px Poppins;color:#1F2D3D;background:#fff;border-radius:44px;padding:18px 0;box-shadow:-6px -6px 0 #BFE3EA,8px 8px 0 #C2CBE6');
 
 /* ---------- gerak ---------- */
 function tp(el,t,a,b,o={}){const dy=o.dy??50;if(t<a||t>b+.5){el.style.visibility='hidden';return 0;}el.style.visibility='visible';
@@ -468,7 +468,7 @@ const SCENE={
   audio:{vo:[{src:'assets/audio/vo-01a.mp3',at:.1,teks:'Stok habis lagi?'},
             {src:'assets/audio/vo-01b.mp3',at:2.35,teks:'Di buku dua puluh, di rak... nol.'},
             {src:'assets/audio/vo-01c.mp3',at:5.7,teks:'Masih mau catat manual?'},...VO_LAIN],sfx:[],music:null},
-  muat(){return Promise.all([document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
+  muat(){return Promise.all([...[...document.querySelectorAll('.logoimg')].map(i=>i.decode().catch(()=>0)),document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
   frame(t){kameraGlobal(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);sembunyiAdegan1(t);babak(t);}
 };
 grainOn(.03);
