@@ -47,6 +47,46 @@
 #mfSub .sf>span{background:#FFFFFF!important;box-shadow:-6px -6px 0 #BFE3EA,8px 8px 0 #C2CBE6}
 #tutup{position:absolute;left:-300px;top:0;width:1700px;height:2600px;background:#2C5AAE;z-index:95}
 #tutup:before{content:'';position:absolute;left:0;right:0;top:0;height:26px;background:#5677C8}
+/* ===== adegan 2-12 ===== */
+.bb{position:absolute;visibility:hidden}
+#malam{position:absolute;left:-240px;top:-260px;width:1560px;height:2440px;background:linear-gradient(180deg,#2E3A80 0%,#4B5AA8 55%,#7D86C8 100%);opacity:0}
+#bulan{position:absolute;left:800px;top:200px;width:120px;height:120px;border-radius:50%;box-shadow:-26px 10px 0 0 #FFF4C9;opacity:0}
+.win{border-radius:26px;background:#fff;box-shadow:-10px -10px 0 #BFE3EA,16px 16px 0 #C2CBE6;overflow:hidden}
+.win .bar{height:64px;background:#E6EAF7;display:flex;align-items:center;gap:12px;padding:0 22px;font:800 28px 'Plus Jakarta Sans';color:#4F6F92}
+.win .bar i{width:16px;height:16px;border-radius:50%;background:#C2CBE6;display:inline-block}
+.grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:6px;padding:16px}
+.grid div{height:52px;border-radius:8px;background:#F1F3FA;font:700 24px/52px 'Plus Jakarta Sans';color:#1F2D3D;padding:0 12px;white-space:nowrap;overflow:hidden}
+.grid .h{background:#DCE3F6;color:#4F6F92}
+.tile{width:420px;height:116px;display:flex;align-items:center;gap:20px;padding:0 22px;border-radius:22px;background:#fff;font:700 36px 'Poppins';color:#1F2D3D;box-shadow:-8px -8px 0 #BFE3EA,10px 10px 0 #C2CBE6}
+.tile .ci{flex:none;width:76px;height:76px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 6px #8FCFD9,0 0 0 6px #4F6F92;position:relative}
+.tile .ci svg{position:absolute;left:12px;top:12px;width:52px;height:52px}
+.wide{width:860px;height:150px;font-size:44px}
+.wide .ci{width:96px;height:96px}.wide .ci svg{left:16px;top:16px;width:64px;height:64px}
+#jam{left:390px;top:300px;width:300px;height:300px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 14px #8FCFD9,0 0 0 12px #4F6F92,14px 16px 0 12px #C9D0E8}
+#jam .jr{position:absolute;left:146px;bottom:150px;width:8px;border-radius:4px;background:#1F2D3D;transform-origin:50% 100%}
+.pil{padding:16px 30px;border-radius:40px;background:#fff;font:700 40px 'Poppins';color:#1F2D3D;box-shadow:-6px -6px 0 #BFE3EA,8px 8px 0 #C2CBE6;white-space:nowrap}
+.pil b{color:#3163D1}
+/* laptop */
+#lapScr{position:absolute;left:230px;top:800px;width:620px;height:392px;border-radius:26px;background:#AEB8EE;padding:14px;transform-origin:50% 100%;box-shadow:0 0 0 5px #C3CBF4}
+#lapIn{position:relative;width:100%;height:100%;border-radius:14px;background:#F6F8FD;overflow:hidden}
+#lapBase{position:absolute;left:150px;top:1186px;width:780px;height:110px}
+.pane{position:absolute;inset:0;opacity:0}
+.side{position:absolute;left:0;top:0;bottom:0;width:86px;background:#3163D1}
+.side i{display:block;width:40px;height:10px;border-radius:5px;background:rgba(255,255,255,.55);margin:30px 0 0 23px}
+.ptop{position:absolute;left:86px;right:0;top:0;height:58px;background:#fff;border-bottom:3px solid #E6EAF7;font:800 26px/58px 'Plus Jakarta Sans';color:#1F2D3D;padding-left:20px}
+.pbody{position:absolute;left:100px;right:14px;top:70px;bottom:12px}
+.row{display:flex;align-items:center;justify-content:space-between;height:60px;border-radius:10px;background:#fff;margin-bottom:8px;padding:0 14px;font:700 25px 'Plus Jakarta Sans';color:#1F2D3D;box-shadow:0 3px 0 #E3E8F5}
+.st{font:800 22px 'Plus Jakarta Sans';color:#fff;padding:6px 14px;border-radius:20px}
+.st.m{background:#EF5B67}.st.o{background:#F5A524}.st.h{background:#5DAD72}.st.b{background:#3163D1}
+.lbl small{display:block;font:600 24px/1.1 'Poppins';color:#6B7A99;margin-bottom:4px}
+.lbl.c{text-align:center}
+#cloud{left:380px;top:250px;width:320px;height:200px}
+#otom{left:445px;top:480px}
+.dev{border-radius:30px;background:#9AA6EA;padding:12px;box-shadow:0 0 0 5px #B6BFF2}
+.dev>div{width:100%;height:100%;border-radius:20px;background:#F6F8FD;overflow:hidden;position:relative}
+#garis{left:0;top:0;width:1080px;height:1920px;overflow:visible}
+.tombol{display:inline-flex;align-items:center;gap:16px;padding:26px 52px;border-radius:22px;background:#1F2D3D;color:#fff;font:800 50px 'Poppins';box-shadow:10px 12px 0 #C2CBE6}
+#jari{width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.85);border:8px solid #3163D1}
 </style>
 <!--@BODY-->
 <div id="dunia">
@@ -122,14 +162,196 @@ function kartu(t){[['#kBuku',WAKTU.buku,-1],['#kRak',WAKTU.rak,1]].forEach(([id,
 function teks(t){kata($('#judul'),t,WAKTU.judul,WAKTU.keluar-.2);kata($('#tanya'),t,WAKTU.tanya,WAKTU.tutup-.3);}
 function tutup(t){const k=E.io(seg(t,WAKTU.tutup,WAKTU.dur));st($('#tutup'),{transform:`translateY(${lerp(2000,-40,k)}px)`});}
 
+/* =====================================================================================
+   ADEGAN 2-12 · satu timeline. Durasi tiap adegan = durasi klip VO (DUR). Klip yang belum ada
+   memakai perkiraan; setelah klip jadi, cukup ganti angkanya di DUR dan tandai ADA.
+   ===================================================================================== */
+const DUR={1:8.0,2:10.37,3:7.86,4:6.6,5:11.65,6:9.6,7:8.8,8:7.6,9:8.15,10:5.6,11:7.6,12:6.45};
+const ADA={2:1,3:1,5:1,9:1,12:1};
+const TEKS={2:'Jujur aja, nyatat stok pakai buku atau Excel itu rawan banget. Stok selisih, nota numpuk, obat mau kedaluwarsa nggak ketahuan, kas juga nggak cocok.',
+3:'Ujung-ujungnya? Pembeli balik kanan karena obatnya kosong, obat kebuang karena lewat tanggal, dan kamu lembur rekap tiap malam.',
+4:'Nah, di sinilah apotek butuh aplikasi online yang berlangganan. Kenapa harus online, dan kenapa berlangganan?',
+5:'Online artinya datamu tersimpan aman di cloud. Kamu bisa pantau apotek dari laptop, tablet, atau HP, kapan aja, dari mana aja. Lagi di luar kota pun tetap bisa cek.',
+6:'Berlangganan artinya kamu nggak perlu beli server atau software mahal di awal. Cukup bayar rutin, dan aplikasinya terus diperbarui tanpa ribet instal ulang.',
+7:'Contohnya Apotek Digital. Stok tercatat otomatis setiap ada transaksi, jadi kamu langsung tahu obat mana yang kurang dan mana yang numpuk.',
+8:'Di kasir, tinggal scan barcode, struk langsung tercetak. Laporan penjualan dan keuangan pun rapi sendiri, tanpa rekap manual.',
+9:'Mau belanja ke PBF? Fitur analisis pembelian bantu kamu tahu obat apa yang perlu dipesan, biar nggak kelebihan atau kekurangan.',
+10:'Data karyawan dan pelanggan juga terkelola di satu tempat, jadi kerja tim makin rapi.',
+11:'Semuanya dalam satu aplikasi. Kamu nggak lagi sibuk ngurus catatan, tapi bisa fokus melayani pasien dan mengembangkan apotek.',
+12:'Jadi, masih mau catat manual? Coba gratis Apotek Digital sekarang. Kunjungi apotek digital titik com.'};
+const GAP=.35,S={1:0,2:8.3};for(let n=3;n<=12;n++)S[n]=S[n-1]+DUR[n-1]+GAP;
+const AKHIR=S[12]+DUR[12]+1.8;
+const A=n=>S[n]-.2,B=n=>n<12?S[n+1]-.4:AKHIR+9,P=(n,p)=>S[n]+p*DUR[n];
+const pad=n=>String(n).padStart(2,'0');
+
+/* ---------- ikon garis ---------- */
+const G='fill="none" stroke="#4F6F92" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"',M='fill="none" stroke="#EF5B67" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"',HJ='fill="none" stroke="#5DAD72" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"';
+const titik='<path d="M38 52h0M50 52h0M62 52h0M38 66h0M50 66h0M62 66h0M38 79h0M50 79h0M62 79h0" stroke="#4F6F92" stroke-width="9" stroke-linecap="round"/>';
+const IK={
+ nota:`<path d="M28 12h44v76l-7-5-7 5-7-5-7 5-7-5-9 5z" ${G}/><path d="M38 32h24M38 46h24M38 60h14" ${M}/>`,
+ selisih:`<path d="M16 34l34-16 34 16v40L50 90 16 74z M16 34l34 16 34-16 M50 50v40" ${G}/>`,
+ ed:`<rect x="14" y="22" width="72" height="64" rx="8" ${G}/><path d="M14 40h72M32 12v18M68 12v18" ${G}/><path d="M40 52l20 22M60 52L40 74" ${M}/>`,
+ kas:`<rect x="26" y="10" width="48" height="80" rx="8" ${G}/><rect x="35" y="20" width="30" height="16" rx="3" ${M}/>${titik}`,
+ pergi:`<circle cx="36" cy="22" r="10" ${G}/><path d="M36 34v26l-12 26M36 60l14 24M22 46h28" ${G}/><path d="M62 50h26M78 40l10 10-10 10" ${M}/>`,
+ buang:`<path d="M22 28h56M40 28v-10h20v10M28 28l5 60h34l5-60" ${G}/><path d="M42 44v30M58 44v30" ${M}/>`,
+ malam:`<path d="M60 12a38 38 0 1 0 28 56a32 32 0 0 1-28-56z" ${G}/><path d="M46 40v16l10 6" ${M}/>`,
+ server:`<rect x="24" y="12" width="52" height="24" rx="5" ${G}/><rect x="24" y="40" width="52" height="24" rx="5" ${G}/><rect x="24" y="68" width="52" height="22" rx="5" ${G}/><path d="M34 24h0M34 52h0M34 79h0" stroke="#4F6F92" stroke-width="8" stroke-linecap="round"/>`,
+ kalender:`<rect x="14" y="22" width="72" height="64" rx="8" ${G}/><path d="M14 40h72M32 12v18M68 12v18" ${G}/><path d="M34 62l10 10 20-22" ${HJ}/>`,
+ stok:`<path d="M40 14h20v26h26v20H60v26H40V60H14V40h26z" ${G}/>`,
+ keu:`<rect x="26" y="10" width="48" height="80" rx="8" ${G}/><rect x="35" y="20" width="30" height="16" rx="3" ${G}/>${titik}`,
+ pengadaan:`<rect x="18" y="20" width="64" height="44" rx="5" ${G}/><path d="M10 74h80l-6 8H16z" ${G}/>`,
+ penjualan:`<rect x="16" y="14" width="68" height="52" rx="4" ${G}/><path d="M26 54l14-16 12 10 20-22" ${G}/><path d="M50 66v14M38 90l12-10 12 10" ${G}/>`,
+ karyawan:`<circle cx="50" cy="26" r="11" ${G}/><circle cx="28" cy="56" r="10" ${G}/><circle cx="72" cy="56" r="10" ${G}/><path d="M12 88c2-12 30-12 32 0M56 88c2-12 30-12 32 0" ${G}/>`,
+ pelanggan:`<circle cx="34" cy="38" r="20" ${G}/><circle cx="34" cy="33" r="7" ${G}/><path d="M22 50c4-7 20-7 24 0" ${G}/><circle cx="76" cy="26" r="11" ${G}/><circle cx="70" cy="76" r="11" ${G}/><path d="M52 44l14-10M50 52l12 14" ${G}/>`,
+ hati:`<path d="M50 84C20 62 10 46 18 30c7-13 24-14 32 0 8-14 25-13 32 0 8 16-2 32-32 54z" ${G}/>`};
+const svg=k=>`<svg viewBox="0 0 100 100">${IK[k]}</svg>`;
+const LOGO=`<svg viewBox="0 0 132 86"><path d="M6 80V36a24 24 0 0 1 48 0v44z" fill="#3163D1"/><path d="M42 80V36a24 24 0 0 1 48 0v44z" fill="#4B7BE5"/><path d="M78 80V10l48 35z" fill="#5DAD72"/></svg>`;
+
+/* ---------- bangun elemen ---------- */
+const DN=$('#dunia'),TK=$('#teks');
+const bb=(html,css,par=DN,cls='')=>{const e=mk('div','bb '+cls,par,html);e.style.cssText+=css;return e;};
+// malam
+const malam=mk('div','',DN);malam.id='malam';DN.insertBefore(malam,$('#tanaman'));const bulan=mk('div','',malam);bulan.id='bulan';
+// adegan 2: jendela spreadsheet + 4 masalah
+const XL=[['Obat','Buku','Rak','Selisih'],['Paracetamol','20','0','-20'],['Amoxicillin','15','12','-3'],['Vitamin C','30','30','0'],['Antasida','12','9','-3'],['Ibuprofen','8','8','0']];
+const excel=bb(`<div class="bar"><i></i><i></i><i></i>&nbsp;stok_apotek.xlsx</div><div class="grid">${XL.map((r,i)=>r.map((c,j)=>`<div class="${i?'':'h'}" data-m="${i&&j===3&&c!=='0'?1:0}">${c}</div>`).join('')).join('')}</div>`,'left:110px;top:330px;width:860px;height:470px',DN,'win');
+const MSL=[['selisih','Stok selisih'],['nota','Nota numpuk'],['ed','Obat ED nggak ketahuan'],['kas','Kas nggak cocok']];
+const tiles=MSL.map(([k,s],i)=>bb(`<div class="ci">${svg(k)}</div>${s}`,`left:150px;top:${850+i*128}px;width:780px`,DN,'tile'));
+// adegan 3: jam + 3 dampak
+const jam=bb('<div class="jr" style="height:96px"></div><div class="jr" style="height:66px;width:10px;left:145px"></div>','',DN);jam.id='jam';
+const DMP=[['pergi','Pembeli balik kanan'],['buang','Obat kebuang'],['malam','Lembur rekap tiap malam']];
+const dampak=DMP.map(([k,s],i)=>bb(`<div class="ci">${svg(k)}</div>${s}`,`left:110px;top:${700+i*170}px;width:820px;height:140px`,DN,'tile wide'));
+// laptop
+const lap=bb('','left:0;top:0;width:1080px;height:1920px');
+lap.innerHTML=`<svg id="lapBase" viewBox="0 0 780 110"><path d="M70 0h640l70 74H0z" fill="#C9CFF5"/><path d="M0 74h780v16a14 14 0 0 1-14 14H14A14 14 0 0 1 0 90z" fill="#A9B2EC"/>
+ ${[0,1,2].map(r=>`<path d="M${110-r*24} ${16+r*18}h${560+r*48}" stroke="#AEB7EE" stroke-width="11" stroke-dasharray="34 9" />`).join('')}<rect x="300" y="72" width="180" height="10" rx="5" fill="#B9C0F2"/></svg>
+ <div id="lapScr"><div id="lapIn"></div></div>`;
+const LI=$('#lapIn');const pane=h=>mk('div','pane',LI,h);
+const PN={};
+PN.logo=pane(`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+  <div style="width:170px;height:110px">${LOGO}</div><div style="font:800 46px/1 Poppins;color:#2C5AAE;letter-spacing:.02em">APOTEK DIGITAL</div></div>`);
+const side='<div class="side"><i></i><i></i><i></i><i></i><i></i></div>';
+PN.dash=pane(`${side}<div class="ptop">Dashboard</div><div class="pbody">
+  <div style="display:flex;gap:10px">${['Penjualan','Stok aman','Pesanan'].map((s,i)=>`<div style="flex:1;height:84px;border-radius:12px;background:#fff;box-shadow:0 3px 0 #E3E8F5;padding:10px 12px;font:700 20px 'Plus Jakarta Sans';color:#6B7A99">${s}<div style="height:12px;border-radius:6px;margin-top:14px;background:${['#3163D1','#5DAD72','#4DA39A'][i]};width:${[80,65,50][i]}%"></div></div>`).join('')}</div>
+  <svg viewBox="0 0 500 200" style="width:100%;height:200px;margin-top:10px"><path class="gl" d="M10 170 L80 140 L150 150 L220 100 L290 112 L360 60 L430 74 L490 30" fill="none" stroke="#3163D1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/></svg></div>`);
+PN.upd=pane(`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+  <svg class="putar" viewBox="0 0 100 100" style="width:140px;height:140px"><path d="M80 50a30 30 0 1 1-9-21" fill="none" stroke="#3163D1" stroke-width="9" stroke-linecap="round"/><path d="M74 14l-2 18-18-2" fill="none" stroke="#3163D1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="ut" style="font:800 38px Poppins;color:#1F2D3D">Memperbarui…</div></div>`);
+const ROW=(a,b,c,k)=>`<div class="row"><span>${a}</span><span style="display:flex;gap:14px;align-items:center"><span class="q">${b}</span><span class="st ${k}">${c}</span></span></div>`;
+PN.stok=pane(`${side}<div class="ptop">Analisis Stok</div><div class="pbody">${ROW('Paracetamol 500','13','Kurang','m')}${ROW('Amoxicillin 500','140','Numpuk','o')}${ROW('Vitamin C 1000','48','Aman','h')}${ROW('Antasida','30','Aman','h')}</div>`);
+PN.kasir=pane(`${side}<div class="ptop">Laporan Penjualan</div><div class="pbody"><div style="display:flex;align-items:flex-end;gap:16px;height:240px;padding:10px 10px 0">${[40,55,48,70,62,85,100].map((h,i)=>`<div class="bar7" data-h="${h}" style="flex:1;border-radius:10px 10px 0 0;background:${i===6?'#5DAD72':'#3163D1'}"></div>`).join('')}</div><div style="font:700 22px 'Plus Jakarta Sans';color:#6B7A99;margin:8px 0 0 10px">Sen Sel Rab Kam Jum Sab Min</div></div>`);
+const BELI=(a,b)=>`<div class="row"><span>${a}</span><span style="display:flex;gap:12px;align-items:center"><span style="color:#6B7A99">${b}</span><span class="st b psn">Pesan</span></span></div>`;
+PN.beli=pane(`${side}<div class="ptop">Analisis Pembelian</div><div class="pbody">${BELI('Paracetamol 500','+ 60')}${BELI('Antasida','+ 24')}${BELI('Salep luka','+ 12')}${BELI('Vitamin C 1000','—')}</div>`);
+const AV=c=>`<span style="width:40px;height:40px;border-radius:50%;background:${c};display:inline-block"></span>`;
+PN.tim=pane(`${side}<div class="ptop">Karyawan & Pelanggan</div><div class="pbody" style="display:flex;gap:12px">
+  <div style="flex:1">${['Shift pagi','Shift siang','Shift malam'].map((s,i)=>`<div class="row" style="justify-content:flex-start;gap:12px">${AV(['#4DA39A','#3163D1','#5DAD72'][i])}${s}</div>`).join('')}</div>
+  <div style="flex:1">${['Member','Riwayat','Poin'].map((s,i)=>`<div class="row" style="justify-content:flex-start;gap:12px">${AV(['#F5A524','#8FCFD9','#9AA6EA'][i])}${s}</div>`).join('')}</div></div>`);
+// adegan 4: judul + 2 pertanyaan
+const j4=mk('div','jdl',TK,'<span class="w">Aplikasi</span> <span class="w">apotek</span><br><span class="w b">online</span> <span class="w">+</span> <span class="w b">langganan</span>');j4.style.cssText='top:230px;font-size:84px';
+const q4=[bb('Kenapa <b>online</b>?','left:110px;top:560px',DN,'pil'),bb('Kenapa <b>berlangganan</b>?','left:460px;top:660px',DN,'pil')];
+// adegan 5: awan, tablet, HP, garis
+const garis=bb(`<svg viewBox="0 0 1080 1920" style="width:1080px;height:1920px;overflow:visible">${[[150,880,450,440],[540,800,540,450],[935,900,630,440]].map(([x1,y1,x2,y2])=>`<path class="gp" d="M${x1} ${y1}C${x1} ${(y1+y2)/2} ${x2} ${(y1+y2)/2+60} ${x2} ${y2}" fill="none" stroke="#3163D1" stroke-width="7" stroke-dasharray="18 14" stroke-linecap="round"/>`).join('')}</svg>`,'left:0;top:0;width:1080px;height:1920px');
+const cloud=bb(`<svg viewBox="0 0 320 200" style="width:320px;height:200px;overflow:visible"><path d="M70 180a60 60 0 0 1-6-120a80 80 0 0 1 150-14a62 62 0 0 1 40 134z" fill="#fff" stroke="#C2CBE6" stroke-width="6"/><circle cx="160" cy="118" r="38" fill="none" stroke="#5DAD72" stroke-width="10" stroke-dasharray="190 50" class="sinc"/><path d="M190 86l8 18-20 2" fill="none" stroke="#5DAD72" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`,'',DN);cloud.id='cloud';
+const otom=bb('<b style="color:#5DAD72">✓</b> Otomatis!','',DN,'pil');otom.id='otom';
+const tab=bb('<div><div style="height:46px;background:#3163D1"></div><svg viewBox="0 0 200 120" style="width:100%;margin-top:30px"><path d="M10 100L60 70 100 82 150 40 190 30" fill="none" stroke="#3163D1" stroke-width="10" stroke-linecap="round"/></svg></div>','left:40px;top:880px;width:230px;height:310px',DN,'dev');
+const hp2=bb('<div><div style="height:50px;background:#3163D1"></div><div style="margin:20px 14px;height:16px;border-radius:8px;background:#DCE3F6"></div><div style="margin:0 14px;height:16px;border-radius:8px;background:#DCE3F6;width:60%"></div><div style="margin:20px 14px;height:70px;border-radius:12px;background:#E3F3E8"></div></div>','left:860px;top:900px;width:170px;height:300px',DN,'dev');
+const p5=[bb('<b>✓</b> Kapan aja','left:80px;top:620px',DN,'pil'),bb('<b>✓</b> Dari mana aja','left:540px;top:620px',DN,'pil'),bb('Lagi di luar kota? <b>Tetap bisa cek</b>','left:150px;top:1320px',DN,'pil')];
+// adegan 6: server mahal (dicoret) + bayar rutin
+const kartu6=(ik,judul,tanda)=>`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:20px">
+  <div style="width:150px;height:150px;border-radius:50%;box-shadow:inset 0 0 0 9px #8FCFD9,0 0 0 9px #4F6F92;position:relative"><svg viewBox="0 0 100 100" style="position:absolute;left:25px;top:25px;width:100px;height:100px">${IK[ik]}</svg>${tanda}</div>
+  <div style="font:700 40px/1.15 Poppins;color:#1F2D3D;text-align:center">${judul}</div></div>`;
+const silang='<svg class="coret" viewBox="0 0 100 100" style="position:absolute;left:-10px;top:-10px;width:170px;height:170px"><path d="M14 14l72 72M86 14L14 86" fill="none" stroke="#EF5B67" stroke-width="10" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/></svg>';
+const k6=[bb(kartu6('server','Tanpa server<br>mahal di awal',silang),'left:80px;top:330px;width:400px;height:400px',DN,'win'),bb(kartu6('kalender','Cukup bayar<br>rutin',''),'left:540px;top:330px;width:390px;height:400px',DN,'win')];
+// lencana fitur (bertahap 7-11, posisi seperti gambar referensi)
+const LF=[['stok','Stok',380,430,7,.2,'c'],['penjualan','Penjualan',190,1050,8,.35,'l'],['keu','Keuangan',700,430,8,.62,'c'],['pengadaan','Pengadaan',190,700,9,.3,'l'],['karyawan','Karyawan',880,770,10,.12,'r'],['pelanggan','Pelanggan',880,1090,10,.45,'r']];
+const lencF=LF.map(([k,s,x,y,n,p,al])=>{const e=bb(`<div class="cir"></div>${svg(k)}<div class="lbl ${al==='c'?'c':''}" style="${al==='c'?'left:0;transform:translateX(-50%)':al==='l'?'left:-120px':'right:-50px'}"><small>Manajemen</small>${s}</div>`,`left:${x}px;top:${y}px`,DN,'lenc');e.dataset.n=n;e.dataset.p=p;return e;});
+const garis11=bb(`<svg viewBox="0 0 1080 1920" style="width:1080px;height:1920px;overflow:visible">${LF.map(([,,x,y])=>`<path class="g11" d="M${x} ${y}L540 995" stroke="#8FCFD9" stroke-width="8" stroke-dasharray="16 14" stroke-linecap="round"/>`).join('')}</svg>`,'left:0;top:0;width:1080px;height:1920px');
+DN.insertBefore(garis11,lap);
+// adegan 8: scanner + printer + struk
+const scan=bb(`<svg viewBox="0 0 160 150" style="width:160px;height:150px;overflow:visible"><path d="M20 30h70l20 30-30 10z" fill="#3A4A6A"/><path d="M70 66l22-6 28 80H86z" fill="#2B3A55"/><path class="sinar" d="M24 46L-30 150h110z" fill="rgba(239,91,103,.35)"/></svg>`,'left:40px;top:1290px',DN);
+const prn=bb(`<div class="struk" style="position:absolute;left:30px;bottom:96px;width:120px;background:#fff;border-radius:6px 6px 0 0;box-shadow:0 0 0 3px #E3E8F5;overflow:hidden"><div style="margin:14px 16px;height:10px;border-radius:5px;background:#C2CBE6"></div><div style="margin:0 16px 12px;height:10px;border-radius:5px;background:#C2CBE6;width:60%"></div><div style="margin:0 16px;height:10px;border-radius:5px;background:#5DAD72;width:40%"></div></div>
+  <div style="position:absolute;left:0;bottom:0;width:180px;height:100px;border-radius:20px;background:#2B3A55"></div><div style="position:absolute;left:24px;bottom:72px;width:132px;height:16px;border-radius:8px;background:#151E30"></div>`,'left:820px;top:1200px;width:180px;height:240px',DN);
+// adegan 11: pil pasien
+const p11=bb(`<span style="display:inline-block;width:46px;height:46px;vertical-align:middle;margin-right:10px">${svg('hati').replace('<svg','<svg style="width:46px;height:46px"')}</span>Fokus <b>layani pasien</b>`,'left:230px;top:1330px',DN,'pil');
+// adegan 12: kartu sama, logo, tombol, url
+const kartuS=(id,lb,ik)=>`<div class="ikb">${ik}</div><div class="lb">${lb}</div><div class="ang" style="color:#1F2D3D">20</div>`;
+const k12=[bb(kartuS('a','Di buku',$('#kBuku .ikb').innerHTML),'left:70px;top:470px',DN,'kartu'),bb(kartuS('b','Di rak',$('#kRak .ikb').innerHTML.replace('fill="none" stroke="#EF5B67" stroke-width="5" stroke-dasharray="6 5"','fill="#8FCFD9"')),'left:560px;top:470px',DN,'kartu')];
+k12.forEach(k=>k.style.top='470px');
+const sama=bb('=','left:510px;top:730px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:#5DAD72;color:#fff;font:800 80px/116px Poppins;text-align:center;box-shadow:0 0 0 9px #fff,10px 12px 0 9px #C2CBE6');
+const logo12=bb(`<div style="display:flex;align-items:center;gap:22px"><div style="width:150px;height:98px">${LOGO}</div><div style="font:800 64px/1 Poppins;color:#2C5AAE">APOTEK<br>DIGITAL</div></div>`,'left:250px;top:250px');
+const tombol=bb(`<div class="tombol"><svg viewBox="0 0 40 40" style="width:46px;height:46px"><path d="M23 3L8 23h11l-3 14 16-21H21z" fill="#fff"/></svg>Coba Gratis</div>`,'left:270px;top:1050px');
+const jari=bb('','left:640px;top:1110px',DN);jari.id='jari';
+const url=bb('Kunjungi <b style="color:#3163D1">apotekdigital.com</b>','left:0;top:1230px;width:1080px;text-align:center;font:700 52px Poppins;color:#1F2D3D');
+
+/* ---------- gerak ---------- */
+function tp(el,t,a,b,o={}){const dy=o.dy??50;if(t<a||t>b+.5){el.style.visibility='hidden';return 0;}el.style.visibility='visible';
+  const k=E.out(seg(t,a,a+(o.d??.55))),x=E.io(seg(t,b,b+.45));el.style.opacity=k*(1-x);
+  el.style.transform=`translate(${o.x??0}px,${(1-k)*dy-x*40+(o.y??0)}px) scale(${(o.s??1)*(.9+.1*k)})`;return k*(1-x);}
+const vis=(el,on)=>{el.style.visibility=on?'visible':'hidden';};
+function babak(t){
+  // tirai navy dari adegan 1 terbuka ke atas
+  if(t>=WAKTU.dur){const k=E.io(seg(t,WAKTU.dur,WAKTU.dur+.8));st($('#tutup'),{transform:`translateY(${lerp(-40,-2700,k)}px)`});}
+  // properti meja manual hilang saat solusi datang
+  const mj=1-E.io(seg(t,A(4),A(4)+.6));$('#buku').style.opacity=mj;$('#nota').style.opacity=mj;
+  // A2
+  tp(excel,t,A(2)+.15,B(2));
+  [...excel.querySelectorAll('[data-m="1"]')].forEach((c,i)=>{const k=E.io(seg(t,P(2,.18+i*.07),P(2,.18+i*.07)+.4));c.style.background=k>0?`rgba(239,91,103,${.15+.85*k})`:'';c.style.color=k>.5?'#fff':'';});
+  tiles.forEach((e,i)=>tp(e,t,P(2,[.46,.57,.67,.85][i]),B(2),{dy:40}));
+  // A3 + malam
+  const mlm=.85*E.io(seg(t,S[3],P(3,.9)))*(1-E.io(seg(t,A(4),A(4)+.9)));malam.style.opacity=mlm;bulan.style.opacity=mlm;
+  tp(jam,t,A(3)+.1,B(3));[...jam.querySelectorAll('.jr')].forEach((h,i)=>h.style.transform=`rotate(${(t-S[3])*(i?40:480)}deg)`);
+  dampak.forEach((e,i)=>tp(e,t,P(3,[.08,.42,.68][i]),B(3),{dy:40}));
+  // laptop A4..A11
+  const kL=tp(lap,t,S[4]+.1,B(11),{dy:140,d:.8});
+  $('#lapScr').style.transform=`scaleY(${.04+.96*E.out(seg(t,S[4]+.35,S[4]+1.05))})`;
+  const PW={logo:[[S[4]+.6,B(4)]],dash:[[A(5),B(5)],[A(11),B(11)+.4]],upd:[[A(6),B(6)]],stok:[[A(7),B(7)]],kasir:[[A(8),B(8)]],beli:[[A(9),B(9)]],tim:[[A(10),B(10)]]};
+  for(const k in PW){let o=0;for(const[a,b]of PW[k])o=Math.max(o,E.io(seg(t,a,a+.35))*(1-E.io(seg(t,b,b+.35))));PN[k].style.opacity=o;}
+  PN.dash.querySelector('.gl').style.strokeDashoffset=1-E.io(seg(t,A(5)+.3,A(5)+2.2))*(t<A(11)?1:E.io(seg(t,A(11)+.2,A(11)+1.6)));
+  // A4 judul + pertanyaan
+  kata(j4,t,S[4]+.05,B(4)-.1,.14);q4.forEach((e,i)=>tp(e,t,P(4,[.58,.78][i]),B(4)));
+  // A5
+  tp(garis,t,P(5,.15),B(5));[...garis.querySelectorAll('.gp')].forEach(p=>p.style.strokeDashoffset=-t*60);
+  tp(cloud,t,A(5)+.1,B(5));cloud.querySelector('.sinc').style.transform=`rotate(${t*120}deg)`;cloud.querySelector('.sinc').style.transformOrigin='160px 118px';
+  tp(otom,t,P(5,.22),B(5));tp(tab,t,P(5,.38),B(5),{dy:80});tp(hp2,t,P(5,.46),B(5),{dy:80});
+  p5.forEach((e,i)=>tp(e,t,P(5,[.6,.7,.84][i]),B(5),{dy:30}));
+  // A6
+  k6.forEach((e,i)=>tp(e,t,P(6,[.05,.5][i]),B(6)));
+  k6[0].querySelector('.coret path').style.strokeDashoffset=1-E.io(seg(t,P(6,.22),P(6,.22)+.5));
+  const pu=PN.upd.querySelector('.putar'),selesai=t>P(6,.8);pu.style.transform=`rotate(${selesai?0:t*300}deg)`;
+  PN.upd.querySelector('.ut').innerHTML=selesai?'<span style="color:#5DAD72">✓</span> Versi terbaru':'Memperbarui…';
+  // A7 stok: transaksi mengurangi stok
+  const q=PN.stok.querySelector('.q');q.textContent=t>P(7,.4)?'12':'13';
+  [...PN.stok.querySelectorAll('.row')].forEach((r,i)=>{const hi=(i===0&&t>P(7,.62)&&t<P(7,.82))||(i===1&&t>P(7,.82));r.style.boxShadow=hi?'0 0 0 4px #3163D1':'0 3px 0 #E3E8F5';});
+  // A8 kasir
+  tp(scan,t,A(8)+.1,B(8));scan.querySelector('.sinar').style.opacity=t>P(8,.08)&&t<P(8,.3)?.4+.6*Math.abs(Math.sin(t*12)):0;
+  tp(prn,t,A(8)+.2,B(8));prn.querySelector('.struk').style.height=(20+150*E.io(seg(t,P(8,.28),P(8,.5))))+'px';
+  [...PN.kasir.querySelectorAll('.bar7')].forEach((b,i)=>b.style.height=(+b.dataset.h*2.2*E.out(seg(t,P(8,.5)+i*.08,P(8,.5)+i*.08+.6)))+'px');
+  // A9 pembelian
+  [...PN.beli.querySelectorAll('.psn')].forEach((b,i)=>{const ok=i<3&&t>P(9,.55+i*.1);b.textContent=ok?'✓ Dipesan':(i===3?'Cukup':'Pesan');b.className='st psn '+(ok?'h':i===3?'o':'b');});
+  // lencana fitur
+  lencF.forEach((e,i)=>{const n=+e.dataset.n;tp(e,t,P(n,+e.dataset.p),B(11),{dy:50,y:Math.sin(t*1.5+i)*6});});
+  [...garis11.querySelectorAll('.g11')].forEach(p=>p.style.strokeDashoffset=-t*50);tp(garis11,t,P(11,.05),B(11));
+  tp(p11,t,P(11,.55),B(11));
+  // A12
+  k12.forEach((e,i)=>tp(e,t,P(12,[.0,.12][i]),AKHIR+9,{dy:60}));tp(sama,t,P(12,.25),AKHIR+9,{dy:0});
+  tp(logo12,t,P(12,.45),AKHIR+9);tp(tombol,t,P(12,.55),AKHIR+9);
+  const tap=seg(t,P(12,.72),P(12,.72)+.5);tp(jari,t,P(12,.66),P(12,.72)+.5,{dy:30,s:1-.25*Math.sin(PI*tap)});
+  $('.tombol').style.background=tap>.4?'#3163D1':'#1F2D3D';
+  tp(url,t,P(12,.8),AKHIR+9);
+}
+function sembunyiAdegan1(t){const on=t<WAKTU.dur+.05;['#hp','#L0','#L1','#L2','#L3','#kBuku','#kRak','#ne','#judul','#tanya'].forEach(s=>vis($(s),on));}
+function kameraGlobal(t){if(t<WAKTU.dur)return kamera(t);const z=1.03+.015*Math.sin(t*.21);const cx=540+nz(t*.2,3)*5,cy=965+nz(t*.2,8)*5;
+  st($('#dunia'),{transform:`translate(${W/2}px,${H/2}px) scale(${z}) translate(${-cx}px,${-cy}px)`});}
+const VO_LAIN=Object.keys(ADA).map(n=>({src:`assets/audio/vp-${pad(n)}.mp3`,at:S[n],teks:TEKS[n]}));
+
 const SCENE={
-  dur:WAKTU.dur,
+  dur:AKHIR,
   kata:null,
-  sub:{gaya:'pil',font:"800 56px 'Plus Jakarta Sans'",warna:'#1F2D3D',aksen:'#3163D1',kunci:['habis','nol','manual'],maks:3,y:.8},
+  sub:{gaya:'pil',font:"800 56px 'Plus Jakarta Sans'",warna:'#1F2D3D',aksen:'#3163D1',kunci:['habis','nol','manual','online','berlangganan','otomatis','cloud','gratis','apotek digital'],maks:3,y:.8},
   audio:{vo:[{src:'assets/audio/vo-01a.mp3',at:.1,teks:'Stok habis lagi?'},
             {src:'assets/audio/vo-01b.mp3',at:2.35,teks:'Di buku dua puluh, di rak... nol.'},
-            {src:'assets/audio/vo-01c.mp3',at:5.7,teks:'Masih mau catat manual?'}],sfx:[],music:null},
+            {src:'assets/audio/vo-01c.mp3',at:5.7,teks:'Masih mau catat manual?'},...VO_LAIN],sfx:[],music:null},
   muat(){return Promise.all([document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
-  frame(t){kamera(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);}
+  frame(t){kameraGlobal(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);sembunyiAdegan1(t);babak(t);}
 };
 grainOn(.03);
