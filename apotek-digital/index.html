@@ -196,7 +196,7 @@ function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEa
    Gerak HALUS: tanpa guncangan; semua masuk/keluar dengan ease in-out. Semua dihitung dari t.
    ===================================================================================== */
 const PI=Math.PI;
-const WAKTU={judul:.1,tarik:1.7,lenc:2.5,keluar:4.0,buku:4.4,rak:5.1,ne:5.7,tanya:6.4,tutup:7.7,dur:8.6};
+const WAKTU={judul:.1,tarik:1.6,lenc:2.2,keluar:3.55,buku:3.95,rak:5.5,ne:6.45,tanya:7.05,tutup:8.75,dur:9.6};
 const NOTIF=[['!','Paracetamol habis','Rak 2 · baru ketahuan',''],['!','Amoxicillin hampir ED','Gudang · cek manual','k'],
   ['!','Selisih kas kemarin','Tutup shift',''],['!','Faktur numpuk','Belum diinput','k']];
 const T_NOT=[.15,.55,.95,1.35];
@@ -241,12 +241,11 @@ function tutup(t){const k=E.io(seg(t,WAKTU.tutup,WAKTU.dur));st($('#tutup'),{tra
 
 const SCENE={
   dur:WAKTU.dur,
-  kata:[{w:'Stok',t0:.15,t1:.4},{w:'habis',t0:.45,t1:.75},{w:'lagi?',t0:.8,t1:1.3},
-        {w:'Di',t0:4.45,t1:4.55},{w:'buku',t0:4.55,t1:4.85},{w:'dua',t0:4.85,t1:5.0},{w:'puluh,',t0:5.0,t1:5.3},
-        {w:'di',t0:5.35,t1:5.45},{w:'rak...',t0:5.45,t1:5.85},{w:'nol.',t0:5.95,t1:6.3},
-        {w:'Masih',t0:6.45,t1:6.75},{w:'mau',t0:6.75,t1:6.9},{w:'catat',t0:6.9,t1:7.2},{w:'manual?',t0:7.2,t1:7.65}],
+  kata:null,
   sub:{gaya:'pil',font:"800 56px 'Plus Jakarta Sans'",warna:'#1F2D3D',aksen:'#3163D1',kunci:['habis','nol','manual'],maks:3,y:.8},
-  audio:{vo:[],sfx:[],music:null},
+  audio:{vo:[{src:'assets/audio/vo-01a.mp3',at:.1,teks:'Stok habis lagi?'},
+            {src:'assets/audio/vo-01b.mp3',at:3.95,teks:'Di buku dua puluh, di rak... nol.'},
+            {src:'assets/audio/vo-01c.mp3',at:7.15,teks:'Masih mau catat manual?'}],sfx:[],music:null},
   muat(){return Promise.all([document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
   frame(t){kamera(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);}
 };

@@ -1,5 +1,5 @@
 # Naskah: Kenapa apotek butuh aplikasi online berlangganan? (Apotek Digital)
-Suara: (dipilih setelah naskah disetujui) · model ElevenLabs terbaru · bahasa Indonesia
+Suara: Zulfa (qXOoUJU1h7AiwSe4ltRA) · model eleven_v4 · flow ElevenLabs "Video Apotek Digital 90 dtk" · bahasa Indonesia
 Target: owner apotek Gen Z · 9:16 TikTok · ±90 detik · gaya Ilustrasi Flat Brand (lihat gaya.md)
 
 | # | Adegan (yang terlihat) | Kalimat VO | ±detik |
