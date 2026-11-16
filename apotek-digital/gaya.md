@@ -1,14 +1,17 @@
-# Lembar gaya: Apotek Digital — Pop Berani
+# Lembar gaya: Apotek Digital — Ilustrasi Flat Brand (racikan, mengikuti referensi user)
 
-- **Gaya:** Promo Produk & Iklan, arah **Pop Berani**, dibawa ke explainer 90 dtk (9:16, TikTok), untuk owner apotek Gen Z.
-- **Palet brand:** biru `#3163D1` · biru tua `#2C5AAE` · teal `#4DA39A` · hijau `#5DAD72` · navy `#1F2D3D` (tinta, bayangan keras).
-  Pendukung pop: kuning sorot `#FFE14D` (kata kunci), merah alarm `#FF4F64` (masalah saja), krem kertas `#FFFDF5`.
-- **Font:** Bagel Fat One (judul, angka, stiker) + Plus Jakarta Sans 600/800 (subtitle, UI HP, label).
-- **Latar:** blok warna jenuh yang berganti di ketukan, garis diagonal, pola titik halftone, lingkaran bergaris. Tidak ada latar polos.
-- **Kamera:** hook close-up ×1,7 ke HP, tarik mundur cepat + blur, sesudahnya merayap pelan + goyang `nz()`; guncang 10–14 px tiap kata dihentak.
-- **Cahaya/tekstur:** datar ala pop, bayangan keras navy bergeser 16 px, butiran halus .06.
-- **Subtitle:** pil navy, Plus Jakarta Sans 800 58 px, y 0,80, maks 3 kata, kata kunci kuning.
-- **Tanda tangan gerak:** kata kunci DIHENTAK (skala 3,2 → 1 dalam 0,3 dtk) + layar berguncang + blok warna latar berganti.
-- **Babak warna:** masalah = merah alarm di atas biru; solusi = semua merah berubah jadi hijau ✓ di aplikasi Apotek Digital.
-- **Beda dari video sebelumnya (kartun):** tanpa tokoh, kinetic type + mockup HP/laptop, palet brand.
-- **Angka:** hanya dari user. Angka 20 vs 0 = ilustrasi skenario, bukan data.
+- **Gaya:** ilustrasi vektor flat seperti materi resmi Apotek Digital — meja biru, laptop/HP pastel periwinkle,
+  ikon garis di dalam lencana bundar bercincin ganda, label putih dengan bayangan geser lembut, daun teal di samping.
+  Explainer 90 dtk, 9:16 TikTok, untuk owner apotek Gen Z.
+- **Palet:** latar gradasi lavender `#F1F3FC → #C3CDF2` · meja `#3B5BAF`/`#2C5AAE` · perangkat `#B3BCF0`/`#8E9AE6`
+  · biru brand `#3163D1` · teal `#4DA39A` (+ muda `#8FCFD9`) · hijau `#5DAD72` · navy teks `#1F2D3D` · garis ikon `#4F6F92`
+  · koral masalah `#EF5B67` (hanya di babak masalah).
+- **Font:** Poppins 700/800 (judul, label, angka) + Plus Jakarta Sans 600/800 (UI di layar, subtitle).
+- **Kamera:** HALUS — dorong/tarik pelan dengan ease in-out 0,9–1,2 dtk, goyang `nz` ≤ 4 px. **Tanpa guncangan, tanpa sentakan, tanpa blur kejut.**
+- **Gerak masuk:** naik 40–60 px + pudar + skala .9→1 (ease out 0,5–0,7 dtk), bertahap 0,2–0,3 dtk. Keluar: naik pelan + pudar.
+- **Lencana fitur:** lingkaran putih, cincin dalam teal muda, cincin luar slate `#4F6F92`, halo abu `#C9D0E8`; ikon garis 8 px.
+- **Label:** kotak putih sudut 12, Poppins 700, bayangan geser `-8 -8 #BFE3EA` + `10 10 #C2CBE6`.
+- **Subtitle:** pil putih, teks navy Plus Jakarta Sans 800 56 px, kata kunci biru `#3163D1`, y 0,80, maks 3 kata.
+- **Tanda tangan gerak:** lencana bundar "mengapung" (naik-turun 6 px) lalu tersambung garis putus-putus ke layar.
+- **Babak warna:** masalah = ikon & angka koral; solusi = semua jadi biru/hijau dengan centang.
+- **Angka:** hanya dari user; 20 vs 0 = ilustrasi skenario.

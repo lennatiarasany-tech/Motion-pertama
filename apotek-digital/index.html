@@ -10,50 +10,51 @@
      ?clean=1 = diam untuk render. Tombol: R = ulang, Spasi = jeda. -->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/gsap.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Plus+Jakarta+Sans:wght@600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;800&display=swap">
 <style>
-#stage{background:#3163D1;--biru:#3163D1;--biruT:#2C5AAE;--teal:#4DA39A;--hijau:#5DAD72;--navy:#1F2D3D;--kuning:#FFE14D;--merah:#FF4F64;--krem:#FFFDF5}
+#stage{background:#E9EDFB}
 #dunia{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0}
 .abs{position:absolute}
-/* latar */
-#bg{position:absolute;left:-200px;top:-200px;width:1480px;height:2320px;overflow:hidden}
-#b1{position:absolute;inset:0;background:var(--biru)}
-#dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.17) 3px,transparent 3.6px);background-size:26px 26px}
-#ring{position:absolute;width:520px;height:520px;border-radius:50%;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.15) 0 18px,transparent 18px 44px)}
-#b2{position:absolute;left:-300px;width:2200px;height:1600px;background:var(--teal);transform-origin:0 0}
-#b3{position:absolute;left:-300px;width:2200px;height:56px;background:var(--hijau);transform-origin:0 0}
+#bg{position:absolute;left:-240px;top:-260px;width:1560px;height:2440px;background:linear-gradient(180deg,#F4F6FD 0%,#E3E8FA 45%,#C3CDF2 100%)}
+.bulat{position:absolute;border-radius:50%;background:rgba(255,255,255,.55)}
+#meja{position:absolute;left:-240px;top:1262px;width:1560px;height:900px;background:#3B5BAF}
+#meja:before{content:'';position:absolute;left:0;right:0;top:0;height:22px;background:#5677C8}
+#meja:after{content:'';position:absolute;left:0;right:0;top:22px;height:14px;background:#33519F}
 /* HP */
-#hp{position:absolute;left:300px;top:640px;width:500px;height:990px;border-radius:72px;background:var(--navy);padding:22px;box-shadow:30px 30px 0 rgba(31,45,61,.45)}
-#layar{position:relative;width:100%;height:100%;border-radius:54px;background:#EEF2FA;overflow:hidden}
-#statusbar{position:absolute;left:40px;right:40px;top:22px;display:flex;justify-content:space-between;font:800 24px 'Plus Jakarta Sans';color:var(--navy)}
-#poni{position:absolute;left:50%;top:18px;width:120px;height:34px;margin-left:-60px;border-radius:20px;background:var(--navy)}
-#appbar{position:absolute;left:28px;right:28px;top:78px;display:flex;align-items:center;justify-content:space-between;font:800 34px 'Plus Jakarta Sans';color:var(--navy)}
-#badge{background:var(--merah);color:#fff;font:800 28px 'Plus Jakarta Sans';padding:4px 18px;border-radius:30px}
-.not{position:absolute;left:24px;right:24px;background:#fff;border-radius:26px;padding:20px 20px;box-shadow:0 6px 0 #D2DBEC;display:flex;gap:16px;align-items:center;font:800 29px/1.15 'Plus Jakarta Sans';color:var(--navy)}
-.not small{display:block;font:600 23px/1.3 'Plus Jakarta Sans';color:#6B7890}
-.ic{flex:none;width:62px;height:62px;border-radius:18px;background:var(--merah);color:#fff;font:800 40px/62px 'Plus Jakarta Sans';text-align:center}
-.ic.k{background:#FFB020}
-/* kertas nota */
-.nota{position:absolute;width:230px;height:150px;background:var(--krem);border:5px solid var(--navy);border-radius:10px;box-shadow:8px 8px 0 var(--navy);padding:24px}
-.nota i{display:block;height:11px;background:#D9D3BD;margin-bottom:16px;border-radius:5px}
-/* stiker */
-.stk{position:absolute;font:400 60px/1 'Bagel Fat One';padding:20px 32px;border-radius:26px;border:6px solid var(--navy);box-shadow:10px 10px 0 var(--navy);white-space:nowrap}
+#hp{position:absolute;left:370px;top:590px;width:340px;height:690px;border-radius:52px;background:#9AA6EA;padding:16px;box-shadow:0 0 0 6px #B6BFF2,22px 22px 0 rgba(44,67,140,.18)}
+#layar{position:relative;width:100%;height:100%;border-radius:38px;background:#F3F5FC;overflow:hidden}
+#appbar{position:absolute;left:0;right:0;top:0;height:118px;background:#3163D1;color:#fff;font:800 28px 'Plus Jakarta Sans';padding:58px 22px 0;display:flex;justify-content:space-between}
+#poni{position:absolute;left:50%;top:14px;width:90px;height:24px;margin-left:-45px;border-radius:14px;background:#9AA6EA;z-index:2}
+#badge{background:#EF5B67;color:#fff;font:800 24px/34px 'Plus Jakarta Sans';min-width:34px;height:34px;border-radius:17px;text-align:center;padding:0 8px}
+.not{position:absolute;left:14px;right:14px;background:#fff;border-radius:20px;padding:14px 14px;box-shadow:0 5px 0 #DCE2F2;display:flex;gap:12px;align-items:center;font:800 23px/1.15 'Plus Jakarta Sans';color:#1F2D3D}
+.not small{display:block;font:600 18px/1.3 'Plus Jakarta Sans';color:#7A86A0}
+.ic{flex:none;width:46px;height:46px;border-radius:14px;background:#EF5B67;color:#fff;font:800 30px/46px 'Plus Jakarta Sans';text-align:center}
+.ic.k{background:#F5A524}
+/* lencana bundar + label */
+.lenc{position:absolute;width:0;height:0}
+.lenc .cir{position:absolute;left:-100px;top:-100px;width:200px;height:200px;border-radius:50%;background:#fff;
+  box-shadow:inset 0 0 0 9px #fff,inset 0 0 0 15px #8FCFD9,0 0 0 11px #4F6F92,12px 14px 0 11px #C9D0E8}
+.lenc svg{position:absolute;left:-58px;top:-58px;width:116px;height:116px;overflow:visible}
+.lbl{position:absolute;top:128px;white-space:nowrap;background:#fff;border-radius:12px;padding:14px 24px 12px;font:700 38px/1 'Poppins';color:#1F2D3D;
+  box-shadow:-8px -8px 0 #BFE3EA,10px 10px 0 #C2CBE6}
 /* kartu banding */
-.kartu{position:absolute;top:640px;width:430px;height:560px;border-radius:44px;background:#fff;border:8px solid var(--navy);box-shadow:18px 18px 0 var(--navy);text-align:center;padding-top:44px}
-.kartu .lb{font:800 50px 'Plus Jakarta Sans';color:var(--navy);letter-spacing:.02em}
-.kartu .ang{font:400 300px/1.05 'Bagel Fat One';color:var(--navy)}
-.kartu .ik{margin:0 auto;width:120px;height:92px;position:relative}
-#vs{position:absolute;left:540px;top:900px;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;background:var(--kuning);border:7px solid var(--navy);box-shadow:8px 8px 0 var(--navy);font:400 92px/138px 'Bagel Fat One';color:var(--navy);text-align:center}
-/* teks besar (di luar kamera, tetap terbaca) */
+.kartu{position:absolute;top:700px;width:390px;height:520px;border-radius:34px;background:#fff;text-align:center;padding-top:40px;
+  box-shadow:-10px -10px 0 #BFE3EA,16px 16px 0 #C2CBE6}
+.kartu .ikb{width:120px;height:120px;margin:0 auto;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 8px #8FCFD9,0 0 0 8px #4F6F92;position:relative}
+.kartu .ikb svg{position:absolute;left:22px;top:22px;width:76px;height:76px}
+.kartu .lb{margin-top:26px;font:700 50px 'Poppins';color:#4F6F92}
+.kartu .ang{font:800 230px/1 'Poppins';color:#1F2D3D;margin-top:-4px}
+#ne{position:absolute;left:510px;top:960px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:#3163D1;color:#fff;font:800 76px/116px 'Poppins';text-align:center;box-shadow:0 0 0 9px #fff,10px 12px 0 9px #C2CBE6}
+/* teks */
 #teks{position:absolute;inset:0;pointer-events:none}
-.big{position:absolute;left:70px;font:400 172px/1 'Bagel Fat One';color:#fff;text-shadow:16px 16px 0 var(--navy);white-space:nowrap;transform-origin:20% 60%}
-.big.k{color:var(--kuning)}
-#blk{position:absolute;left:70px;top:590px;font:400 96px/1 'Bagel Fat One';color:#fff;background:var(--navy);padding:22px 30px 18px;box-shadow:16px 16px 0 var(--hijau);white-space:nowrap;transform-origin:0 50%}
-#tanya{position:absolute;left:0;right:0;top:250px;text-align:center;font:400 128px/1.02 'Bagel Fat One';color:#fff;text-shadow:14px 14px 0 var(--navy)}
-#tanya span{color:var(--kuning)}
+.jdl{position:absolute;left:0;right:0;text-align:center;font:800 124px/1.04 'Poppins';color:#1F2D3D;letter-spacing:-.02em}
+.jdl .k{color:#EF5B67}
+.jdl .b{color:#3163D1}
+.jdl .w{display:inline-block}
 #mfSub{z-index:90}
-#mfSub .sf>span{background:#1F2D3D!important;box-shadow:8px 8px 0 rgba(0,0,0,.25)}
-#sapu{position:absolute;z-index:95;left:-400px;top:-300px;width:2400px;height:2600px;background:var(--navy);transform-origin:0 0}
+#mfSub .sf>span{background:#FFFFFF!important;box-shadow:-6px -6px 0 #BFE3EA,8px 8px 0 #C2CBE6}
+#tutup{position:absolute;left:-300px;top:0;width:1700px;height:2600px;background:#2C5AAE;z-index:95}
+#tutup:before{content:'';position:absolute;left:0;right:0;top:0;height:26px;background:#5677C8}
 </style>
 <style>
 html,body{margin:0;height:100%;background:#000;overflow:hidden}
@@ -72,27 +73,29 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden}
 <body>
 <div id="stage">
 <div id="dunia">
-  <div id="bg"><div id="b1"></div><div id="dots"></div><div id="ring"></div><div id="b2"></div><div id="b3"></div></div>
-  <div class="nota" id="n0"><i></i><i style="width:70%"></i><i style="width:85%"></i></div>
-  <div class="nota" id="n1"><i></i><i style="width:60%"></i><i style="width:80%"></i></div>
-  <div id="hp"><div id="layar"><div id="poni"></div><div id="statusbar"><span>08.15</span><span>▲ ▮▮▮</span></div>
-    <div id="appbar"><span>Notifikasi</span><span id="badge">0</span></div></div></div>
-  <div class="kartu" id="kBuku" style="left:70px"><div class="ik" id="ikBuku"></div><div class="lb">DI BUKU</div><div class="ang">20</div></div>
-  <div class="kartu" id="kRak" style="left:580px"><div class="ik" id="ikRak"></div><div class="lb">DI RAK</div><div class="ang" style="color:var(--merah)">0</div></div>
-  <div id="vs">≠</div>
-  <div class="stk" id="s0" style="background:var(--kuning);color:var(--navy)">ZONK!</div>
-  <div class="stk" id="s1" style="background:var(--hijau);color:#fff">+99 nota</div>
-  <div class="nota" id="n2"><i></i><i style="width:75%"></i><i style="width:55%"></i></div>
-  <div class="nota" id="n3"><i></i><i style="width:65%"></i><i style="width:90%"></i></div>
+  <div id="bg"><div class="bulat" style="left:120px;top:420px;width:520px;height:520px"></div><div class="bulat" style="left:900px;top:240px;width:380px;height:380px"></div></div>
+  <svg id="tanaman" class="abs" style="left:800px;top:870px;width:360px;height:440px" viewBox="0 0 360 440"></svg>
+  <div id="hp"><div id="layar"><div id="poni"></div><div id="appbar"><span>Notifikasi</span><span id="badge">0</span></div></div></div>
+  <div id="meja"></div>
+  <svg id="buku" class="abs" style="left:40px;top:1300px;width:340px;height:140px" viewBox="0 0 340 140">
+    <path d="M40 10h130l-10 120H10z" fill="#fff"/><path d="M170 10h130l30 120H160z" fill="#F6F7FC"/><path d="M168 10l-8 120" stroke="#C2CBE6" stroke-width="4"/>
+    <path d="M45 40h100M42 62h96M39 84h104M36 106h80M190 40h90M193 62h70M196 84h96" stroke="#9FB0D6" stroke-width="6" stroke-linecap="round"/></svg>
+  <svg id="nota" class="abs" style="left:640px;top:1300px;width:200px;height:120px" viewBox="0 0 200 120">
+    <g transform="rotate(-6 100 60)"><rect x="20" y="20" width="160" height="80" rx="8" fill="#E9ECF8"/></g>
+    <g transform="rotate(4 100 60)"><rect x="20" y="16" width="160" height="80" rx="8" fill="#fff"/><path d="M40 40h110M40 58h80M40 76h96" stroke="#B8C3E0" stroke-width="6" stroke-linecap="round"/></g></svg>
+  <div class="lenc" id="L0" style="left:200px;top:620px"><div class="cir"></div><svg viewBox="0 0 100 100"><path d="M28 12h44v76l-7-5-7 5-7-5-7 5-7-5-9 5z" fill="none" stroke="#4F6F92" stroke-width="6" stroke-linejoin="round"/><path d="M38 32h24M38 46h24M38 60h14" stroke="#EF5B67" stroke-width="6" stroke-linecap="round"/></svg><div class="lbl" style="left:-150px">Nota numpuk</div></div>
+  <div class="lenc" id="L1" style="left:200px;top:1030px"><div class="cir"></div><svg viewBox="0 0 100 100"><path d="M16 34l34-16 34 16v40L50 90 16 74z M16 34l34 16 34-16 M50 50v40" fill="none" stroke="#4F6F92" stroke-width="6" stroke-linejoin="round"/><text x="50" y="30" font-family="Poppins" font-weight="800" font-size="34" fill="#EF5B67" text-anchor="middle">?</text></svg><div class="lbl" style="left:-150px">Stok selisih</div></div>
+  <div class="lenc" id="L2" style="left:880px;top:620px"><div class="cir"></div><svg viewBox="0 0 100 100"><rect x="26" y="10" width="48" height="80" rx="8" fill="none" stroke="#4F6F92" stroke-width="6"/><rect x="35" y="20" width="30" height="16" rx="3" fill="none" stroke="#EF5B67" stroke-width="5"/><path d="M38 52h0M50 52h0M62 52h0M38 66h0M50 66h0M62 66h0M38 79h0M50 79h0M62 79h0" stroke="#4F6F92" stroke-width="9" stroke-linecap="round"/></svg><div class="lbl" style="right:-50px">Kas selisih</div></div>
+  <div class="lenc" id="L3" style="left:880px;top:1030px"><div class="cir"></div><svg viewBox="0 0 100 100"><rect x="14" y="22" width="72" height="64" rx="8" fill="none" stroke="#4F6F92" stroke-width="6"/><path d="M14 40h72M32 12v18M68 12v18" stroke="#4F6F92" stroke-width="6" stroke-linecap="round"/><path d="M40 52l20 22M60 52L40 74" stroke="#EF5B67" stroke-width="7" stroke-linecap="round"/></svg><div class="lbl" style="right:-50px">Obat ED</div></div>
+  <div class="kartu" id="kBuku" style="left:70px"><div class="ikb"><svg viewBox="0 0 100 100"><path d="M10 26c13-7 27-7 40 2 13-9 27-9 40-2v54c-13-7-27-7-40 2-13-9-27-9-40-2z M50 28v54" fill="none" stroke="#4F6F92" stroke-width="7" stroke-linejoin="round"/></svg></div><div class="lb">Di buku</div><div class="ang">20</div></div>
+  <div class="kartu" id="kRak" style="left:560px"><div class="ikb"><svg viewBox="0 0 100 100"><path d="M10 44h80M10 84h80" stroke="#4F6F92" stroke-width="7" stroke-linecap="round"/><rect x="16" y="16" width="20" height="26" rx="3" fill="#8FCFD9"/><rect x="64" y="16" width="20" height="26" rx="3" fill="#8FCFD9"/><rect x="40" y="54" width="22" height="28" rx="3" fill="none" stroke="#EF5B67" stroke-width="5" stroke-dasharray="6 5"/></svg></div><div class="lb">Di rak</div><div class="ang" style="color:#EF5B67">0</div></div>
+  <div id="ne">≠</div>
 </div>
 <div id="teks">
-  <div class="big" id="w0" style="top:200px">STOK</div>
-  <div class="big k" id="w1" style="top:375px">HABIS</div>
-  <div class="big" id="w2" style="top:375px;left:690px;font-size:116px;padding-top:40px">LAGI?!</div>
-  <div id="blk">CATAT MANUAL</div>
-  <div id="tanya">MASIH<br><span>MANUAL?</span></div>
+  <div class="jdl" id="judul" style="top:220px"><span class="w">Stok</span> <span class="w k">habis</span><br><span class="w">lagi?</span></div>
+  <div class="jdl" id="tanya" style="top:240px;font-size:112px"><span class="w">Masih</span> <span class="w">catat</span><br><span class="w b">manual?</span></div>
 </div>
-<div id="sapu"></div>
+<div id="tutup"></div>
 <svg id="mfLab" viewBox="0 0 1080 1920"></svg>
 <div id="mfSub"></div>
 <div id="grain"></div>
@@ -189,89 +192,65 @@ function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEa
 </script>
 <script>
 /* =====================================================================================
-   APOTEK DIGITAL · gaya POP BERANI · adegan 1 (hook ±8 dtk)
-   Semua gerak dihitung dari t di frame(t). Detik penting di WAKTU.
+   APOTEK DIGITAL · gaya ILUSTRASI FLAT BRAND · adegan 1 (hook ±8,6 dtk)
+   Gerak HALUS: tanpa guncangan; semua masuk/keluar dengan ease in-out. Semua dihitung dari t.
    ===================================================================================== */
-const WAKTU={w0:.05,w1:.38,w2:.72,tarik:1.55,s0:2.15,s1:2.55,blk:2.9,keluar:3.65,kartu:3.95,buku:4.15,rak:5.0,vs:5.55,tanya:6.35,sapu:7.55,dur:8.2};
+const PI=Math.PI;
+const WAKTU={judul:.1,tarik:1.7,lenc:2.5,keluar:4.0,buku:4.4,rak:5.1,ne:5.7,tanya:6.4,tutup:7.7,dur:8.6};
 const NOTIF=[['!','Paracetamol habis','Rak 2 · baru ketahuan',''],['!','Amoxicillin hampir ED','Gudang · cek manual','k'],
-  ['!','Selisih kas','Tutup shift kemarin',''],['!','Faktur PBF numpuk','Belum diinput','k'],['!','Antasida kosong','Pembeli balik kanan','']];
-const T_NOT=[.0,.28,.56,.84,1.12];
-const lay=$('#layar'),NEL=NOTIF.map(([i,a,b,k])=>{const e=mk('div','not',lay,`<div class="ic ${k}">${i}</div><div>${a}<small>${b}</small></div>`);return e;});
-// ikon kecil kartu: buku & rak (CSS murni)
-$('#ikBuku').innerHTML='<div class="abs" style="left:10px;top:8px;width:100px;height:76px;background:#3163D1;border:6px solid #1F2D3D;border-radius:10px"></div><div class="abs" style="left:57px;top:8px;width:6px;height:76px;background:#1F2D3D"></div>';
-$('#ikRak').innerHTML='<div class="abs" style="left:4px;top:30px;width:112px;height:12px;background:#1F2D3D"></div><div class="abs" style="left:4px;top:80px;width:112px;height:12px;background:#1F2D3D"></div>'+
-  '<div class="abs" style="left:14px;top:2px;width:24px;height:28px;background:#5DAD72;border:4px solid #1F2D3D"></div><div class="abs" style="left:78px;top:2px;width:24px;height:28px;background:#FFE14D;border:4px solid #1F2D3D"></div>'+
-  '<div class="abs" style="left:44px;top:50px;width:26px;height:30px;border:4px dashed #FF4F64"></div>';
+  ['!','Selisih kas kemarin','Tutup shift',''],['!','Faktur numpuk','Belum diinput','k']];
+const T_NOT=[.15,.55,.95,1.35];
+const lay=$('#layar'),NEL=NOTIF.map(([i,a,b,k])=>mk('div','not',lay,`<div class="ic ${k}">${i}</div><div>${a}<small>${b}</small></div>`));
+// tanaman (daun teal, pot putih)
+(()=>{const sv=$('#tanaman');const daun=[[180,400,-38,1.0,'#4DA39A'],[180,400,-12,1.15,'#2F7A72'],[180,400,14,1.05,'#7CC4BB'],[180,400,-62,.8,'#7CC4BB'],[180,400,40,.85,'#4DA39A']];
+  sv.innerHTML=daun.map(([x,y,r,s,c])=>`<g class="dn" data-r="${r}" data-s="${s}" transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="M0 0C-38-120-30-250 0-340C30-250 38-120 0 0z" fill="${c}"/><path d="M0-10V-320" stroke="rgba(255,255,255,.35)" stroke-width="4"/></g>`).join('')+
+  '<path d="M110 380h140l-16 60H126z" fill="#fff"/><path d="M104 370h152v22H104z" fill="#E6EAF7"/>';})();
 
 const st=(el,s)=>{for(const k in s)el.style[k]=s[k];};
-// hentak: skala 3.2 -> 1 dalam .3 dtk + blur
-function hentak(el,t,t0,keluar=99,rot=0){const k=seg(t,t0,t0+.3),o=seg(t,keluar,keluar+.22);
-  if(t<t0||o>=1){el.style.opacity=0;return;}const s=lerp(3.2,1,E.out(k))*(1+.06*Math.sin(seg(t,t0+.3,t0+.6)*PI));
-  st(el,{opacity:Math.min(1,k*3)*(1-o),filter:`blur(${(1-k)*14+o*10}px)`,transform:`translateY(${-o*80}px) rotate(${rot}deg) scale(${s})`});}
-const PI=Math.PI;
-// guncangan kamera: jumlah denyut di detik hentak
-const GUNCANG=[[WAKTU.w0,10],[WAKTU.w1,14],[WAKTU.w2,10],[WAKTU.blk,10],[WAKTU.buku,8],[WAKTU.rak,16],[WAKTU.tanya,12]];
-function guncang(t){let g=0;for(const[a,m]of GUNCANG){const u=t-a;if(u>0&&u<.35)g+=m*(1-u/.35);}return[Math.sin(t*93)*g,Math.cos(t*71)*g];}
+// muncul halus: naik dy px + pudar + skala .92->1 ; keluar: naik + pudar
+function muncul(el,t,t0,t1=99,dy=50,d=.6){const k=E.out(seg(t,t0,t0+d)),o=E.io(seg(t,t1,t1+.5));
+  st(el,{opacity:(t<t0?0:k)*(1-o),transform:`translateY(${(1-k)*dy-o*60}px) scale(${.92+.08*k})`});return k*(1-o);}
+function kata(el,t,t0,t1,st0=.2){[...el.querySelectorAll('.w')].forEach((w,i)=>muncul(w,t,t0+i*st0,t1+i*.06,60,.55));}
 
-function kamera(t){const tr=E.io(seg(t,WAKTU.tarik,WAKTU.tarik+.55));
-  let z=lerp(1.72,1.0,tr),cx=lerp(560,540,tr),cy=lerp(1080,960,tr);
-  z*=1+.025*seg(t,WAKTU.tarik+.55,WAKTU.dur);cx+=nz(t*.4,3)*6;cy+=nz(t*.4,8)*6;
-  const[gx,gy]=guncang(t),bl=Math.sin(PI*seg(t,WAKTU.tarik,WAKTU.tarik+.55))*9;
-  st($('#dunia'),{transform:`translate(${W/2+gx}px,${H/2+gy}px) scale(${z}) translate(${-cx}px,${-cy}px)`,filter:bl>.3?`blur(${bl}px)`:'none'});
-  st($('#teks'),{transform:`translate(${gx*.6}px,${gy*.6}px)`});}
+function kamera(t){const tr=E.io(seg(t,WAKTU.tarik,WAKTU.tarik+1.2)),tc=E.io(seg(t,WAKTU.tutup-.3,WAKTU.dur));
+  const z=lerp(1.42,1.0,tr)*(1+.03*seg(t,WAKTU.tarik+1.2,WAKTU.tutup))+tc*.08;
+  const cx=540+nz(t*.25,3)*4,cy=lerp(940,960,tr)+tc*80+nz(t*.25,8)*4;
+  st($('#dunia'),{transform:`translate(${W/2}px,${H/2}px) scale(${z}) translate(${-cx}px,${-cy}px)`});}
 
-function latar(t){
-  // blok warna berganti di ketukan
-  const beat=[0,WAKTU.tarik,WAKTU.kartu,WAKTU.tanya],warna=['#3163D1','#2C5AAE','#3163D1','#1F2D3D'];let i=0;while(i<beat.length-1&&t>=beat[i+1])i++;
-  $('#b1').style.background=warna[i];
-  const ang=lerp(-14,-20,E.io(seg(t,WAKTU.kartu-.2,WAKTU.kartu+.3)))+Math.sin(t*.8)*1.2;
-  const yb=lerp(1180,1360,E.io(seg(t,WAKTU.kartu-.2,WAKTU.kartu+.3)));
-  st($('#b2'),{top:yb+'px',transform:`rotate(${ang}deg)`,background:t>=WAKTU.tanya?'#2C5AAE':'#4DA39A'});
-  st($('#b3'),{top:(yb+260)+'px',transform:`rotate(${ang}deg)`});
-  st($('#ring'),{left:(980+Math.sin(t*.7)*20)+'px',top:(260+Math.cos(t*.6)*20)+'px',transform:`rotate(${t*20}deg)`});
-  $('#dots').style.backgroundPosition=`${t*20}px ${t*12}px`;}
-
-function hp(t){const out=E.in(seg(t,WAKTU.keluar,WAKTU.kartu+.2)),getar=t<1.5?Math.sin(t*80)*1.6*Math.max(0,1-((t%.28)/.2)):0;
-  st($('#hp'),{transform:`translateY(${out*1300}px) rotate(${8+getar+out*14}deg)`});
-  let n=0;NEL.forEach((e,i)=>{const k=E.back(seg(t,T_NOT[i],T_NOT[i]+.32));if(t>=T_NOT[i])n++;
-    // terbaru di atas: kartu lama turun ke bawah
-    const pos=NEL.length-1-i,slot=T_NOT.filter(x=>x<=t).length-1-i;
-    st(e,{top:(150+Math.max(0,slot)*148)+'px',opacity:t<T_NOT[i]?0:1,transform:`translateY(${(1-k)*-120}px) scale(${.85+.15*k})`});});
+function hp(t){const out=E.io(seg(t,WAKTU.keluar,WAKTU.keluar+.8));
+  st($('#hp'),{transform:`translateY(${out*760}px) rotate(${-2+Math.sin(t*.9)*1.2}deg)`});
+  const n=T_NOT.filter(x=>t>=x).length;
+  NEL.forEach((e,i)=>{const k=E.out(seg(t,T_NOT[i],T_NOT[i]+.5));
+    // kartu lama turun halus saat kartu baru masuk di atas
+    const yy=T_NOT.reduce((s,x,j)=>s+(j>i?E.io(seg(t,x,x+.5)):0),0);
+    st(e,{top:(134+yy*128)+'px',opacity:k,transform:`translateY(${(1-k)*-30}px) scale(${.94+.06*k})`});});
   $('#badge').textContent=n;}
 
-function nota(t){
-  const N=[['#n0',60,900,-16,-40,30],['#n1',90,1170,9,30,-25],['#n2',800,1280,-8,50,40],['#n3',-60,620,14,-50,-35]];
-  N.forEach(([id,x,y,r,vx,vy],i)=>{const dt=t+i*.7,fx=x+vx*Math.sin(dt*.9)+ (t>WAKTU.kartu? (i%2?1:-1)*E.in(seg(t,WAKTU.kartu,WAKTU.kartu+.5))*1400:0);
-    st($(id),{left:fx+'px',top:(y+vy*Math.sin(dt*1.1))+'px',transform:`rotate(${r+Math.sin(dt*1.3)*8}deg)`,opacity:(t>WAKTU.tarik-.2||i>1)&&t<WAKTU.kartu+.5?1:0});});}
+function lencana(t){['#L0','#L2','#L1','#L3'].forEach((id,i)=>{const el=$(id),t0=WAKTU.lenc+i*.28,k=E.out(seg(t,t0,t0+.7)),o=E.io(seg(t,WAKTU.keluar-.1+i*.08,WAKTU.keluar+.5+i*.08));
+  const ap=Math.sin(t*1.6+i*1.3)*6;st(el,{opacity:t<t0?0:k*(1-o),transform:`translateY(${(1-k)*50+ap-o*80}px) scale(${.85+.15*k})`});});}
 
-function stiker(t){[['#s0',WAKTU.s0,740,700,12],['#s1',WAKTU.s1,80,1300,-8]].forEach(([id,t0,x,y,r])=>{const k=E.back(seg(t,t0,t0+.3)),o=seg(t,WAKTU.keluar,WAKTU.keluar+.25);
-  st($(id),{left:x+'px',top:y+'px',opacity:t<t0||o>=1?0:1,transform:`rotate(${r+Math.sin(t*3)*3}deg) scale(${k*(1-o)})`});});}
+function meja(t){[...$('#tanaman').querySelectorAll('.dn')].forEach((g,i)=>{const r=+g.dataset.r+Math.sin(t*1.1+i)*2.2;g.setAttribute('transform',`translate(180 400) rotate(${r}) scale(${g.dataset.s})`);});}
 
-function kartu(t){[['#kBuku',WAKTU.buku,-1],['#kRak',WAKTU.rak,1]].forEach(([id,t0,sd])=>{const k=E.back(seg(t,t0,t0+.35)),gt=id==='#kRak'?Math.sin(t*60)*6*Math.max(0,1-(t-t0-.3)/.6)*(t>t0+.3?1:0):0;
-    const naik=seg(t,WAKTU.tanya-.1,WAKTU.tanya+.4);
-    st($(id),{opacity:t<t0?0:1,transform:`translate(${(1-k)*sd*500+gt}px,${E.io(naik)*230}px) rotate(${sd*(1-k)*20+sd*2.5}deg) scale(${lerp(1,.8,E.io(naik))})`});});
-  const kv=E.back(seg(t,WAKTU.vs,WAKTU.vs+.3)),naik=E.io(seg(t,WAKTU.tanya-.1,WAKTU.tanya+.4));
-  st($('#vs'),{opacity:t<WAKTU.vs?0:1,transform:`translateY(${naik*200}px) rotate(${Math.sin(t*4)*8}deg) scale(${kv})`});}
+function kartu(t){[['#kBuku',WAKTU.buku,-1],['#kRak',WAKTU.rak,1]].forEach(([id,t0,sd])=>{const k=E.out(seg(t,t0,t0+.8)),turun=E.io(seg(t,WAKTU.tanya-.1,WAKTU.tanya+.8));
+    st($(id),{opacity:t<t0?0:Math.min(1,k*1.4),transform:`translate(${(1-k)*sd*160}px,${turun*120+Math.sin(t*1.4+sd)*5}px) rotate(${sd*(1-k)*6}deg)`});});
+  const kn=E.out(seg(t,WAKTU.ne,WAKTU.ne+.6)),turun=E.io(seg(t,WAKTU.tanya-.1,WAKTU.tanya+.8));
+  st($('#ne'),{opacity:t<WAKTU.ne?0:kn,transform:`translateY(${turun*120}px) scale(${.6+.4*kn})`});}
 
-function teks(t){hentak($('#w0'),t,WAKTU.w0,WAKTU.keluar,-2);hentak($('#w1'),t,WAKTU.w1,WAKTU.keluar+.05,-2);hentak($('#w2'),t,WAKTU.w2,WAKTU.keluar+.1,4);
-  const kb=seg(t,WAKTU.blk,WAKTU.blk+.28),ob=seg(t,WAKTU.keluar+.1,WAKTU.keluar+.35);
-  st($('#blk'),{opacity:t<WAKTU.blk||ob>=1?0:1,transform:`rotate(-3deg) scaleX(${E.out(kb)}) translateX(${-ob*900}px)`});
-  const kt=E.back(seg(t,WAKTU.tanya,WAKTU.tanya+.35));st($('#tanya'),{opacity:t<WAKTU.tanya?0:1,transform:`scale(${lerp(2.6,1,E.out(seg(t,WAKTU.tanya,WAKTU.tanya+.3)))}) rotate(${-2+Math.sin(t*2)*1}deg)`,filter:`blur(${(1-seg(t,WAKTU.tanya,WAKTU.tanya+.3))*12}px)`});}
-
-function sapu(t){const k=E.in(seg(t,WAKTU.sapu,WAKTU.dur));st($('#sapu'),{transform:`rotate(-14deg) translateY(${lerp(2300,-200,k)}px)`});}
+function teks(t){kata($('#judul'),t,WAKTU.judul,WAKTU.keluar-.2);kata($('#tanya'),t,WAKTU.tanya,WAKTU.tutup-.3);}
+function tutup(t){const k=E.io(seg(t,WAKTU.tutup,WAKTU.dur));st($('#tutup'),{transform:`translateY(${lerp(2000,-40,k)}px)`});}
 
 const SCENE={
   dur:WAKTU.dur,
-  kata:[{w:'Stok',t0:.1,t1:.35},{w:'habis',t0:.4,t1:.7},{w:'lagi?',t0:.74,t1:1.2},
-        {w:'Di',t0:4.05,t1:4.15},{w:'buku',t0:4.15,t1:4.45},{w:'dua',t0:4.45,t1:4.65},{w:'puluh,',t0:4.65,t1:4.95},
-        {w:'di',t0:5.0,t1:5.1},{w:'rak...',t0:5.1,t1:5.5},{w:'nol.',t0:5.65,t1:6.05},
-        {w:'Masih',t0:6.4,t1:6.7},{w:'mau',t0:6.7,t1:6.85},{w:'catat',t0:6.85,t1:7.15},{w:'manual?',t0:7.15,t1:7.6}],
-  sub:{gaya:'pil',font:"800 58px 'Plus Jakarta Sans'",warna:'#FFFFFF',aksen:'#FFE14D',kunci:['habis','nol','manual'],maks:3,y:.8},
+  kata:[{w:'Stok',t0:.15,t1:.4},{w:'habis',t0:.45,t1:.75},{w:'lagi?',t0:.8,t1:1.3},
+        {w:'Di',t0:4.45,t1:4.55},{w:'buku',t0:4.55,t1:4.85},{w:'dua',t0:4.85,t1:5.0},{w:'puluh,',t0:5.0,t1:5.3},
+        {w:'di',t0:5.35,t1:5.45},{w:'rak...',t0:5.45,t1:5.85},{w:'nol.',t0:5.95,t1:6.3},
+        {w:'Masih',t0:6.45,t1:6.75},{w:'mau',t0:6.75,t1:6.9},{w:'catat',t0:6.9,t1:7.2},{w:'manual?',t0:7.2,t1:7.65}],
+  sub:{gaya:'pil',font:"800 56px 'Plus Jakarta Sans'",warna:'#1F2D3D',aksen:'#3163D1',kunci:['habis','nol','manual'],maks:3,y:.8},
   audio:{vo:[],sfx:[],music:null},
-  muat(){return Promise.all([document.fonts.load("400 60px 'Bagel Fat One'"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 30px 'Plus Jakarta Sans'")]);},
-  frame(t){kamera(t);latar(t);hp(t);nota(t);stiker(t);kartu(t);teks(t);sapu(t);}
+  muat(){return Promise.all([document.fonts.load("800 60px Poppins"),document.fonts.load("700 38px Poppins"),document.fonts.load("800 30px 'Plus Jakarta Sans'"),document.fonts.load("600 20px 'Plus Jakarta Sans'")]);},
+  frame(t){kamera(t);hp(t);lencana(t);meja(t);kartu(t);teks(t);tutup(t);}
 };
-grainOn(.06);
+grainOn(.03);
 </script>
 <script>
 /* ---------- boot: timeline, audio pratinjau, autoplay + loop, penggeser debug, API render ---------- */
