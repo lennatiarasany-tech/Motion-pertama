@@ -15,7 +15,7 @@ Target: owner apotek Gen Z · 9:16 TikTok · ±90 detik · gaya Ilustrasi Flat B
 | 9 | Layar "Analisis Pembelian", daftar pesanan ke PBF — lencana Manajemen Pengadaan | Mau belanja ke PBF? Fitur analisis pembelian bantu kamu tahu obat apa yang perlu dipesan, biar nggak kelebihan atau kekurangan. | 8,3 |
 | 10 | Lencana Manajemen Karyawan & Pelanggan bergabung ke laptop | Data karyawan dan pelanggan juga terkelola di satu tempat, jadi kerja tim makin rapi. | 6,0 |
 | 11 | Enam lencana fitur mengelilingi laptop seperti gambar referensi, garis tersambung | Semuanya dalam satu aplikasi. Kamu nggak lagi sibuk ngurus catatan, tapi bisa fokus melayani pasien dan mengembangkan apotek. | 7,5 |
-| 12 | Kartu "Di buku = Di rak" (sama), centang hijau; logo Apotek Digital + tombol "Coba Gratis" diketuk + apotekdigital.com | Jadi, masih mau catat manual? Coba gratis Apotek Digital sekarang di apotek digital titik com. | 6,4 |
+| 12 | Kartu "Di buku = Di rak" (sama), centang hijau; logo Apotek Digital + tombol "Coba Gratis" diketuk + teks layar "Kunjungi apotekdigital.com" | Jadi, masih mau catat manual? Coba gratis Apotek Digital sekarang. Kunjungi apotek digital titik com. | 6,4 |
 |   | **Total** | ±229 kata · ±1.483 karakter | **±98** |
 
 Catatan fakta: fitur yang disebut hanya yang tampak di materi user (6 modul manajemen, analisis pembelian
