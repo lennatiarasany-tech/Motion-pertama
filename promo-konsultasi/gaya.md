@@ -1,10 +1,11 @@
 # Lembar gaya — Promo Konsultasi Privat Apotek (Digikes × Apotek Digital)
-- Gaya: Promo Produk, arah **Bersih Premium sinematik**. Ceritanya dari dingin ke hangat: masalah tampil biru-abu redup, solusi tampil hangat keemasan.
-- Palet: malam #0B1322 · navy #16233A · biru dingin #8FB0D6 · krem #F3EEE4 · emas #D9B26A · merah grafik #E5484D · brand biru #1F57B5 · brand hijau #1E8B3A
-- Font: Instrument Serif (judul, italic emas untuk kata kunci) + Onest 500–700 (UI, label, harga kecil)
-- Kamera: hook close-up ×2,1 di layar grafik, tarik mundur 0,7 dtk dengan blur, lalu push-in pelan + goyang halus
-- Cahaya/tekstur: lampu neon dingin (satu berkedip), etalase kaca dengan hujan di luar, lantai mengilap, debu di cahaya, butiran film, vinyet
-- Subtitle: pil, y .80, maks 3 kata, kata kunci: stuck, sepi, 18 cabang, 100 ribu
-- Tanda gerak: garis tipis emas yang "menyala" menyapu di bawah kata kunci
-- Pembeda: interior apotek berperspektif satu titik, dengan pemilik tampil sebagai siluet ber-rim-light (bukan wajah)
-- Data (dari poster klien): apt. Syah Akbarul Adha, M.Farm, "Owner 18 Apotek & Advisor Bisnis Apotek"; normal 500K → 100K/sesi, khusus mitra Digikes; Hubungi 0895-0877-3941
+- Gaya: **B · Senja Elegan**, ilustrasi vektor datar (terinspirasi contoh user, tidak meniru): tanpa garis tepi, bayangan satu nada, tokoh berekspresi sederhana
+- Kamera: lurus dari depan setinggi mata. Hook close-up ×2,2 ke papan grafik, lalu tarik mundur 0,7 dtk dengan blur, lalu push-in pelan dan goyang halus
+- Palet: dinding navy #1B2742 · bingkai #121B30 · emas #D9B26A · krem #F3EEE4 · senja #3D3F78→#C9708A→#F4B26A · merah grafik #E5484D · hijau apotek #2E9E5B · biru #2F63D6
+- Font: DM Serif Display italic emas (kata kunci) + Manrope 800 kapital (pengantar, UI)
+- Tekstur: butiran film .08, cahaya lampu gantung emas, debu melayang, pantulan kaca jendela
+- Gerak: tokoh bernapas, berkedip, kepala sedikit miring; lampu berayun; awan & pejalan kaki di luar jendela; jendela gedung berkedip; gelembung pikiran muncul memantul
+- Tanda gerak: garis emas yang menyapu di bawah kata kunci
+- Cerita warna: masalah = senja/redup, solusi = lampu emas menyala terang
+- Data (dari klien): apt. Syah Akbarul Adha, M.Farm · "Owner 18 Apotek & Advisor Bisnis Apotek" · normal 500K → 100K/sesi, khusus mitra Digikes · Hubungi admin 0895-0877-3941
+- Foto narasumber: assets/gambar/narasumber.png (1080×1350, latar putih) → tampil di kartu bingkai emas
