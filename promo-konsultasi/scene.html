@@ -8,20 +8,96 @@
 #stage{background:#1B2742}
 #dunia{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0}
 #atas{position:absolute;inset:0;pointer-events:none}
+#hangat{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;opacity:0;background:radial-gradient(70% 55% at 50% 45%,#FFC77A 0%,#E9A458 55%,#8A5A2A 100%)}
 .baris{position:absolute;left:0;width:100%;text-align:center;opacity:0;color:#F3EEE4;
   font:400 150px/1.02 'DM Serif Display',serif;text-shadow:0 6px 24px rgba(10,16,32,.7)}
 .baris em{font-style:italic;color:#D9B26A;position:relative;display:inline-block}
 .baris em::after{content:'';position:absolute;left:6%;bottom:-4px;height:4px;width:calc(var(--g,0)*88%);background:#D9B26A;box-shadow:0 0 14px rgba(217,178,106,.8)}
 .kecil{display:block;font:800 44px/1.2 'Manrope',sans-serif;letter-spacing:.14em;color:#C3CDE0;margin-bottom:18px;text-transform:uppercase}
 .besar{font-size:172px}
+/* adegan 2-5 */
+.lap{position:absolute;opacity:0;will-change:transform,opacity,filter}
+.chip{display:inline-block;font:800 40px/1 'Manrope';letter-spacing:.12em;color:#1B2742;background:linear-gradient(90deg,#E9C985,#D9B26A);padding:20px 34px;border-radius:60px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#s2judul{left:0;width:100%;text-align:center;top:250px}
+#s2judul .kecil{margin-bottom:6px}
+#s2judul .serif{font:400 168px/1 'DM Serif Display';color:#F3EEE4;text-shadow:0 6px 24px rgba(10,16,32,.7)}
+#s2judul .serif em{font-style:italic;color:#D9B26A}
+#s2judul .chip{margin-top:34px}
+#profil{left:0;width:100%;top:0;height:1920px}
+#busur{position:absolute;left:250px;top:300px;width:580px;height:720px;border-radius:290px 290px 28px 28px;overflow:hidden;
+  background:radial-gradient(80% 70% at 50% 40%,#FFF8EA,#E8DCC4);box-shadow:0 0 0 6px #D9B26A,0 0 0 14px rgba(217,178,106,.18),0 30px 80px rgba(0,0,0,.55)}
+#busur img{position:absolute;left:50%;top:0;height:112%;transform-origin:50% 30%}
+#profil .nama{position:absolute;left:0;width:100%;top:1065px;text-align:center;font:400 62px/1.05 'DM Serif Display';color:#F3EEE4;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+#profil .gelar{position:absolute;left:0;width:100%;top:1160px;text-align:center}
+.pil{display:inline-block;margin:10px 10px;font:800 46px/1 'Manrope';color:#F3EEE4;border:3px solid #D9B26A;border-radius:60px;padding:20px 34px;background:rgba(18,27,48,.75);opacity:0}
+.pil b{color:#D9B26A;font-weight:800}
+#tagAhli{position:absolute;left:0;width:100%;top:220px;text-align:center}
+#harga{left:110px;width:860px;top:430px;height:1060px}
+#kartuH{position:absolute;inset:0;border-radius:56px;background:#F3EEE4;box-shadow:0 0 0 4px #D9B26A,0 40px 90px rgba(0,0,0,.55)}
+#pita{position:absolute;left:0;width:100%;top:70px;text-align:center}
+#pita .p1{display:inline-flex;align-items:center;gap:22px;background:#1B2742;color:#F3EEE4;font:800 40px/1 'Manrope';letter-spacing:.1em;padding:16px 18px 16px 36px;border-radius:60px}
+#pita .p1 span.lg{background:#fff;border-radius:40px;padding:8px 20px;display:inline-flex}
+#pita img{height:46px;display:block}
+#lama{position:absolute;left:0;width:100%;top:250px;text-align:center;font:700 44px 'Manrope';color:#7A869C;letter-spacing:.08em}
+#lama .angka{display:inline-block;position:relative;font:800 130px/1.1 'Manrope';color:#9AA4B5;letter-spacing:0}
+#lama .coret{position:absolute;left:-4%;top:52%;height:12px;border-radius:6px;background:#C0392B;width:0;transform:rotate(-8deg);transform-origin:0 50%}
+#baru{position:absolute;left:0;width:100%;top:560px;text-align:center;color:#1B2742}
+#baru .hanya{font:400 64px 'DM Serif Display';font-style:italic;color:#B48A3C;display:block}
+#baru .angka{font:800 270px/1 'Manrope';letter-spacing:-.04em;display:inline-block}
+#baru .sesi{font:800 60px 'Manrope';color:#5B6B86}
+#lencana{position:absolute;right:-50px;top:-70px;width:250px;height:250px}
+#lencana svg{position:absolute;inset:0}
+#lencana .t{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font:800 34px/1.1 'Manrope';color:#1B2742;text-align:center}
+#lencana .t b{font-size:62px}
+#hargaJudul{left:0;width:100%;top:200px;text-align:center}
+#cta{left:0;width:100%;top:0;height:1920px}
+#ctaJudul{position:absolute;left:0;width:100%;top:220px;text-align:center;font:400 96px/1.1 'DM Serif Display';color:#F3EEE4;text-shadow:0 6px 24px rgba(10,16,32,.8)}
+#ctaJudul em{font-style:italic;color:#D9B26A}
+#ctaJudul .b1,#ctaJudul .b2{display:block;white-space:nowrap}#ctaJudul .b2{opacity:0}
+#logo{position:absolute;left:50%;top:640px;transform:translateX(-50%);display:flex;align-items:center;gap:26px;background:#fff;border-radius:40px;padding:22px 40px;box-shadow:0 20px 50px rgba(0,0,0,.4);opacity:0}
+#logo img{height:70px}
+#logo .x{font:700 44px Manrope;color:#9AA4B5}
+#tombol{position:absolute;left:140px;width:800px;top:1180px;height:170px;border-radius:90px;background:linear-gradient(180deg,#F0D193,#D9B26A 60%,#C49A4E);
+  box-shadow:0 18px 50px rgba(217,178,106,.45),inset 0 3px 0 rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:28px;font:800 66px 'Manrope';color:#1B2742;opacity:0}
+#tombol svg{width:70px;height:70px}
+#nomor{position:absolute;left:0;width:100%;top:1390px;text-align:center;font:800 84px 'Manrope';color:#F3EEE4;letter-spacing:.02em;opacity:0;text-shadow:0 4px 20px rgba(0,0,0,.6)}
+#nomor small{display:block;font:700 40px 'Manrope';color:#C3CDE0;letter-spacing:.14em;margin-bottom:10px}
+#jari{position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 10px 30px rgba(0,0,0,.45);opacity:0}
+#riak{position:absolute;width:120px;height:120px;border-radius:50%;border:6px solid #fff;opacity:0}
 </style>
 <!--@BODY-->
 <div id="dunia"></div>
+<div id="hangat"></div>
 <canvas id="atas" width="1080" height="1920"></canvas>
 <div class="baris" id="b1"><span class="kecil">Apotekmu mengalami</span><em class="besar">masalah ini?</em></div>
+<div class="lap" id="s2judul"><span class="kecil">Saatnya ikut</span><div class="serif">Konsultasi<br><em>privat</em></div><span class="chip">1 ON 1 · EMPAT MATA</span></div>
+<div class="lap" id="profil">
+  <div id="tagAhli"><span class="chip">BARENG AHLINYA</span></div>
+  <div id="busur"><img src="assets/gambar/narasumber.png" alt=""></div>
+  <div class="nama">apt. Syah Akbarul Adha, M.Farm</div>
+  <div class="gelar"><span class="pil" id="pil1">Owner <b id="n18">18</b> Apotek</span><br><span class="pil" id="pil2">Advisor Bisnis Apotek</span></div>
+</div>
+<div class="lap" id="hargaJudul"><span class="kecil">Konsultasi privat 1 on 1</span></div>
+<div class="lap" id="harga">
+  <div id="kartuH"></div>
+  <div id="pita"><span class="p1">KHUSUS MITRA <span class="lg"><img src="assets/gambar/logo-digikes.png" alt="digikes"></span></span></div>
+  <div id="lama">HARGA NORMAL<br><span class="angka">500K<span class="coret"></span></span></div>
+  <div id="baru"><span class="hanya">cukup</span><span class="angka" id="angkaBaru">100K</span><span class="sesi">/sesi</span></div>
+  <div id="lencana"><svg viewBox="0 0 200 200"><polygon fill="#D9B26A" points="100,4 117,30 147,18 152,49 183,54 172,84 196,104 172,122 182,153 151,157 145,188 116,175 100,200 84,175 55,188 49,157 18,153 28,122 4,104 28,84 17,54 48,49 53,18 83,30"/></svg><div class="t">HEMAT<b>80%</b></div></div>
+</div>
+<div class="lap" id="cta">
+  <div id="ctaJudul"><span class="b1">Bedah kondisi <em>riil</em></span><span class="b2">temukan solusi <em>konkret</em></span></div>
+  <div id="logo"><img src="assets/gambar/logo-apotekdigital.png" alt="Apotek Digital"><span class="x">×</span><img src="assets/gambar/logo-digikes.png" alt="digikes"></div>
+  <div id="tombol"><svg viewBox="0 0 24 24"><path fill="#1B2742" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>Hubungi Admin</div>
+  <div id="nomor"><small>KLIK &amp; HUBUNGI</small>0895-0877-3941</div>
+  <div id="riak"></div><div id="jari"></div>
+</div>
 <!--@SCRIPT-->
 /* ================= 1. WAKTU & WARNA ================= */
-const WAKTU = {vo: .3, tarik: 1.6, turun: 2.0, gelembung: [2.35, 2.95, 3.55, 4.15], dur: 5.9};
+const WAKTU = {vo: .3, tarik: 1.6, turun: 2.0, gelembung: [2.35, 2.95, 3.55, 4.15],
+  s2: 5.0, s3: 9.1, s4: 14.5, s5: 19.1, dur: 26.4,
+  /* perkiraan; disesuaikan setelah suara jadi */
+  v2: 5.25, v3: 9.3, v4: 14.7, v5: 19.3};
 const PAL = {dinding: '#1B2742', navy: '#121B30', emas: '#D9B26A', krem: '#F3EEE4', merah: '#E5484D', hijau: '#2E9E5B'};
 const OBAT = ['#E9EEF5', '#9FC0E2', '#8FC4A0', '#E2B184', '#C98A8A', '#F0E2B0'];
 const JEN = {x: 120, y: 560, w: 840, h: 620};
@@ -87,8 +163,8 @@ function lampu(t) {
     poly([-60, ly, 60, ly, 34, ly - 54, -34, ly - 54], PAL.emas);
     el(0, ly + 4, 40, 8, '#FFE7B0');
     x.restore();
-    const r = x.createRadialGradient(lx, ly + 40, 0, lx, ly + 40, 380); r.addColorStop(0, 'rgba(255,214,140,.30)'); r.addColorStop(1, 'rgba(255,214,140,0)');
-    x.fillStyle = r; x.fillRect(lx - 380, ly - 340, 760, 760);
+    const nyala = E.out(seg(t, WAKTU.s2, WAKTU.s2 + .5)); const rad = 380 + 260 * nyala; const r = x.createRadialGradient(lx, ly + 40, 0, lx, ly + 40, rad); r.addColorStop(0, `rgba(255,214,140,${.30 + .35 * nyala})`); r.addColorStop(1, 'rgba(255,214,140,0)');
+    x.fillStyle = r; x.fillRect(lx - rad, ly - rad, rad * 2, rad * 2);
   });
 }
 
@@ -114,10 +190,10 @@ function papan(t) {
 
 function pemilik(t) {
   const napas = Math.sin(t * 1.7) * 6;
-  const kd = [1.1, 3.0, 4.9].reduce((m, c) => Math.max(m, 1 - Math.abs(t - c) / .08), 0);
-  const miring = -4 + Math.sin(t * .9) * 2.5 - 3 * E.io(seg(t, WAKTU.turun, WAKTU.turun + .8));
+  const kd = [1.1, 3.0, 4.6, 6.8, 8.4].reduce((m, c) => Math.max(m, 1 - Math.abs(t - c) / .08), 0);
+  const miring = -4 + Math.sin(t * .9) * 2.5 - 3 * E.io(seg(t, WAKTU.turun, WAKTU.turun + .8)) + 9 * E.io(seg(t, WAKTU.s2 + .3, WAKTU.s2 + .9));
   orang(430, 2050 - napas, 1450 + napas * .6, {jas: '#F6F3EE', jasG: '#D8D2C7', baju: '#2F63D6', bajuG: '#264FAD', rambut: 'panjang', kerudung: '#5E3B5E',
-    kanan: 'dagu', ekspresi: 'sedih', aksenJas: PAL.emas, kulit: '#E3A37A', kulitG: '#C9875F', kedip: clamp(kd, 0, 1), miring});
+    kanan: 'dagu', ekspresi: t > WAKTU.s2 + .45 ? 'senyum' : 'sedih', aksenJas: PAL.emas, kulit: '#E3A37A', kulitG: '#C9875F', kedip: clamp(kd, 0, 1), miring});
 }
 
 /* 4 gelembung masalah (teks dari poster klien) */
@@ -131,7 +207,9 @@ function gelembung(t) {
   MASALAH.forEach((m, i) => {
     const s0 = seg(t, WAKTU.gelembung[i], WAKTU.gelembung[i] + .45);
     if (s0 <= 0) return;
-    const k = 1 + 2.7 * Math.pow(s0 - 1, 3) + 1.7 * Math.pow(s0 - 1, 2);
+    const keluar = E.in(seg(t, WAKTU.s2 - .15 + i * .05, WAKTU.s2 + .15 + i * .05));
+    if (keluar >= 1) return;
+    const k = (1 + 2.7 * Math.pow(s0 - 1, 3) + 1.7 * Math.pow(s0 - 1, 2)) * (1 + keluar * .35) * (1 - keluar);
     const h = 160, cx = m.x + m.w / 2, cy = m.y + h / 2 + Math.sin(t * 1.8 + i * 1.3) * 6;
     // ekor titik ke arah kepala apoteker
     const hx = 430, hy = 850, ex = lerp(cx, hx, .55), ey = lerp(cy, hy, .55);
@@ -160,26 +238,94 @@ function debu(t) {
 /* ================= 4. KAMERA ================= */
 function kamera(t) {
   const k = E.io(seg(t, WAKTU.tarik, WAKTU.tarik + .7));
-  const s0 = 2.2 + .1 * seg(t, 0, WAKTU.tarik), s1 = .99 + .05 * E.io(seg(t, WAKTU.tarik + .7, WAKTU.dur));
+  const s0 = 2.2 + .1 * seg(t, 0, WAKTU.tarik), s1 = .99 + .05 * E.io(seg(t, WAKTU.tarik + .7, WAKTU.s2)) + .06 * E.io(seg(t, WAKTU.s2, WAKTU.s3)) + .12 * E.io(seg(t, WAKTU.s3, WAKTU.s3 + .8)) + .05 * seg(t, WAKTU.s3 + .8, WAKTU.dur);
   const s = lerp(s0, s1, k);
   const fx = lerp(PAPAN.x + PAPAN.w / 2 + 70, 540, k);
-  const fy = lerp(PAPAN.y + PAPAN.h / 2, 1000, k);
+  const fy = lerp(PAPAN.y + PAPAN.h / 2, 1000 - 60 * E.io(seg(t, WAKTU.s2, WAKTU.s3)), k);
   const sy = lerp(1180, 980, k);
   const gx = nz(t * .35, 1) * 6, gy = nz(t * .35, 2) * 5;
   const D = $('#dunia');
   D.style.transform = `translate(${540 - s * fx + gx}px,${sy - s * fy + gy}px) scale(${s})`;
-  D.style.filter = `blur(${(Math.sin(Math.PI * k) * 8).toFixed(2)}px)`;
+  const kab = 14 * E.io(seg(t, WAKTU.s3 - .1, WAKTU.s3 + .6));
+  D.style.filter = `blur(${(Math.sin(Math.PI * k) * 8 + kab).toFixed(2)}px) brightness(${1 - .5 * E.io(seg(t, WAKTU.s3 - .1, WAKTU.s3 + .6))})`;
 }
 
-function lapisAtas() {
+function lapisAtas(t) {
   ax.clearRect(0, 0, W, H);
+  $('#hangat').style.opacity = (.85 * E.out(seg(t, WAKTU.s2, WAKTU.s2 + .6))).toFixed(3);
+  // cahaya hangat saat solusi datang (lampu menyala)
+  const hg = E.out(seg(t, WAKTU.s2, WAKTU.s2 + .6));
+  if (hg > 0) { const flash = Math.max(0, 1 - Math.abs(t - WAKTU.s2 - .08) / .18);
+    ax.fillStyle = `rgba(255,236,200,${.35 * flash})`; ax.fillRect(0, 0, W, H); }
   const gr = ax.createLinearGradient(0, 0, 0, 720); gr.addColorStop(0, 'rgba(14,20,38,.85)'); gr.addColorStop(1, 'rgba(14,20,38,0)');
   ax.fillStyle = gr; ax.fillRect(0, 0, W, 720);
   const v = ax.createRadialGradient(W / 2, H * .55, H * .3, W / 2, H * .55, H * .8); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(5,8,18,.55)');
   ax.fillStyle = v; ax.fillRect(0, 0, W, H);
 }
 
-/* ================= 5. SCENE ================= */
+/* ================= 5. ADEGAN 2-5 (lapisan DOM) ================= */
+function muncul(el, t, a, b, o = {}) {
+  const ki = E.out(seg(t, a, a + (o.d || .55))), ko = b == null ? 0 : E.in(seg(t, b, b + .35));
+  el.style.opacity = (ki * (1 - ko)).toFixed(3);
+  el.style.transform = `translateY(${((1 - ki) * (o.dy ?? 70) - ko * 60).toFixed(1)}px) scale(${(lerp(o.s ?? .94, 1, ki) * (1 + ko * .04)).toFixed(4)})`;
+  el.style.filter = `blur(${((1 - ki) * 14 + ko * 12).toFixed(1)}px)`;
+  return ki * (1 - ko);
+}
+const D2 = {judul: $('#s2judul'), profil: $('#profil'), busurImg: $('#busur img'), busur: $('#busur'), pil1: $('#pil1'), pil2: $('#pil2'), n18: $('#n18'),
+  hj: $('#hargaJudul'), harga: $('#harga'), coret: $('#lama .coret'), lama: $('#lama'), baru: $('#angkaBaru'), lencana: $('#lencana'), baruBox: $('#baru'),
+  cta: $('#cta'), cb1: $('#ctaJudul .b1'), cb2: $('#ctaJudul .b2'), logo: $('#logo'), tombol: $('#tombol'), nomor: $('#nomor'), jari: $('#jari'), riak: $('#riak')};
+[D2.hj].forEach(e => e.style.top = (AMAN.atas + 30) + 'px');
+function adegan(t) {
+  const T = WAKTU;
+  // judul adegan 1 keluar
+  BB[0].style.filter = `blur(${(E.in(seg(t, T.s2 - .3, T.s2)) * 12).toFixed(1)}px)`;
+  if (t > T.s2 - .3) BB[0].style.opacity = (1 - E.in(seg(t, T.s2 - .3, T.s2))).toFixed(3);
+  // adegan 2
+  muncul(D2.judul, t, T.s2 + .25, T.s3 - .35, {dy: 60});
+  // adegan 3: profil narasumber
+  const kp = muncul(D2.profil, t, T.s3 + .1, T.s4 - .35, {dy: 0, s: .9, d: .7});
+  D2.busurImg.style.transform = `translateX(-50%) scale(${(1.08 - .08 * seg(t, T.s3, T.s4)).toFixed(4)})`;
+  muncul(D2.pil1, t, T.s3 + 1.6, null, {dy: 40});
+  muncul(D2.pil2, t, T.s3 + 2.8, null, {dy: 40});
+  D2.n18.textContent = Math.round(lerp(1, 18, E.out(seg(t, T.s3 + 1.7, T.s3 + 2.5))));
+  // adegan 4: harga
+  muncul(D2.hj, t, T.s4 + .1, T.s5 - .35, {dy: 40});
+  muncul(D2.harga, t, T.s4 + .15, T.s5 - .35, {dy: 160, s: .9, d: .6});
+  D2.coret.style.width = (E.io(seg(t, T.s4 + 2.0, T.s4 + 2.35)) * 108) + '%';
+  D2.lama.style.opacity = (1 - .35 * seg(t, T.s4 + 2.35, T.s4 + 2.7)).toFixed(3);
+  const kh = E.out(seg(t, T.s4 + 2.5, T.s4 + 3.1));
+  D2.baru.textContent = Math.round(lerp(500, 100, kh)) + 'K';
+  D2.baru.style.filter = `blur(${(Math.sin(Math.PI * kh) * 5).toFixed(1)}px)`;
+  const den = Math.max(0, 1 - Math.abs(t - T.s4 - 3.2) / .25);
+  D2.baru.style.transform = `scale(${(1 + .14 * den).toFixed(3)}) translateX(${(Math.sin(t * 60) * 6 * Math.sin(Math.PI * kh)).toFixed(1)}px)`;
+  D2.baru.style.color = kh >= 1 ? '#1B2742' : '#5B6B86';
+  const kl = E.out(seg(t, T.s4 + 3.2, T.s4 + 3.6));
+  D2.lencana.style.opacity = kl; D2.lencana.style.transform = `scale(${(lerp(2.2, 1, kl)).toFixed(3)}) rotate(${(t * 25).toFixed(1)}deg)`;
+  D2.lencana.querySelector('.t').style.transform = `rotate(${(-t * 25).toFixed(1)}deg)`;
+  // adegan 5: ajakan
+  D2.cta.style.opacity = t > T.s5 ? 1 : 0;
+  muncul(D2.cb1, t, T.s5 + .15, null, {dy: 50});
+  muncul(D2.cb2, t, T.s5 + 1.9, null, {dy: 50});
+  muncul(D2.logo, t, T.s5 + .6, null, {dy: 40});
+  D2.logo.style.transform += ' translateX(-50%)';
+  muncul(D2.tombol, t, T.s5 + 3.4, null, {dy: 120});
+  muncul(D2.nomor, t, T.s5 + 3.8, null, {dy: 40});
+  // jari mengetuk tombol
+  const tk = T.s5 + 5.0, kj = E.io(seg(t, tk - .8, tk - .1));
+  const jx = lerp(1000, 680, kj), jy = lerp(1650, 1210, kj), tekan = Math.max(0, 1 - Math.abs(t - tk) / .12);
+  D2.jari.style.opacity = clamp(seg(t, tk - .8, tk - .6), 0, 1) * (1 - seg(t, tk + .6, tk + .9));
+  D2.jari.style.left = jx + 'px'; D2.jari.style.top = jy + 'px'; D2.jari.style.transform = `scale(${(1 - .18 * tekan).toFixed(3)})`;
+  const kr = seg(t, tk, tk + .6);
+  D2.riak.style.left = '680px'; D2.riak.style.top = '1210px'; D2.riak.style.opacity = (kr > 0 ? 1 - kr : 0).toFixed(3);
+  D2.riak.style.transform = `scale(${(1 + kr * 3).toFixed(3)})`;
+  const tn = t > tk ? 1 : 0;
+  D2.tombol.style.background = tn ? 'linear-gradient(180deg,#5BC98A,#2E9E5B 60%,#24804A)' : '';
+  D2.tombol.style.color = tn ? '#FFFFFF' : '';
+  D2.tombol.querySelector('path').setAttribute('fill', tn ? '#FFFFFF' : '#1B2742');
+  if (t > T.s5 + 3.4) D2.tombol.style.transform += ` scale(${(1 - .05 * tekan + .02 * Math.sin(t * 5) * (1 - tn)).toFixed(3)})`;
+}
+
+/* ================= 6. SCENE ================= */
 const BB = [$('#b1')];
 BB.forEach(b => b.style.top = (AMAN.atas + 40) + 'px');
 grainOn(.08);
@@ -189,7 +335,8 @@ const SCENE = {
   kata: [],
   sub: {gaya: 'mati'},
   audio: {vo: [{src: 'assets/audio/vo-01.mp3', at: WAKTU.vo, teks: 'Apotekmu mengalami masalah-masalah ini?'}], sfx: [], music: null},
-  muat: () => Promise.all([document.fonts.load("italic 400 150px 'DM Serif Display'"), document.fonts.load("800 30px Manrope")]),
+  muat: () => Promise.all([document.fonts.load("italic 400 150px 'DM Serif Display'"), document.fonts.load("400 150px 'DM Serif Display'"), document.fonts.load("800 30px Manrope"), document.fonts.load("700 30px Manrope"),
+    ...[...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))]),
   build(tl) {
     wIn(tl, BB[0], .05, {st: .12});
   },
@@ -200,7 +347,7 @@ const SCENE = {
     pemilik(t);
     x.drawImage(DEP, 0, 0);
     gelembung(t); debu(t);
-    kamera(t); lapisAtas();
+    kamera(t); lapisAtas(t); adegan(t);
     BB[0].querySelector('em').style.setProperty('--g', E.out(seg(t, 1.6, 2.3)));
   }
 };
