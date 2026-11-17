@@ -213,9 +213,9 @@ function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEa
 <script>
 /* ================= 1. WAKTU & WARNA ================= */
 const WAKTU = {vo: .3, tarik: 1.6, turun: 2.0, gelembung: [2.35, 2.95, 3.55, 4.15],
-  s2: 5.0, s3: 9.1, s4: 14.5, s5: 19.1, dur: 26.4,
-  /* perkiraan; disesuaikan setelah suara jadi */
-  v2: 5.25, v3: 9.3, v4: 14.7, v5: 19.3};
+  /* waktu adegan diturunkan dari durasi suara (vo-01 2,85 · vo-02 4,60 · vo-03 6,43 · vo-04 4,83 · vo-05 7,39 dtk) */
+  s2: 5.0, s3: 9.75, s4: 16.6, s5: 21.8, dur: 30.8,
+  v2: 5.15, v3: 9.95, v4: 16.8, v5: 22.0};
 const PAL = {dinding: '#1B2742', navy: '#121B30', emas: '#D9B26A', krem: '#F3EEE4', merah: '#E5484D', hijau: '#2E9E5B'};
 const OBAT = ['#E9EEF5', '#9FC0E2', '#8FC4A0', '#E2B184', '#C98A8A', '#F0E2B0'];
 const JEN = {x: 120, y: 560, w: 840, h: 620};
@@ -403,9 +403,9 @@ function adegan(t) {
   // adegan 3: profil narasumber
   const kp = muncul(D2.profil, t, T.s3 + .1, T.s4 - .35, {dy: 0, s: .9, d: .7});
   D2.busurImg.style.transform = `translateX(-50%) scale(${(1.08 - .08 * seg(t, T.s3, T.s4)).toFixed(4)})`;
-  muncul(D2.pil1, t, T.s3 + 1.6, null, {dy: 40});
-  muncul(D2.pil2, t, T.s3 + 2.8, null, {dy: 40});
-  D2.n18.textContent = Math.round(lerp(1, 18, E.out(seg(t, T.s3 + 1.7, T.s3 + 2.5))));
+  muncul(D2.pil1, t, T.v3 + 2.5, null, {dy: 40});
+  muncul(D2.pil2, t, T.v3 + 4.1, null, {dy: 40});
+  D2.n18.textContent = Math.round(lerp(1, 18, E.out(seg(t, T.v3 + 2.6, T.v3 + 3.4))));
   // adegan 4: harga
   muncul(D2.hj, t, T.s4 + .1, T.s5 - .35, {dy: 40});
   muncul(D2.harga, t, T.s4 + .15, T.s5 - .35, {dy: 160, s: .9, d: .6});
@@ -426,10 +426,10 @@ function adegan(t) {
   muncul(D2.cb2, t, T.s5 + 1.9, null, {dy: 50});
   muncul(D2.logo, t, T.s5 + .6, null, {dy: 40});
   D2.logo.style.transform += ' translateX(-50%)';
-  muncul(D2.tombol, t, T.s5 + 3.4, null, {dy: 120});
-  muncul(D2.nomor, t, T.s5 + 3.8, null, {dy: 40});
+  muncul(D2.tombol, t, T.s5 + 3.7, null, {dy: 120});
+  muncul(D2.nomor, t, T.s5 + 4.1, null, {dy: 40});
   // jari mengetuk tombol
-  const tk = T.s5 + 5.0, kj = E.io(seg(t, tk - .8, tk - .1));
+  const tk = T.v5 + 5.45, kj = E.io(seg(t, tk - .8, tk - .1));
   const jx = lerp(1000, 680, kj), jy = lerp(1650, 1210, kj), tekan = Math.max(0, 1 - Math.abs(t - tk) / .12);
   D2.jari.style.opacity = clamp(seg(t, tk - .8, tk - .6), 0, 1) * (1 - seg(t, tk + .6, tk + .9));
   D2.jari.style.left = jx + 'px'; D2.jari.style.top = jy + 'px'; D2.jari.style.transform = `scale(${(1 - .18 * tekan).toFixed(3)})`;
@@ -440,7 +440,7 @@ function adegan(t) {
   D2.tombol.style.background = tn ? 'linear-gradient(180deg,#5BC98A,#2E9E5B 60%,#24804A)' : '';
   D2.tombol.style.color = tn ? '#FFFFFF' : '';
   D2.tombol.querySelector('path').setAttribute('fill', tn ? '#FFFFFF' : '#1B2742');
-  if (t > T.s5 + 3.4) D2.tombol.style.transform += ` scale(${(1 - .05 * tekan + .02 * Math.sin(t * 5) * (1 - tn)).toFixed(3)})`;
+  if (t > T.s5 + 3.7) D2.tombol.style.transform += ` scale(${(1 - .05 * tekan + .02 * Math.sin(t * 5) * (1 - tn)).toFixed(3)})`;
 }
 
 /* ================= 6. SCENE ================= */
@@ -450,9 +450,14 @@ grainOn(.08);
 
 const SCENE = {
   dur: WAKTU.dur,
-  kata: [],
-  sub: {gaya: 'mati'},
-  audio: {vo: [{src: 'assets/audio/vo-01.mp3', at: WAKTU.vo, teks: 'Apotekmu mengalami masalah-masalah ini?'}], sfx: [], music: null},
+  sub: {gaya: 'pil', y: .835, maks: 3, font: "800 50px Manrope", aksen: '#D9B26A', kunci: ['masalah-masalah', 'privat,', 'ahlinya.', 'delapan', 'belas', 'Digikes,', 'seratus', 'ribu,', 'riil', 'konkret', 'admin']},
+  audio: {vo: [
+    {src: 'assets/audio/vo-01.mp3', at: WAKTU.vo, teks: 'Apotekmu mengalami masalah-masalah ini?'},
+    {src: 'assets/audio/vo-02.mp3', at: WAKTU.v2, teks: 'Saatnya ikut konsultasi privat, empat mata, bareng ahlinya.'},
+    {src: 'assets/audio/vo-03.mp3', at: WAKTU.v3, teks: 'Apoteker Syah Akbarul Adha, owner delapan belas apotek dan advisor bisnis apotek.'},
+    {src: 'assets/audio/vo-04.mp3', at: WAKTU.v4, teks: 'Khusus mitra Digikes, cuma seratus ribu, dari lima ratus ribu!'},
+    {src: 'assets/audio/vo-05.mp3', at: WAKTU.v5, teks: 'Bedah kondisi riil apotekmu dan temukan solusi konkret untuk apotekmu. Hubungi admin sekarang juga!'}],
+    sfx: [], music: null},
   muat: () => Promise.all([document.fonts.load("italic 400 150px 'DM Serif Display'"), document.fonts.load("400 150px 'DM Serif Display'"), document.fonts.load("800 30px Manrope"), document.fonts.load("700 30px Manrope"),
     ...[...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))]),
   build(tl) {
