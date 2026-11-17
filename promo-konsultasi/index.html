@@ -21,7 +21,7 @@
 .baris em{font-style:italic;color:#D9B26A;position:relative;display:inline-block}
 .baris em::after{content:'';position:absolute;left:6%;bottom:-4px;height:4px;width:calc(var(--g,0)*88%);background:#D9B26A;box-shadow:0 0 14px rgba(217,178,106,.8)}
 .kecil{display:block;font:800 44px/1.2 'Manrope',sans-serif;letter-spacing:.14em;color:#C3CDE0;margin-bottom:18px;text-transform:uppercase}
-.besar{font-size:200px}
+.besar{font-size:172px}
 </style>
 <style>
 html,body{margin:0;height:100%;background:#000;overflow:hidden}
@@ -41,9 +41,7 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden}
 <div id="stage">
 <div id="dunia"></div>
 <canvas id="atas" width="1080" height="1920"></canvas>
-<div class="baris" id="b1"><span class="kecil">Penjualan apotekmu</span><em class="besar">stuck?</em></div>
-<div class="baris" id="b2"><span class="kecil">Apotekmu makin</span><em class="besar">sepi?</em></div>
-<div class="baris" id="b3"><span class="kecil">Bingung cara</span><em class="besar">bersaing?</em></div>
+<div class="baris" id="b1"><span class="kecil">Apotekmu mengalami</span><em class="besar">masalah ini?</em></div>
 <svg id="mfLab" viewBox="0 0 1080 1920"></svg>
 <div id="mfSub"></div>
 <div id="grain"></div>
@@ -140,7 +138,7 @@ function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEa
 </script>
 <script>
 /* ================= 1. WAKTU & WARNA ================= */
-const WAKTU = {tarik: 1.75, b2: 1.95, b3: 3.7, gelembung: 3.75, dur: 5.6};
+const WAKTU = {vo: .3, tarik: 1.6, turun: 2.0, gelembung: [2.35, 2.95, 3.55, 4.15], dur: 5.9};
 const PAL = {dinding: '#1B2742', navy: '#121B30', emas: '#D9B26A', krem: '#F3EEE4', merah: '#E5484D', hijau: '#2E9E5B'};
 const OBAT = ['#E9EEF5', '#9FC0E2', '#8FC4A0', '#E2B184', '#C98A8A', '#F0E2B0'];
 const JEN = {x: 120, y: 560, w: 840, h: 620};
@@ -219,7 +217,7 @@ function papan(t) {
   for (let i = 0; i < 3; i++) { x.beginPath(); x.moveTo(px + 28, py + 80 + i * 40); x.lineTo(px + w - 28, py + 80 + i * 40); x.stroke(); }
   // garis: datar dulu (stuck) lalu turun
   const P = [[.0, .42], [.18, .36], [.36, .40], [.54, .38], [.7, .55], [.85, .75], [1, .92]];
-  const prog = .15 + .45 * E.out(seg(t, 0, 1.2)) + .4 * E.io(seg(t, WAKTU.b2 + .3, WAKTU.b2 + 1.4));
+  const prog = .15 + .45 * E.out(seg(t, 0, 1.2)) + .4 * E.io(seg(t, WAKTU.turun, WAKTU.turun + 1.2));
   const pt = ([a, b]) => [px + 30 + a * (w - 70), py + 70 + b * (h - 100)];
   const n = prog * (P.length - 1), i0 = Math.floor(n), fr = n - i0;
   x.beginPath(); x.moveTo(...pt(P[0])); for (let i = 1; i <= i0; i++) x.lineTo(...pt(P[i]));
@@ -234,31 +232,40 @@ function papan(t) {
 function pemilik(t) {
   const napas = Math.sin(t * 1.7) * 6;
   const kd = [1.1, 3.0, 4.9].reduce((m, c) => Math.max(m, 1 - Math.abs(t - c) / .08), 0);
-  const miring = -4 + Math.sin(t * .9) * 2.5 - 3 * E.io(seg(t, WAKTU.b2, WAKTU.b2 + .8));
+  const miring = -4 + Math.sin(t * .9) * 2.5 - 3 * E.io(seg(t, WAKTU.turun, WAKTU.turun + .8));
   orang(430, 2050 - napas, 1450 + napas * .6, {jas: '#F6F3EE', jasG: '#D8D2C7', baju: '#2F63D6', bajuG: '#264FAD', rambut: 'panjang', kerudung: '#5E3B5E',
     kanan: 'dagu', ekspresi: 'sedih', aksenJas: PAL.emas, kulit: '#E3A37A', kulitG: '#C9875F', kedip: clamp(kd, 0, 1), miring});
 }
 
-/* gelembung pikiran: apotek pesaing yang ramai */
+/* 4 gelembung masalah (teks dari poster klien) */
+const MASALAH = [
+  {x: 60, y: 565, w: 440, baris: ['Omzet stagnan', '/ turun?']},
+  {x: 590, y: 565, w: 440, baris: ['Bingung bikin', 'strategi penjualan?']},
+  {x: 40, y: 1060, w: 490, baris: ['Pelanggan sepi /', 'kalah saing kompetitor?']},
+  {x: 610, y: 940, w: 420, baris: ['Atau punya', 'masalah lain?']},
+];
 function gelembung(t) {
-  const s0 = seg(t, WAKTU.gelembung, WAKTU.gelembung + .5);
-  if (s0 <= 0) return;
-  const k = 1 + 2.7 * Math.pow(s0 - 1, 3) + 1.7 * Math.pow(s0 - 1, 2);
-  const cx = 770, cy = 760;
-  [[560, 930, 16, 0], [610, 880, 26, .12]].forEach(([bx, by, r, d]) => { const kk = clamp(seg(t, WAKTU.gelembung - .2 + d, WAKTU.gelembung + .1 + d), 0, 1); if (kk > 0) { x.save(); x.shadowColor = 'rgba(0,0,0,.3)'; x.shadowBlur = 16; el(bx, by, r * kk, r * kk, PAL.krem); x.restore(); } });
-  x.save(); x.translate(cx, cy); x.scale(k, k);
-  x.save(); x.shadowColor = 'rgba(0,0,0,.35)'; x.shadowBlur = 26; x.shadowOffsetY = 10;
-  rr(-200, -150, 400, 300, 120, PAL.krem); x.restore();
-  x.beginPath(); x.roundRect(-200, -150, 400, 300, 120); x.clip();
-  rr(-200, -150, 400, 300, 0, '#F7E6CF');
-  rr(-120, -60, 240, 170, 8, '#FFFFFF'); tenda(-130, -80, 260, 5, PAL.hijau, '#FFFFFF', 60);
-  palang(0, -110, 40, PAL.hijau);
-  rr(-100, -10, 200, 110, 6, '#D6EFE0');
-  ['#F2C14E', '#E0607A', '#6C63C7', '#3BA7A0', '#2F63D6'].forEach((c, i) => {
-    const bob = Math.abs(Math.sin(t * 6 + i)) * 4;
-    orang(-150 + i * 72, 150 - bob, 190, {baju: c, bajuG: c, rambut: i % 2 ? 'pendek' : 'panjang', ekspresi: 'senyum', celana: '#2B2F55', balik: i % 2 === 1});
+  MASALAH.forEach((m, i) => {
+    const s0 = seg(t, WAKTU.gelembung[i], WAKTU.gelembung[i] + .45);
+    if (s0 <= 0) return;
+    const k = 1 + 2.7 * Math.pow(s0 - 1, 3) + 1.7 * Math.pow(s0 - 1, 2);
+    const h = 160, cx = m.x + m.w / 2, cy = m.y + h / 2 + Math.sin(t * 1.8 + i * 1.3) * 6;
+    // ekor titik ke arah kepala apoteker
+    const hx = 430, hy = 850, ex = lerp(cx, hx, .55), ey = lerp(cy, hy, .55);
+    x.save(); x.globalAlpha = clamp(s0 * 2, 0, 1); x.shadowColor = 'rgba(0,0,0,.3)'; x.shadowBlur = 12;
+    el(ex, ey, 11 * k, 11 * k, PAL.krem); el(lerp(cx, hx, .38), lerp(cy, hy, .38), 16 * k, 16 * k, PAL.krem); x.restore();
+    x.save(); x.translate(cx, cy); x.scale(k, k); x.globalAlpha = clamp(s0 * 3, 0, 1);
+    x.save(); x.shadowColor = 'rgba(0,0,0,.4)'; x.shadowBlur = 28; x.shadowOffsetY = 12;
+    rr(-m.w / 2, -h / 2, m.w, h, 44, PAL.krem); x.restore();
+    rr(-m.w / 2 + 6, h / 2 - 12, m.w - 12, 5, 3, 'rgba(217,178,106,.8)');
+    // lencana X merah
+    el(-m.w / 2 + 10, -h / 2 + 8, 30, 30, PAL.merah);
+    x.strokeStyle = '#fff'; x.lineWidth = 7; x.lineCap = 'round'; x.beginPath();
+    x.moveTo(-m.w / 2 - 1, -h / 2 - 3); x.lineTo(-m.w / 2 + 21, -h / 2 + 19); x.moveTo(-m.w / 2 + 21, -h / 2 - 3); x.lineTo(-m.w / 2 - 1, -h / 2 + 19); x.stroke();
+    x.fillStyle = '#1B2742'; x.font = "800 38px Manrope"; x.textAlign = 'center'; x.textBaseline = 'middle';
+    m.baris.forEach((b, j) => x.fillText(b, 14, (j - .5) * 46));
+    x.restore();
   });
-  x.restore();
 }
 
 function debu(t) {
@@ -270,9 +277,9 @@ function debu(t) {
 /* ================= 4. KAMERA ================= */
 function kamera(t) {
   const k = E.io(seg(t, WAKTU.tarik, WAKTU.tarik + .7));
-  const s0 = 2.2 + .1 * seg(t, 0, WAKTU.tarik), s1 = 1.04 + .07 * E.io(seg(t, WAKTU.tarik + .7, WAKTU.dur));
+  const s0 = 2.2 + .1 * seg(t, 0, WAKTU.tarik), s1 = .99 + .05 * E.io(seg(t, WAKTU.tarik + .7, WAKTU.dur));
   const s = lerp(s0, s1, k);
-  const fx = lerp(PAPAN.x + PAPAN.w / 2 + 70, 560 + 40 * E.io(seg(t, WAKTU.b3, WAKTU.dur)), k);
+  const fx = lerp(PAPAN.x + PAPAN.w / 2 + 70, 540, k);
   const fy = lerp(PAPAN.y + PAPAN.h / 2, 1000, k);
   const sy = lerp(1180, 980, k);
   const gx = nz(t * .35, 1) * 6, gy = nz(t * .35, 2) * 5;
@@ -290,7 +297,7 @@ function lapisAtas() {
 }
 
 /* ================= 5. SCENE ================= */
-const BB = [$('#b1'), $('#b2'), $('#b3')];
+const BB = [$('#b1')];
 BB.forEach(b => b.style.top = (AMAN.atas + 40) + 'px');
 grainOn(.08);
 
@@ -298,14 +305,10 @@ const SCENE = {
   dur: WAKTU.dur,
   kata: [],
   sub: {gaya: 'mati'},
-  audio: {vo: [], sfx: [], music: null},
+  audio: {vo: [{src: 'assets/audio/vo-01.mp3', at: WAKTU.vo, teks: 'Apotekmu mengalami masalah-masalah ini?'}], sfx: [], music: null},
   muat: () => Promise.all([document.fonts.load("italic 400 150px 'DM Serif Display'"), document.fonts.load("800 30px Manrope")]),
   build(tl) {
-    wIn(tl, BB[0], .05, {st: .09});
-    wOut(tl, BB[0], WAKTU.b2 - .35);
-    wIn(tl, BB[1], WAKTU.b2, {st: .1});
-    wOut(tl, BB[1], WAKTU.b3 - .35);
-    wIn(tl, BB[2], WAKTU.b3, {st: .1});
+    wIn(tl, BB[0], .05, {st: .12});
   },
   frame(t) {
     pakai(x); x.setTransform(1, 0, 0, 1, 0, 0);
@@ -315,9 +318,7 @@ const SCENE = {
     x.drawImage(DEP, 0, 0);
     gelembung(t); debu(t);
     kamera(t); lapisAtas();
-    BB[0].querySelector('em').style.setProperty('--g', E.out(seg(t, .55, 1.05)));
-    BB[1].querySelector('em').style.setProperty('--g', E.out(seg(t, WAKTU.b2 + .5, WAKTU.b2 + 1.0)));
-    BB[2].querySelector('em').style.setProperty('--g', E.out(seg(t, WAKTU.b3 + .5, WAKTU.b3 + 1.0)));
+    BB[0].querySelector('em').style.setProperty('--g', E.out(seg(t, 1.6, 2.3)));
   }
 };
 </script>
