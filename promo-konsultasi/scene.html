@@ -340,7 +340,7 @@ const SCENE = {
     {src: 'assets/audio/vo-03.mp3', at: WAKTU.v3, teks: 'Apoteker Syah Akbarul Adha, owner delapan belas apotek dan advisor bisnis apotek.'},
     {src: 'assets/audio/vo-04.mp3', at: WAKTU.v4, teks: 'Khusus mitra Digikes, cuma seratus ribu, dari lima ratus ribu!'},
     {src: 'assets/audio/vo-05.mp3', at: WAKTU.v5, teks: 'Bedah kondisi riil apotekmu dan temukan solusi konkret untuk apotekmu. Hubungi admin sekarang juga!'}],
-    sfx: [], music: null},
+    sfx: [], music: {src: 'assets/audio/musik-pas.mp3', vol: .13}},
   muat: () => Promise.all([document.fonts.load("italic 400 150px 'DM Serif Display'"), document.fonts.load("400 150px 'DM Serif Display'"), document.fonts.load("800 30px Manrope"), document.fonts.load("700 30px Manrope"),
     ...[...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))]),
   build(tl) {
