@@ -32,14 +32,15 @@
 #s2judul .serif em{font-style:italic;color:#D9B26A}
 #s2judul .chip{margin-top:34px}
 #profil{left:0;width:100%;top:0;height:1920px}
-#busur{position:absolute;left:250px;top:300px;width:580px;height:720px;border-radius:290px 290px 28px 28px;overflow:hidden;
-  background:radial-gradient(80% 70% at 50% 40%,#FFF8EA,#E8DCC4);box-shadow:0 0 0 6px #D9B26A,0 0 0 14px rgba(217,178,106,.18),0 30px 80px rgba(0,0,0,.55)}
-#busur img{position:absolute;left:50%;top:0;height:112%;transform-origin:50% 30%}
-#profil .nama{position:absolute;left:0;width:100%;top:1065px;text-align:center;font:400 62px/1.05 'DM Serif Display';color:#F3EEE4;text-shadow:0 4px 18px rgba(0,0,0,.6)}
-#profil .gelar{position:absolute;left:0;width:100%;top:1160px;text-align:center}
+#gelap{position:absolute;inset:0;background:radial-gradient(90% 60% at 50% 40%,rgba(8,12,24,.55),rgba(5,8,16,.92))}
+#cahayaBlk{position:absolute;left:90px;top:160px;width:900px;height:900px;border-radius:50%;background:radial-gradient(closest-side,rgba(217,178,106,.42),rgba(217,178,106,.12) 55%,rgba(217,178,106,0))}
+#busur{position:absolute;left:150px;top:140px;width:780px;height:975px}
+#busur img{position:absolute;left:50%;top:0;width:100%;transform-origin:50% 30%;filter:drop-shadow(0 0 18px rgba(217,178,106,.35))}
+#profil .nama{position:absolute;left:0;width:100%;top:1120px;text-align:center;font:400 62px/1.05 'DM Serif Display';color:#F3EEE4;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+#profil .gelar{position:absolute;left:0;width:100%;top:1215px;text-align:center}
 .pil{display:inline-block;margin:10px 10px;font:800 46px/1 'Manrope';color:#F3EEE4;border:3px solid #D9B26A;border-radius:60px;padding:20px 34px;background:rgba(18,27,48,.75);opacity:0}
 .pil b{color:#D9B26A;font-weight:800}
-#tagAhli{position:absolute;left:0;width:100%;top:220px;text-align:center}
+#tagAhli{position:absolute;left:0;width:100%;top:190px;text-align:center;z-index:2}
 #harga{left:110px;width:860px;top:430px;height:1060px}
 #kartuH{position:absolute;inset:0;border-radius:56px;background:#F3EEE4;box-shadow:0 0 0 4px #D9B26A,0 40px 90px rgba(0,0,0,.55)}
 #pita{position:absolute;left:0;width:100%;top:70px;text-align:center}
@@ -96,7 +97,7 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden}
 <div class="lap" id="s2judul"><span class="kecil">Saatnya ikut</span><div class="serif">Konsultasi<br><em>privat</em></div><span class="chip">1 ON 1 · EMPAT MATA</span></div>
 <div class="lap" id="profil">
   <div id="tagAhli"><span class="chip">BARENG AHLINYA</span></div>
-  <div id="busur"><img src="assets/gambar/narasumber.png" alt=""></div>
+  <div id="gelap"></div><div id="cahayaBlk"></div><div id="busur"><img src="assets/gambar/narasumber-potong.png" alt=""></div>
   <div class="nama">apt. Syah Akbarul Adha, M.Farm</div>
   <div class="gelar"><span class="pil" id="pil1">Owner <b id="n18">18</b> Apotek</span><br><span class="pil" id="pil2">Advisor Bisnis Apotek</span></div>
 </div>
