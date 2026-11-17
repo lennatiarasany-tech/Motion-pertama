@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@600;800&display=swap">
+<style>html,body{margin:0}#stage{width:1080px;height:1920px;position:relative}canvas{display:block}</style></head>
+<body><div id="stage"><canvas id="cv" width="1080" height="1920"></canvas></div>
+<script src="flat.js"></script>
+<script>
+Promise.all([document.fonts.load("400 120px 'DM Serif Display'"), document.fonts.load("italic 400 120px 'DM Serif Display'"), document.fonts.load("800 40px Manrope")]).then(gambar);
+function gambar() {
+  // dinding interior navy
+  g.fillStyle = '#1B2742'; g.fillRect(0, 0, W, H);
+  // jendela besar senja
+  const jx = 120, jy = 560, jw = 840, jh = 620;
+  rr(jx - 24, jy - 24, jw + 48, jh + 48, 18, '#121B30');
+  g.save(); g.beginPath(); g.roundRect(jx, jy, jw, jh, 10); g.clip();
+  let gr = g.createLinearGradient(0, jy, 0, jy + jh); gr.addColorStop(0, '#3D3F78'); gr.addColorStop(.55, '#C9708A'); gr.addColorStop(1, '#F4B26A'); g.fillStyle = gr; g.fillRect(jx, jy, jw, jh);
+  el(700, jy + jh - 120, 70, 70, '#FFE0A6');
+  [[100, 260, 90], [210, 180, 70], [300, 300, 110], [430, 220, 80], [540, 330, 100], [660, 240, 90], [770, 290, 120], [900, 200, 80]].forEach(([x, h, w], i) => {
+    gedung(jx + x - 80, jy + jh - h, w, h, '#2A2D57', i % 3 ? '#F2C46D' : '#3A3D6E', 30 + i); });
+  [[60, 160, 70], [380, 140, 90], [820, 150, 70]].forEach(([x, h, w], i) => gedung(jx + x - 40, jy + jh - h, w, h, '#1E2147', '#E9B65B', 50 + i));
+  g.restore();
+  g.fillStyle = '#121B30'; g.fillRect(jx + jw / 2 - 8, jy, 16, jh); g.fillRect(jx, jy + jh * .42, jw, 14);
+  // tulisan kaca terbalik? tidak — tanda BUKA
+  rr(jx + 40, jy + 40, 150, 56, 10, '#0E1526'); g.fillStyle = '#F2C46D'; g.font = '800 30px Manrope'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('BUKA', jx + 115, jy + 69);
+  // lampu gantung emas
+  [[130, 500], [950, 500]].forEach(([x, y]) => { g.fillStyle = '#C9A15A'; g.fillRect(x - 2, 0, 4, y - 40);
+    poly([x - 60, y, x + 60, y, x + 34, y - 54, x - 34, y - 54], '#D9B26A');
+    const r = g.createRadialGradient(x, y + 20, 0, x, y + 20, 320); r.addColorStop(0, 'rgba(255,214,140,.35)'); r.addColorStop(1, 'rgba(255,214,140,0)'); g.fillStyle = r; g.fillRect(x - 320, y - 300, 640, 640); });
+  // rak samping kiri & kanan (sebagian)
+  rakObat(-60, 520, 170, 900, '#24345A', ['#E9EEF5', '#9FC0E2', '#8FC4A0', '#E2B184', '#C98A8A', '#F0E2B0'], 41, 6);
+  rakObat(970, 520, 170, 900, '#24345A', ['#E9EEF5', '#9FC0E2', '#8FC4A0', '#E2B184', '#C98A8A', '#F0E2B0'], 42, 6);
+  // grafik turun di dinding atas jendela? -> papan kecil kanan
+  rr(690, 1230, 260, 170, 16, '#F3EEE4');
+  g.strokeStyle = '#E5484D'; g.lineWidth = 9; g.lineJoin = 'round'; g.lineCap = 'round'; g.beginPath(); [[720, 1290], [770, 1280], [820, 1300], [870, 1340], [915, 1370]].forEach(([a, b], i) => i ? g.lineTo(a, b) : g.moveTo(a, b)); g.stroke();
+  poly([915, 1370, 885, 1372, 912, 1345], '#E5484D');
+  g.fillStyle = '#5B6B86'; g.font = '800 22px Manrope'; g.textAlign = 'left'; g.fillText('PENJUALAN', 718, 1256);
+  // pemilik di balik konter (setengah badan)
+  orang(430, 2050, 1450, {jas: '#F6F3EE', jasG: '#D8D2C7', baju: '#2F63D6', bajuG: '#264FAD', rambut: 'panjang', kerudung: '#5E3B5E', kanan: 'dagu', ekspresi: 'sedih', aksenJas: '#D9B26A', kulit: '#E3A37A', kulitG: '#C9875F'});
+  // konter
+  rr(-20, 1520, 1120, 60, 10, '#D9B26A');
+  rr(-20, 1580, 1120, 360, 0, '#22314F'); g.fillStyle = 'rgba(217,178,106,.25)'; for (let i = 1; i < 6; i++) g.fillRect(i * 180, 1600, 4, 320);
+  palang(540, 1730, 120, 'rgba(46,158,91,.85)');
+  // barang di konter
+  rr(720, 1450, 70, 72, 10, '#F3EEE4'); rr(720, 1468, 70, 22, 0, '#2E9E5B'); rr(820, 1420, 46, 100, 10, '#B9D3EE'); rr(812, 1410, 62, 24, 8, '#F3EEE4');
+  // judul serif
+  g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+  g.fillStyle = '#B8C3D9'; g.font = '800 40px Manrope'; g.fillText('APOTEKMU MAKIN', 540, 250);
+  g.font = "italic 400 190px 'DM Serif Display'"; g.fillStyle = '#D9B26A'; g.fillText('sepi?', 540, 430);
+  g.fillStyle = '#D9B26A'; g.fillRect(400, 465, 280, 4);
+  grain(.07, 9);
+  selesai();
+}
+</script></body></html>

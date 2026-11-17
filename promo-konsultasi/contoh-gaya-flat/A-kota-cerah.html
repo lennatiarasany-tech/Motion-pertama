@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap">
+<style>html,body{margin:0}#stage{width:1080px;height:1920px;position:relative}canvas{display:block}</style></head>
+<body><div id="stage"><canvas id="cv" width="1080" height="1920"></canvas></div>
+<script src="flat.js"></script>
+<script>
+document.fonts.load("700 58px Montserrat").then(() => document.fonts.load("800 40px Montserrat")).then(gambar);
+function gambar() {
+  // langit
+  let gr = g.createLinearGradient(0, 0, 0, 1300); gr.addColorStop(0, '#CFE2F8'); gr.addColorStop(1, '#EEF5FD'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  // awan datar
+  [[180, 260, 120], [860, 330, 150]].forEach(([x, y, r]) => { el(x, y, r, r * .32, '#FFFFFF'); el(x - r * .35, y - r * .18, r * .45, r * .3, '#FFFFFF'); el(x + r * .3, y - r * .22, r * .5, r * .35, '#FFFFFF'); });
+  // kota latar (2 lapis)
+  [[20, 760, 150, 520], [190, 640, 130, 640], [340, 820, 170, 460], [560, 700, 140, 580], [720, 600, 160, 680], [900, 780, 170, 500]].forEach(([x, y, w, h], i) => gedung(x, y, w, h, '#C3D6F0', '#D9E6F7', i + 1));
+  [[80, 960, 200, 360], [420, 900, 180, 420], [780, 940, 220, 380]].forEach(([x, y, w, h], i) => gedung(x, y, w, h, '#ADC6EA', '#C3D6F0', i + 9));
+  // pepohonan belakang
+  pohon(120, 1180, 120, '#86CBA0', '#5DAF7E', 2); pohon(980, 1170, 130, '#86CBA0', '#5DAF7E', 3); pohon(520, 1160, 90, '#9AD6B0', '#6FBB8D', 4);
+  // trotoar & jalan
+  rr(0, 1290, W, 630, 0, '#8F8CC0'); rr(0, 1290, W, 26, 0, '#A5A3D0');
+  // APOTEK KOMPETITOR (kiri, ramai)
+  rr(-40, 900, 380, 400, 8, '#FFFFFF'); tenda(-40, 880, 380, 6, '#2E9E5B', '#FFFFFF', 120);
+  rr(10, 1010, 300, 220, 8, '#D6EFE0'); rakObat(20, 1020, 280, 200, '#BFE3CD', ['#FFFFFF', '#F6C38E', '#F3A3A3', '#9CC7F0', '#FFE7A1'], 7, 3);
+  palang(170, 830, 60, '#2E9E5B');
+  // antrean kecil
+  [[60, '#F2C14E', 'panjang'], [150, '#E0607A', 'pendek'], [235, '#6C63C7', 'panjang'], [310, '#3BA7A0', 'pendek']].forEach(([x, c, r], i) =>
+    orang(x, 1330, 330, {baju: c, bajuG: c, rambut: r, ekspresi: 'senyum', celana: '#2B2F55', balik: i % 2 === 0}));
+  // APOTEK KITA (kanan, sepi)
+  rr(560, 860, 560, 440, 8, '#FFFFFF'); tenda(560, 840, 540, 6, '#2F63D6', '#FFFFFF', 130);
+  rr(640, 990, 280, 300, 6, '#DCE8F7'); rakObat(650, 1000, 260, 220, '#C8DAF1', ['#FFFFFF', '#CFE0F5', '#E7EDF5', '#BFD3EC'], 11, 3);
+  rr(950, 1000, 130, 290, 6, '#BFD3EC'); rr(960, 1010, 110, 270, 4, '#E4EEF9');
+  rr(700, 760, 300, 70, 14, '#2F63D6'); g.fillStyle = '#fff'; g.font = '800 40px Montserrat'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('APOTEK', 850, 796);
+  rr(870, 1180, 86, 40, 8, '#1B2B4A'); g.fillStyle = '#9FE0B0'; g.font = '800 22px Montserrat'; g.fillText('BUKA', 913, 1201);
+  // daun jatuh / semak tepi
+  semak(-60, 1500, 160, 260, '#4FA672', '#2E7D4F', 5); semak(1140, 1560, 170, 300, '#4FA672', '#2E7D4F', 6);
+  // pemilik apotek (apoteker, jas putih) besar di tengah
+  orang(470, 2060, 1260, {jas: '#FFFFFF', jasG: '#DCE4EF', baju: '#3A6FD8', bajuG: '#2F5CB8', rambut: 'pendek', kanan: 'garuk', ekspresi: 'sedih', celana: '#1E2340', kacamata: '#1D1A24', dasi: '#2F63D6'});
+  // balon kata
+  balon(150, 330, 780, 190, 'Kok apotekku sepi ya…?', {bayang: 'rgba(40,70,130,.18)', ekorX: 470, ekorDx: 0});
+  // label kecil
+  rr(80, 120 + 0, 0, 0, 0, '#000');
+  selesai();
+}
+</script></body></html>
