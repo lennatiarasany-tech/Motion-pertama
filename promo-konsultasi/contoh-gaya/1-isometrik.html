@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;700;800&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(120% 80% at 50% 45%,#EAF2FB 0%,#C9DAEE 55%,#9DB6D6 100%)}
+#dunia{position:absolute;inset:0}
+.t{position:absolute;left:0;width:100%;text-align:center;font-family:'Onest';color:#13284A}
+.k1{top:230px;font:700 46px Onest;letter-spacing:.14em;color:#3B5B86}
+.k2{top:300px;font:800 150px/1 Onest;letter-spacing:-.03em}
+.k2 span{color:#E5484D}
+.lbl{position:absolute;font:700 34px Onest;color:#13284A;background:#fff;padding:10px 22px;border-radius:40px;box-shadow:0 8px 24px rgba(20,40,80,.18)}
+.lbl::before{content:'';display:inline-block;width:14px;height:14px;border-radius:50%;background:#E5484D;margin-right:12px;vertical-align:middle}
+.nama{position:absolute;bottom:120px;left:0;width:100%;text-align:center;font:600 30px Onest;color:#3B5B86;letter-spacing:.2em}
+</style></head><body>
+<div id="stage"><div id="dunia"></div>
+<div class="t k1">PENJUALAN APOTEKMU</div>
+<div class="t k2">Stuck? <span>↘</span></div>
+<div class="lbl" style="left:110px;top:1240px">Kasir sepi</div>
+<div class="lbl" style="left:650px;top:860px">Omzet turun</div>
+<div class="nama">GAYA 1 · DIORAMA ISOMETRIK 3D</div>
+</div>
+<script src="three.min.js"></script><script src="umum.js"></script>
+<script>
+const {ren, sc} = siapkan(true);
+const asp = W / H, f = 10.2;
+const cam = new THREE.OrthographicCamera(-f * asp, f * asp, f, -f, .1, 100);
+cam.position.set(14, 12, 14); cam.lookAt(0, 3.2, 0); cam.position.y -= 0; cam.updateProjectionMatrix();
+cam.zoom = 1.0; cam.updateProjectionMatrix();
+sc.add(new THREE.HemisphereLight(lin('#F4F8FF'), lin('#8AA3C4'), .9));
+const mat1 = new THREE.DirectionalLight(lin('#FFFFFF'), 1.6); mat1.position.set(6, 12, 4); mat1.castShadow = true;
+mat1.shadow.mapSize.set(2048, 2048); Object.assign(mat1.shadow.camera, {left: -10, right: 10, top: 10, bottom: -10}); mat1.shadow.bias = -.0005; sc.add(mat1);
+
+const BIRU = '#1F57B5', HIJAU = '#1E8B3A';
+const root = new THREE.Group(); root.position.y = -1.2; sc.add(root);
+// alas diorama: lapisan tanah + lantai
+const alas = rbox(8.4, .7, 8.4, .25, mat('#2B4C7E')); alas.rotation.x = 0; alas.position.y = -.35; root.add(alas);
+const lantai = rbox(8, .12, 8, .1, mat('#F1F4F8', {roughness: .35})); lantai.position.y = .06; root.add(lantai);
+// pola tegel
+for (let i = -3; i <= 3; i++) { const l = mesh(new THREE.BoxGeometry(8, .005, .02), mat('#D5DDE8'), 0, .125, i * 1.1); root.add(l); const l2 = l.clone(); l2.rotation.y = Math.PI / 2; l2.position.set(i * 1.1, .125, 0); root.add(l2); }
+// dinding belakang & kiri (potongan)
+const dind = mat('#E4ECF5'), aksenDind = mat(BIRU);
+const d1 = rbox(8, 4.2, .25, .05, dind); d1.position.set(0, 2.2, -3.9); root.add(d1);
+const d2 = rbox(.25, 4.2, 8, .05, dind); d2.position.set(-3.9, 2.2, 0); root.add(d2);
+const lis1 = rbox(8, .25, .3, .05, aksenDind); lis1.position.set(0, 4.3, -3.9); root.add(lis1);
+const lis2 = rbox(.3, .25, 8, .05, aksenDind); lis2.position.set(-3.9, 4.3, 0); root.add(lis2);
+// rak di dinding
+const PAL = ['#FFFFFF', '#CFE2F7', '#9CD3AE', '#F4C38E', '#F2A3A3', '#FBE7A6', '#B9C6F2'];
+[[-2.2, 0], [0, 0], [2.2, 0]].forEach(([x], i) => { const r = rak(2, 3.2, .7, '#F8FAFD', PAL, 10 + i); r.position.set(x, .12, -3.4); root.add(r); });
+[[-1.6], [0.6]].forEach(([z], i) => { const r = rak(2, 3.2, .7, '#F8FAFD', PAL, 20 + i); r.rotation.y = Math.PI / 2; r.position.set(-3.4, .12, z); root.add(r); });
+// konter
+const kon = rbox(3.6, 1.1, 1.1, .1, mat('#FFFFFF', {roughness: .3})); kon.position.set(.6, .67, .9); root.add(kon);
+const konA = rbox(3.62, .14, 1.14, .05, mat(HIJAU)); konA.position.set(.6, 1.25, .9); root.add(konA);
+// kasir/monitor
+const mon = rbox(.9, .6, .08, .05, mat('#1B2A44')); mon.position.set(-.3, 1.75, .8); mon.rotation.y = .5; root.add(mon);
+const lay = new THREE.Mesh(new THREE.PlaneGeometry(.78, .48), new THREE.MeshBasicMaterial({map: teksTex('↘', {w: 256, h: 160, bg: '#0F1E36', warna: '#E5484D', font: '800 120px Onest'})}));
+lay.position.set(-.3 + .05 * Math.sin(.5), 1.75, .8 + .05 * Math.cos(.5)); lay.rotation.y = .5; root.add(lay);
+// pemilik: jas putih, menunduk
+const own = new THREE.Group(); own.position.set(1.2, 1.25, .1); root.add(own);
+const badan = rbox(.75, .9, .5, .22, mat('#FFFFFF', {roughness: .5})); badan.position.y = .35; own.add(badan);
+const kepala = mesh(new THREE.SphereGeometry(.3, 32, 24), mat('#E8B98F'), -.05, 1.02, .05); own.add(kepala);
+const rambut = mesh(new THREE.SphereGeometry(.315, 32, 24, 0, Math.PI * 2, 0, Math.PI * .55), mat('#1E1B1A')); rambut.position.copy(kepala.position); rambut.rotation.x = -.5; own.add(rambut);
+own.rotation.set(.35, .6, 0);
+const tangan = mesh(new THREE.CylinderGeometry(.09, .09, .65, 16), mat('#FFFFFF'), -.32, .9, .28); tangan.rotation.z = .7; tangan.rotation.x = -.4; own.add(tangan);
+const tg = mesh(new THREE.SphereGeometry(.1, 16, 12), mat('#E8B98F'), -.38, 1.12, .3); own.add(tg);
+// awan hujan kecil di atas pemilik (sedih)
+const awan = new THREE.Group(); awan.position.set(1.2, 3.1, .2); root.add(awan);
+[[0, 0, .32], [.35, -.05, .25], [-.33, -.06, .24], [.12, .14, .26]].forEach(([x, y, r]) => awan.add(mesh(new THREE.SphereGeometry(r, 24, 16), mat('#8C9DB5'), x, y, 0)));
+for (let i = 0; i < 5; i++) awan.add(mesh(new THREE.CylinderGeometry(.015, .015, .22, 6), mat('#6FA0E0', {emissive: lin('#3B70C0')}), -.3 + i * .15, -.4 - (i % 2) * .15, 0));
+// atap terangkat
+const atap = rbox(8.4, .35, 8.4, .12, mat(BIRU)); atap.position.set(0, 7.6, 0); root.add(atap);
+const plang = new THREE.Group(); plang.position.set(0, 8.5, 0); root.add(plang);
+plang.add(rbox(.45, 1.3, .3, .08, mat(HIJAU, {emissive: lin('#0C3F1A')})));
+const p2 = rbox(1.3, .45, .3, .08, mat(HIJAU, {emissive: lin('#0C3F1A')})); plang.add(p2);
+// grafik batang turun di depan-kanan
+const gr = new THREE.Group(); gr.position.set(2.7, 0, -1.4); root.add(gr);
+[2.6, 2.3, 2.4, 1.7, 1.2, .7].forEach((h, i) => { const b = rbox(.38, h, .38, .06, mat(i > 2 ? '#E5484D' : '#4C86D8', {roughness: .35})); b.position.set(i * .5 - 1.2, h / 2 + .12, 0); gr.add(b); });
+gr.rotation.y = Math.PI / 4;
+// pintu kaca kosong + keset
+const kes = rbox(1.4, .05, .8, .05, mat('#C5D0DE')); kes.position.set(2.6, .15, 3.4); root.add(kes);
+ren.render(sc, cam);
+siapFont().then(() => { ren.render(sc, cam); window.SIAP = true; });
+</script></body></html>

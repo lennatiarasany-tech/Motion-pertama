@@ -1,0 +1,77 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;800&family=Fredoka:wght@600;700&display=swap">
+<style>
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:linear-gradient(180deg,#DCEBFA 0%,#EAF4EE 60%,#D7EAD9 100%)}
+#dunia{position:absolute;inset:0}
+.t{position:absolute;left:0;width:100%;text-align:center;color:#24406E}
+.k1{top:240px;font:600 46px Onest;letter-spacing:.12em;color:#4D6B96}
+.k2{top:300px;font:700 150px/1 Fredoka}
+.k2 span{color:#2E9E5B}
+.nama{position:absolute;bottom:120px;left:0;width:100%;text-align:center;font:600 30px Onest;color:#4D6B96;letter-spacing:.2em}
+</style></head><body>
+<div id="stage"><div id="dunia"></div>
+<div class="t k1">APOTEKMU MAKIN</div>
+<div class="t k2"><span>sepi</span> ya?</div>
+<div class="nama">GAYA 3 · 3D LEMBUT ALA CLAY</div>
+</div>
+<script src="three.min.js"></script><script src="umum.js"></script>
+<script>
+const {ren, sc} = siapkan(true); ren.toneMappingExposure = 1.05;
+const cam = new THREE.PerspectiveCamera(30, W / H, .1, 100);
+sc.add(new THREE.HemisphereLight(lin('#FFFFFF'), lin('#B8CBE0'), .85));
+const sun = new THREE.DirectionalLight(lin('#FFF4E6'), 1.4); sun.position.set(5, 9, 7); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, {left: -8, right: 8, top: 8, bottom: -8}); sun.shadow.radius = 6; sc.add(sun);
+const C = (hex) => mat(hex, {roughness: .85});
+// tanah bundar
+const tanah = mesh(new THREE.CylinderGeometry(4.6, 4.6, .5, 96), C('#BFE0C6'), 0, -.25, 0); sc.add(tanah);
+// bangunan apotek
+const bang = rbox(5.2, 3.6, 2.6, .35, C('#FFF6EA')); bang.position.set(0, 1.8, -.8); sc.add(bang);
+const atap = rbox(5.8, .7, 3.0, .3, C('#7FB2E8')); atap.position.set(0, 3.85, -.7); sc.add(atap);
+// papan nama
+const papan = rbox(3.0, .8, .25, .3, C('#2E9E5B')); papan.position.set(0, 4.6, .3); sc.add(papan);
+const pt = new THREE.Mesh(new THREE.PlaneGeometry(2.6, .6), new THREE.MeshBasicMaterial({map: teksTex('APOTEK', {w: 520, h: 120, warna: '#FFFFFF', font: '700 86px Fredoka'}), transparent: true}));
+pt.position.set(0, 4.6, .44); sc.add(pt);
+// jendela etalase (kaca) dengan rak
+const kaca = rbox(4.2, 2.2, .2, .25, new THREE.MeshPhysicalMaterial({color: lin('#CDE6F7'), roughness: .1, transmission: 0, opacity: .22, transparent: true}));
+kaca.position.set(0, 1.7, .55); sc.add(kaca);
+const PAL = ['#FFB5A7', '#FCD5A5', '#B8E0C2', '#A9CBF0', '#E7C6F2', '#FFFFFF'];
+const r1 = rak(3.6, 1.9, .5, '#F2E3CF', PAL, 3, C); r1.position.set(0, .55, -.3); sc.add(r1);
+// konter + pemilik chibi
+const kon = rbox(3.4, 1.0, .9, .3, C('#FFFFFF')); kon.position.set(0, .5, 1.6); sc.add(kon);
+const konA = rbox(3.5, .2, 1.0, .1, C('#7FB2E8')); konA.position.set(0, 1.05, 1.6); sc.add(konA);
+const own = new THREE.Group(); own.position.set(.3, 1.0, 1.0); sc.add(own);
+own.add(mesh(new THREE.SphereGeometry(.55, 48, 32), C('#FFFFFF'), 0, .3, 0));
+const kep = new THREE.Group(); kep.position.set(0, 1.25, .1); kep.rotation.x = .28; own.add(kep);
+kep.add(mesh(new THREE.SphereGeometry(.62, 48, 32), C('#F3C9A3')));
+const rmb = mesh(new THREE.SphereGeometry(.66, 48, 32, 0, Math.PI * 2, 0, Math.PI * .5), C('#3A2E2A')); rmb.rotation.x = -.35; kep.add(rmb);
+// mata sedih & alis miring
+[-.22, .22].forEach((x, i) => {
+  kep.add(mesh(new THREE.SphereGeometry(.07, 16, 12), C('#2A2230'), x, -.02, .57));
+  const alis = mesh(new THREE.CylinderGeometry(.03, .03, .2, 8), C('#3A2E2A'), x, .14, .56);
+  alis.rotation.z = Math.PI / 2 + (i ? -.45 : .45); kep.add(alis);
+});
+const mulut = mesh(new THREE.TorusGeometry(.1, .025, 8, 24, Math.PI), C('#8A4B44'), 0, -.25, .56); kep.add(mulut);
+kep.add(mesh(new THREE.SphereGeometry(.09, 16, 12), C('#F7B3A8'), -.36, -.14, .5)); kep.add(mesh(new THREE.SphereGeometry(.09, 16, 12), C('#F7B3A8'), .36, -.14, .5));
+// tetes keringat
+const tet = mesh(new THREE.SphereGeometry(.08, 16, 12), new THREE.MeshPhysicalMaterial({color: lin('#9FD3FF'), roughness: .05, clearcoat: 1}), .5, .3, .4); tet.scale.y = 1.4; kep.add(tet);
+// tangan menopang dagu
+const tgn = mesh(new THREE.SphereGeometry(.2, 24, 16), C('#F3C9A3'), -.35, .72, .62); own.add(tgn);
+// awan mendung kecil
+const aw = new THREE.Group(); aw.position.set(.3, 3.6, 1.5); sc.add(aw);
+[[0, 0, .38], [.42, -.06, .3], [-.4, -.07, .3], [.15, .2, .3]].forEach(([x, y, r]) => aw.add(mesh(new THREE.SphereGeometry(r, 32, 24), C('#9AA9BF'), x, y, 0)));
+for (let i = 0; i < 4; i++) { const d = mesh(new THREE.SphereGeometry(.06, 12, 10), C('#7FB2E8'), -.35 + i * .23, -.55 - (i % 2) * .2, 0); d.scale.y = 1.6; aw.add(d); }
+// grafik turun di papan kecil
+const pap = rbox(1.3, 1.0, .12, .2, C('#FFFFFF')); pap.position.set(-2.9, 1.3, 2.0); pap.rotation.y = .4; sc.add(pap);
+const kaki = mesh(new THREE.CylinderGeometry(.05, .05, .8, 12), C('#C9A57A'), -2.9, .4, 1.95); sc.add(kaki);
+const gt = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .8), new THREE.MeshBasicMaterial({map: teksTex('📉', {w: 256, h: 190, font: '150px sans-serif'}), transparent: true}));
+const g2 = new THREE.Group(); g2.position.copy(pap.position); g2.rotation.y = .4; sc.add(g2);
+[.65, .55, .38, .22].forEach((h, i) => { const b = rbox(.17, h, .08, .06, C(i > 1 ? '#F28C8C' : '#7FB2E8')); b.position.set(-.33 + i * .22, -.38 + h / 2, .09); g2.add(b); });
+// semak & pot
+[[-3.6, 0, .8], [3.5, 0, .9], [3.1, 0, -1.8]].forEach(([x, y, z], i) => { const s = mesh(new THREE.SphereGeometry(.6 - i * .08, 32, 24), C('#7CC08E'), x, .45, z); sc.add(s); });
+// kucing? tidak. pintu tertutup sepi: keset
+const kes = rbox(1.2, .06, .6, .05, C('#E9B7A0')); kes.position.set(2.2, .04, 2.5); sc.add(kes);
+cam.position.set(0, 8.5, 27); cam.lookAt(0, 3.0, 0);
+ren.render(sc, cam);
+siapFont().then(() => { pt.material.map = teksTex('APOTEK', {w: 520, h: 120, warna: '#FFFFFF', font: '700 86px Fredoka'}); ren.render(sc, cam); window.SIAP = true; });
+</script></body></html>
