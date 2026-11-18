@@ -1,0 +1,43 @@
+NASKAH VO — "Bocornya Bukan di Kasir" (Fitur Tunda Faktur)
+Format: [mulai – selesai] kalimat. Waktu mengikuti video-tunda-faktur-tanpa-vo.mp4 (59 detik).
+Tips: bacakan agak cepat & ceria (±2,9 kata/detik) supaya pas.
+
+ADEGAN 1 — HOOK
+[00:00 – 00:02] Owner apotek ini hampir nuduh kasirnya sendiri.
+[00:02 – 00:04] Padahal bocornya bukan di kasir.
+
+ADEGAN 2 — MASALAH
+[00:04 – 00:05] Jadi gini ceritanya.
+[00:05 – 00:09] Tiga bulan berturut-turut margin apoteknya turun, padahal omzet dan harga jual sama.
+[00:09 – 00:12] Dia cek laci, cek struk, semuanya cocok.
+
+ADEGAN 3 — MULAI MENEMUKAN
+[00:12 – 00:16] Suatu malam, dia iseng buka faktur PBF bulan lalu, lalu dibandingkan dengan yang diinput di sistem.
+[00:16 – 00:18] Ternyata, di situlah masalahnya.
+
+ADEGAN 4 — TEMUAN
+[00:18 – 00:20] Ada harga beli yang dinaikkan.
+[00:20 – 00:22] Ada diskon yang nggak diinput,
+[00:22 – 00:24] dan barang bonus yang nggak masuk stok.
+[00:24 – 00:27] Bahkan ada satu faktur yang dibayar dua kali.
+
+ADEGAN 5 — CELAHNYA
+[00:27 – 00:29] Memang, selama ini urusan faktur dia percayakan ke satu karyawan andalannya.
+[00:29 – 00:33] Mulai dari terima barang, input ke sistem, sampai stok langsung ter-update.
+[00:33 – 00:36] Nggak ada yang ngecek ulang, termasuk owner-nya sendiri.
+
+ADEGAN 6 — SOLUSI: TUNDA FAKTUR
+[00:36 – 00:37] Sekarang caranya diubah.
+[00:37 – 00:40] Karyawan input dan cek barang datang, owner yang verifikasi.
+[00:40 – 00:42] Untungnya, di Apotek Digital ada fitur Tunda Faktur.
+[00:42 – 00:44] Setelah faktur diinput, stok nggak langsung ter-update.
+[00:44 – 00:47] Owner cek dulu, kalau sudah sesuai baru disimpan,
+[00:47 – 00:50] dan stoknya otomatis ter-update.
+
+ADEGAN 7 — PENUTUP
+[00:50 – 00:53] Karyawan tetap kerja, owner tetap pegang kendali.
+
+ADEGAN 8 — CTA
+[00:53 – 00:55] Celah kerugian bisa muncul di mana saja.
+[00:55 – 00:56] Pastikan aplikasimu bisa mencegahnya.
+[00:56 – 00:59] Coba gratis Apotek Digital sekarang!
