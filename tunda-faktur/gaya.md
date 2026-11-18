@@ -1,6 +1,6 @@
 # Gaya: Flat Vektor Apotek Digital (racikan dari referensi-gaya.jpg)
 
-- **Latar:** kios apotek di tepi taman kota (seperti referensi): gedung biru pucat bergaris jendela, pohon hijau muda + pohon tua bertekstur bintik di kiri, rumput berbintik, jalan ungu-abu, tenda bergaris biru-putih, papan gelap "APOTEK", meja kios bergaris peach
+- **Latar:** interior apotek sesuai brief (rak obat berangka besi tipis, meja kasir bergaris peach, komputer, salib hijau, tanaman pot berbintik), lewat jendela besar terlihat pemandangan gaya referensi: gedung biru pucat bergaris jendela, pohon hijau muda, rumput berbintik. Lantai ungu-abu seperti referensi
 - **Kamera:** datar dari depan seperti panggung, dorong masuk pelan terus-menerus; paralaks 3 lapis (jendela/kota · ruangan · tokoh depan); goyang kecil saat kejutan
 - **Cahaya:** siang terang merata, tanpa bayangan keras; satu nada gelap bertepi tegas di sisi kanan badan/benda (bayangan minimal). Scene 3–4 malam: ruang biru tua + kerucut cahaya lampu meja hangat. Scene 5 flashback: sepia pudar
 - **Palet:** biru utama #3064D1 (baju owner, tombol) · biru tua #2C59AE (nada gelap) · teal #4BA299 (seragam karyawan) · hijau #5BAC72 (centang/positif) · navy #1B2B3B (teks, end card) · merah #E5484D hanya untuk tanda masalah. Latar: langit #DCEBFB, gedung pucat #BCD4F2/#A9C3EA, pohon #9ED4A6/#6DBE8A, lantai ungu-abu #8F8DC2 (dari referensi)
