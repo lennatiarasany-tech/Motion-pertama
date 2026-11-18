@@ -1,3 +1,4 @@
 *.mp4
 .potret/
 video-tunda-faktur-tipografi/assets/rekaman/*.jpg
+__pycache__/
