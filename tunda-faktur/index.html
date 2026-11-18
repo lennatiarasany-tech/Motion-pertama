@@ -24,7 +24,8 @@
 .pil.kecil{font-size:42px;padding:22px 34px 24px;white-space:nowrap}
 #k3 .pil{font-size:60px}
 #k7 .pil{font-size:58px}
-#k2a .pil,#k2b .pil{font-size:64px}
+#k2a .pil{font-size:54px;white-space:nowrap}
+#k2b .pil{font-size:64px}
 .cek{display:inline-block;font-style:normal;color:#fff;background:#5BAC72;border-radius:50%;width:76px;height:76px;line-height:76px;text-align:center;font-size:50px;vertical-align:middle}
 .kartu{position:absolute;width:940px;height:128px;background:#fff;border-radius:32px;display:flex;align-items:center;gap:28px;padding:0 34px;font:700 46px 'Montserrat';color:#1B2B3B;opacity:0;box-shadow:0 10px 0 rgba(40,50,100,.08)}
 .kartu .x{width:72px;height:72px;border-radius:50%;background:#E5484D;color:#fff;font:800 40px/72px 'Montserrat';text-align:center;font-style:normal;flex:none}
@@ -41,7 +42,10 @@
 .judul8{display:inline-block;font:800 92px/1.08 'Montserrat';color:#1B2B3B}
 .judul8 b{color:#3064D1}
 .sub8{display:inline-block;font:600 40px 'Montserrat';color:#3B4A66}
-.tombol{position:absolute;width:560px;height:124px;border-radius:62px;background:#3064D1;color:#fff;font:800 60px/124px 'Montserrat';text-align:center;box-shadow:0 12px 0 #2C59AE;opacity:0}
+.sorot{background-image:linear-gradient(var(--c),var(--c));background-repeat:no-repeat;background-position:0 86%;background-size:0% 34%;border-radius:6px;padding:0 4px}
+.chip{position:absolute;padding:14px 32px 16px;border-radius:40px;background:#1B2B3B;color:#fff;font:700 40px 'Montserrat';opacity:0;transform-origin:0 50%}
+.kilap{position:absolute;top:0;left:0;width:130px;height:100%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.6),rgba(255,255,255,0))}
+.tombol{overflow:hidden;position:absolute;width:560px;height:124px;border-radius:62px;background:#3064D1;color:#fff;font:800 60px/124px 'Montserrat';text-align:center;box-shadow:0 12px 0 #2C59AE;opacity:0}
 .kin em{font-style:normal;color:#E5484D}
 .kin b{color:#3064D1}
 </style>
@@ -63,10 +67,10 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden}
 <div id="stage">
 <div id="dunia"></div>
 <div class="balon" id="bPikir1">Jangan-jangan kasir…?</div>
-<div class="kin" id="k1"><span class="pil">Bocornya <em>bukan</em><br>di kasir.</span></div>
+<div class="kin" id="k1"><span class="pil">Bocornya <em class="sorot" data-a="3.75" style="--c:rgba(229,72,77,.22)">bukan</em><br>di kasir.</span></div>
 <video id="rek" src="assets/video/rekaman-tunda-faktur.mp4" muted playsinline preload="auto" style="display:none"></video>
 <div class="balon" id="b2">Apotek aku kenapa ya???</div>
-<div class="kin" id="k2a"><span class="pil">Omzet sama 📊 &nbsp;Margin turun 📉</span></div>
+<div class="kin" id="k2a"><span class="pil">Omzet sama 📊 &nbsp;<em class="sorot" data-a="8.0" style="--c:rgba(229,72,77,.2)">Margin turun</em> 📉</span></div>
 <div class="kin" id="k2b"><span class="pil">Laci <i class="cek">✓</i> &nbsp; Struk <i class="cek">✓</i></span></div>
 <div class="balon" id="b3">Lho… kok beda?</div>
 <div class="kin" id="k3"><span class="pil">Faktur PBF 🆚 Input sistem 🔍</span></div>
@@ -75,19 +79,22 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden}
 <div class="kartu" id="c4_2"><i class="x">✕</i>Bonus tidak masuk stok</div>
 <div class="kartu" id="c4_3"><i class="x">✕</i>Faktur dibayar 2x</div>
 <div class="kin" id="k5a"><span class="pil kecil"><span class="lk">Terima barang</span><span class="lk"> → </span><span class="lk">Input</span><span class="lk"> → </span><span class="lk">Stok ter-update</span></span></div>
-<div class="kin" id="k5b"><span class="pil">1 orang.<br><em>Tanpa cek ulang.</em></span></div>
+<div class="kin" id="k5b"><span class="pil">1 orang.<br><em class="sorot" data-a="33.9" style="--c:rgba(229,72,77,.2)">Tanpa cek ulang.</em></span></div>
 <div class="kin" id="k6a"><span class="pil kecil"><span class="lk">Karyawan input &amp; cek</span><span class="lk"> → </span><span class="lk"><b>Owner verifikasi</b></span></span></div>
-<div class="judul6" id="k6h">Fitur<br><b>Tunda Faktur</b></div>
+<div class="judul6" id="k6h">Fitur<br><b class="sorot" data-a="42.8" style="--c:rgba(48,100,209,.18)">Tunda Faktur</b></div>
 <div class="balon" id="b6">Nah, gini kan tenang.</div>
 <div class="langkah" id="l6_0"><i>1</i>Karyawan: input &amp; cek</div>
 <div class="langkah" id="l6_1"><i>2</i>Faktur ditunda</div>
 <div class="langkah" id="l6_2"><i>3</i>Owner verifikasi</div>
 <div class="langkah hijau" id="l6_3"><i>✓</i>Stok ter-update</div>
-<div class="kin" id="k7"><span class="pil"><span class="lk">Karyawan tetap kerja.</span><br><span class="lk"><b>Owner tetap pegang kendali.</b></span></span></div>
+<div class="kin" id="k7"><span class="pil"><span class="lk">Karyawan tetap kerja.</span><br><span class="lk"><b class="sorot" data-a="52.2" style="--c:rgba(48,100,209,.16)">Owner tetap pegang kendali.</b></span></span></div>
 <div class="kin" id="logo8"><span class="kartuLogo"><img src="assets/gambar/logo-apotek-digital.png"></span></div>
-<div class="kin" id="j8"><span class="judul8">Coba <b>GRATIS</b><br>Apotek Digital</span></div>
+<div class="kin" id="j8"><span class="judul8">Coba <b class="sorot" data-a="54.6" style="--c:rgba(91,172,114,.3)">GRATIS</b><br>Apotek Digital</span></div>
 <div class="kin" id="s8"><span class="sub8">Cegah celah kerugian di apotekmu</span></div>
-<div class="tombol" id="t8">Coba GRATIS</div>
+<div class="tombol" id="t8">Coba GRATIS<i class="kilap"></i></div>
+<div class="chip" id="ch3">🌙 Suatu malam…</div>
+<div class="chip" id="ch5">⏪ Kilas balik</div>
+<div class="chip" id="ch6">💡 Solusinya</div>
 <svg id="mfLab" viewBox="0 0 1080 1920"></svg>
 <div id="mfSub"></div>
 <div id="grain"></div>
@@ -656,7 +663,27 @@ function sisipanOwner(cx, cy, r, t, eks, k = 1, tilt = 0, lihat = 0) { if (k <= 
   el(cx, cy, r + 10, r + 10); isi('#fff'); c.save(); el(cx, cy, r, r); c.clip(); el(cx, cy, r, r); isi('#CFE0F7');
   tokoh({x: cx, y: cy + 60 + 895 * 1.55, s: 1.55, t, benih: 1, w: TOKOH.owner, eks, tilt, lihat, tangan: {ka: [90, -520, 1], ki: [-90, -520, -1]}});
   c.restore(); c.restore(); }
-/* sapuan biru antar adegan */
+/* transisi motion graphic: lingkaran warna brand menutup, lalu terbuka dari tengah */
+function irisTransisi(t, b) { const R = 1250, cx = 540, cy = 960;
+  if (t > b - .38 && t < b) { c.setTransform(1, 0, 0, 1, 0, 0);
+    [C.teal, C.hijau, C.biru].forEach((w, i) => { const k = E.io(clamp((t - (b - .38 + i * .07)) / .24)); if (k > 0) { el(cx, cy, R * k, R * k); isi(w); } }); }
+  if (t >= b && t < b + .42) { c.setTransform(1, 0, 0, 1, 0, 0); const k = E.io(seg(t, b, b + .42)), r = R * k;
+    c.beginPath(); c.rect(0, 0, W, H); c.moveTo(cx + r, cy); c.arc(cx, cy, r, 0, Math.PI * 2, true); c.fillStyle = C.biru; c.fill('evenodd');
+    c.beginPath(); c.arc(cx, cy, r + 14, 0, 7); gores(C.teal, 28); c.beginPath(); c.arc(cx, cy, r + 44, 0, 7); gores(C.hijau, 18); } }
+/* bentuk melayang: kapsul obat, tanda plus, cincin */
+const BENTUK = Array.from({length: 16}, (_, i) => ({x: hash(i + 600) * W, y: hash(i + 700) * H, s: .6 + hash(i + 800) * .8, r: hash(i + 900) * 6, v: 14 + hash(i + 950) * 22, tipe: i % 3, f: hash(i + 990) * 9}));
+function bentukMelayang(t, a = .35, yMax = H) { c.setTransform(1, 0, 0, 1, 0, 0);
+  BENTUK.forEach((b, i) => { const y = ((b.y - t * b.v) % yMax + yMax) % yMax, x = b.x + nz(t * .25, b.f) * 50;
+    c.save(); c.translate(x, y); c.rotate(b.r + t * .35 * (i % 2 ? 1 : -1)); c.scale(b.s, b.s); c.globalAlpha = a;
+    if (b.tipe === 0) { rr(-46, -18, 92, 36, 18); isi('#fff'); c.save(); rr(-46, -18, 92, 36, 18); c.clip(); c.fillStyle = [C.biru, C.teal, C.hijau][i % 3]; c.fillRect(0, -20, 50, 40); c.restore(); }
+    else if (b.tipe === 1) { rr(-10, -30, 20, 60, 6); isi([C.hijau, C.teal, C.biru][i % 3]); rr(-30, -10, 60, 20, 6); isi([C.hijau, C.teal, C.biru][i % 3]); }
+    else { c.beginPath(); c.arc(0, 0, 24, 0, 7); gores([C.biru, C.teal, C.hijau][i % 3], 8); }
+    c.restore(); }); c.globalAlpha = 1; }
+/* riak gelombang di belakang ikon yang muncul */
+function riak(x, y, k, warna, rMax = 230) { if (k <= 0 || k >= 1) return;
+  for (let i = 0; i < 3; i++) { const kk = clamp(k * 1.4 - i * .2); if (kk <= 0 || kk >= 1) continue; c.globalAlpha = (1 - kk) * .7;
+    c.beginPath(); c.arc(x, y, 40 + rMax * E.out(kk), 0, 7); gores(warna, 10 * (1 - kk) + 2); } c.globalAlpha = 1; }
+/* sapuan biru antar adegan (cadangan) */
 function sapuan(t, b) { const k = (t - (b - .3)) / .6; if (k <= 0 || k >= 1) return;
   c.setTransform(1, 0, 0, 1, 0, 0); const cx = lerp(-W * .95, W * 1.95, E.io(k)), lw = W * 1.55;
   [[C.biruTua, -110], [C.biru, 0]].forEach(([w, off]) => { c.beginPath(); c.moveTo(cx - lw / 2 + off + 260, 0); c.lineTo(cx + lw / 2 + off + 260, 0); c.lineTo(cx + lw / 2 + off - 260, H); c.lineTo(cx - lw / 2 + off - 260, H); c.closePath(); isi(w); }); }
@@ -668,7 +695,7 @@ function adegan1(t) {
   /* hook: dekat di mata curiga Bu Owner → mundur memperlihatkan kasir → dorong cepat ke kasir di "bukan" */
   CAM = kamKunci(t, [[0, 360, 900, 1.5], [1.2, 350, 910, 1.42], [2.3, 525, 990, 1.0], [3.65, 535, 985, 1.04], [3.95, 700, 860, 1.2], [4.7, 620, 930, 1.12], [5, 610, 940, 1.12]]);
   CAM.gx = Math.sin(t * 70) * 12 * getar; CAM.gy = Math.cos(t * 63) * 7 * getar;
-  tempel(LATAR, .35); sinar(t); pasang(.8);
+  tempel(LATAR, .35); sinar(t); bentukMelayang(t, .22, 900); pasang(.8);
   pasang(.8);
   const kasirEks = kunciEks(t, [[0, {...EKS.senyum, lx: .6}], [A.silang + .2, {...EKS.netral, alis: -4, miring: -.12, senyum: .55, lx: .5}, .3]]);
   tokoh({x: 760, y: 1470, s: .86, t, benih: 2, w: TOKOH.kasir, lihat: .5, eks: kasirEks,
@@ -682,6 +709,7 @@ function adegan1(t) {
   const tg = kunciTangan(t, [[0, {ka: [20, -838, -1], ki: [-88, -500, 1]}], [A.silang + .5, {ka: [64, -905, 1], ki: [-88, -500, 1]}, .4]]);
   const own = tokoh({x: 300, y: 2150, s: 1.34, t, benih: 1, w: TOKOH.owner, lihat: lerp(.8, .25, E.io(seg(t, A.silang + .5, A.silang + .9))),
     tilt: lerp(-.05, .07, E.io(seg(t, A.silang + .5, A.silang + .9))), eks: ownEks, tangan: tg});
+  riak(own.kepala[0] + 150, own.kepala[1] - 90, seg(t, A.seru, A.seru + .8), C.merah, 140); riak(770, 820, seg(t, A.silang, A.silang + .9), C.merah, 260);
   tandaSeru(own.kepala[0] + 150, own.kepala[1] - 40, pop(t, A.seru, .35) * (1 - seg(t, A.pikirOut, A.pikirOut + .2)), t);
   keringat(own.kepala[0] - 80, own.kepala[1] - 40, seg(t, A.silang + .2, A.silang + 1.4));
   silangBesar(770, 820, pop(t, A.silang, .35)); percikan(770, 820, seg(t, A.silang, A.silang + .5), [C.merah, '#fff'], 12, 230);
@@ -716,7 +744,7 @@ function adegan2(t) {
   if (t < A.potong) {
     /* mulai di grafik → dekati garis margin turun → mundur memperlihatkan Bu Owner bingung */
     CAM = kamKunci(t, [[A.a, 800, 790, 1.32], [A.margin, 790, 800, 1.36], [A.margin + 1.2, 820, 820, 1.42], [A.kinA, 560, 990, 1.03], [A.potong, 520, 980, 1.1]]);
-    tempel(LATAR, .35); sinar(t); tempel(KIOS_MEJA, .8);
+    tempel(LATAR, .35); sinar(t); bentukMelayang(t, .22, 900); tempel(KIOS_MEJA, .8);
     pasang(.9); papanGrafik(t, A);
     pasang(1);
     tokoh({x: 280, y: 2150, s: 1.34, t, benih: 1, w: TOKOH.owner, lihat: .45, tilt: .07 + Math.sin(t * 1.6) * .02,
@@ -791,7 +819,7 @@ function adegan3(t) {
   g.addColorStop(0, 'rgba(255,214,140,.55)'); g.addColorStop(.5, 'rgba(255,200,120,.18)'); g.addColorStop(1, 'rgba(255,200,120,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
   const g2 = c.createRadialGradient(800, 1080, 10, 800, 1080, 380); g2.addColorStop(0, 'rgba(150,190,255,.3)'); g2.addColorStop(1, 'rgba(150,190,255,0)'); c.fillStyle = g2; c.fillRect(0, 0, W, H);
   c.globalCompositeOperation = 'source-over';
-  pasang(1); tandaSeru(own.kepala[0] + 150, own.kepala[1] - 30, pop(t, A.kaget, .3), t);
+  pasang(1); riak(own.kepala[0], own.kepala[1], seg(t, A.kaget, A.kaget + .9), '#FFE3A0', 260); tandaSeru(own.kepala[0] + 150, own.kepala[1] - 30, pop(t, A.kaget, .3), t);
   keringat(own.kepala[0] - 75, own.kepala[1] - 40, seg(t, A.kaget + .2, A.kaget + 1.3));
   /* garis fokus saat kaget */
   const gf = seg(t, A.kaget, A.kaget + 1.2); if (gf > 0 && gf < 1) { c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = .35 * (1 - gf);
@@ -804,7 +832,7 @@ function adegan4(t) {
   CAM = kamKunci(t, [[A.a, 540, 700, 1.0], [A.k1, 330, 520, 1.32], [A.k2 - .2, 330, 540, 1.3], [A.k2 + .2, 330, 660, 1.32], [A.k3 - .2, 330, 670, 1.3], [A.k3 + .2, 330, 740, 1.32],
     [A.k4, 540, 700, 1.04], [A.lunas1, 420, 640, 1.16], [A.lunas2, 640, 660, 1.16], [27.3, 560, 680, 1.1]]);
   [A.k1, A.k2, A.k3, A.k4, A.lunas1, A.lunas2].forEach(a => getarKam(t, a, 7));
-  tempel(UI_BG, .3);
+  tempel(UI_BG, .3); bentukMelayang(t, .45);
   pasang(1);
   const hlD = [A.k1, A.k2, A.k3].map(a => E.out(seg(t, a, a + .3)));
   const hlDok = [hlD[0], 0, hlD[1], hlD[2], 0], hlSis = [hlD[0], 0, hlD[1], hlD[2], 0];
@@ -861,6 +889,7 @@ function adegan5(t) {
   c.setTransform(1, 0, 0, 1, 0, 0);
   const kg = E.back(seg(t, A.gembok, A.gembok + .4));
   if (kg > 0) { c.fillStyle = `rgba(27,43,59,${.25 * Math.min(1, kg)})`; c.fillRect(0, 0, W, H); }
+  riak(540, 900, seg(t, A.gembok + .35, A.gembok + 1.2), '#F2B84B', 300);
   gembok(540, 880, kg, E.out(seg(t, A.gembok + .35, A.gembok + .7)));
   goresanFilm(t);
   /* vinyet flashback */
@@ -872,7 +901,7 @@ function adegan6(t) {
     /* mulai di karyawan yang mengecek → ikuti panah sampai ke owner */
     CAM = kamKunci(t, [[A.a, 430, 960, 1.25], [A.cek + .6, 420, 940, 1.3], [A.panah, 560, 960, 1.02], [A.ui, 680, 900, 1.12]]);
     getarKam(t, A.gembok, 6);
-    tempel(GUDANG, .4); sinar(t, 360);
+    tempel(GUDANG, .4); sinar(t, 360); bentukMelayang(t, .2, 800);
     pasang(.85);
     mejaGudang();
     monitor(130, 790, 330, 230, (x, y, w, h) => { c.fillStyle = C.biru; c.fillRect(x, y, w, 40); teksC('Faktur baru', x + 14, y + 28, "700 20px 'Montserrat'", '#fff');
@@ -905,7 +934,7 @@ function adegan6(t) {
   /* masuk ke layar laptop saat rekaman diputar, mundur lagi saat centang hijau */
   CAM = kamKunci(t, [[A.ui, 540, 980, .96], [A.rek, 540, 945, 1.05], [A.simpan, 540, 940, 1.09], [A.centang, 540, 960, 1.0], [A.a2, 540, 960, 1.02]]);
   getarKam(t, A.centang, 6);
-  tempel(UI_BG, .3);
+  tempel(UI_BG, .3); bentukMelayang(t, .45);
   pasang(1);
   const lx = 70, ly = 440, lw = 940, lh = 600;
   rr(lx, ly, lw, lh, 28); isi(C.navy);
@@ -915,6 +944,7 @@ function adegan6(t) {
   rr(lx + lw / 2 - 70, ly + lh, 140, 12, 6); isi('#AAB6CC');
   const kc = E.back(seg(t, A.centang, A.centang + .4));
   if (kc > 0) { c.fillStyle = `rgba(255,255,255,${.35 * Math.min(1, kc)})`; c.fillRect(vx, vy, vw, vh); }
+  riak(540, 700, seg(t, A.centang, A.centang + 1), C.hijau, 330);
   centang(540, 700, kc, 120);
   const ks = E.back(seg(t, A.centang + .3, A.centang + .65));
   if (ks > 0) { c.save(); c.translate(540, 900); c.scale(ks, ks); rr(-170, -44, 340, 88, 44); isi(C.hijau); teksC('Stok +100 ✓', 0, 16, "800 44px 'Montserrat'", '#fff', 'center'); c.restore(); }
@@ -928,12 +958,12 @@ function adegan7(t) {
   const A = WAKTU.s7;
   /* mulai dekat di dua tokoh → crane naik ke perisai */
   CAM = kamKunci(t, [[A.a, 540, 1180, 1.18], [A.perisai, 540, 1050, 1.08], [A.kinB, 540, 940, 1.0], [53.4, 540, 930, 1.04]]);
-  tempel(LATAR, .35); sinar(t); tempel(KIOS_DEPAN, .8);
+  tempel(LATAR, .35); sinar(t); bentukMelayang(t, .25, 900); tempel(KIOS_DEPAN, .8);
   pasang(1);
   tokoh({x: 350, y: 2080, s: 1.18, t, benih: 1, w: TOKOH.owner, lihat: .3, eks: {...EKS.senyum, lx: .4}, tangan: {ka: [70, -470, -1], ki: [-90, -500, 1]}});
   tokoh({x: 740, y: 2060, s: 1.12, t, benih: 3, w: TOKOH.karyawan, lihat: -.3, eks: {...EKS.senyum, lx: -.4},
     tangan: kunciTangan(t, [[0, {ka: [100, -500, 1], ki: [-90, -500, 1]}], [A.a + .3, {ka: [150, -800, -1, 'jempol'], ki: [-90, -500, 1]}, .35]])});
-  const kpr = E.back(seg(t, A.perisai, A.perisai + .45)); perisai(540, 560 + Math.sin(t * 2.4) * 8, kpr);
+  riak(540, 560, seg(t, A.perisai, A.perisai + 1), C.hijau, 300); const kpr = E.back(seg(t, A.perisai, A.perisai + .45)); perisai(540, 560 + Math.sin(t * 2.4) * 8, kpr);
   if (kpr > .5) [[400, 470, 0], [690, 520, 2], [430, 680, 4], [660, 690, 1]].forEach(([x, y, f]) => kilau(x, y, .9, t, f));
   percikan(540, 560, seg(t, A.perisai, A.perisai + .5), [C.hijau, '#fff', '#F2C14E'], 12, 220);
   debu(t);
@@ -941,7 +971,7 @@ function adegan7(t) {
 function adegan8(t) {
   const A = WAKTU.s8;
   CAM = kamKunci(t, [[A.a, 540, 1180, 1.12], [A.judul, 540, 980, 1.0], [59, 540, 960, 1.04]]);
-  tempel(AKHIR, .3);
+  tempel(AKHIR, .3); bentukMelayang(t, .5, 1300);
   pasang(1);
   const muncul = E.out(seg(t, A.a, A.a + .6));
   tokoh({x: lerp(-120, 170, muncul), y: 2210 - (muncul < 1 ? Math.abs(Math.sin(t * 9)) * 10 : 0), s: 1.2, langkah: muncul < 1 ? t * 9 : undefined, t, benih: 1, w: TOKOH.owner, lihat: .6, eks: {...EKS.senyum, lx: .9, ly: .3},
@@ -961,6 +991,7 @@ const K5A = pasangPos('k5a', null, 230), K5B = pasangPos('k5b', null, 1440);
 const K6A = pasangPos('k6a', null, 230), K6H = pasangPos('k6h', 70, 230), B6 = pasangPos('b6', 330, 430);
 const LANGKAH = [0, 1, 2, 3].map(i => pasangPos('l6_' + i, 70, 1130 + i * 122));
 const K7 = pasangPos('k7', null, 1420);
+const CH3 = pasangPos('ch3', 70, 200), CH5 = pasangPos('ch5', 70, 200), CH6 = pasangPos('ch6', 70, 200);
 const LOGO = pasangPos('logo8', null, 330), J8 = pasangPos('j8', null, 630), T8 = pasangPos('t8', 340, 1040), S8 = pasangPos('s8', null, 870);
 function popEl(elx, t, a, b, dari = .3) {
   const k = pop(t, a, .35), h = 1 - E.in(seg(t, b, b + .2));
@@ -1013,7 +1044,7 @@ const SCENE = {
       if (Math.abs(VID.currentTime - vt) > .001) { await new Promise(r => { VID.addEventListener('seeked', r, {once: true}); VID.currentTime = vt; }); }
       SCENE.frame(t); }
   },
-  build(tl) { K1.style.opacity = 1; wIn(tl, K1.querySelector('.pil'), WAKTU.s1.kin, {st: .09, y: 60}); wOut(tl, K1.querySelector('.pil'), WAKTU.s2.a - .35, {st: .02}); },
+  build(tl) { K1.style.opacity = 1; wIn(tl, K1.querySelector('.pil'), WAKTU.s1.kin, {st: .09, y: 60}); wOut(tl, K1.querySelector('.pil'), WAKTU.s2.a - .7, {st: .02}); },
   frame(t) {
     const S = WAKTU;
     TT = t; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, W, H);
@@ -1022,7 +1053,7 @@ const SCENE = {
     else if (t < S.s6.a) adegan5(t); else if (t < S.s7.a) adegan6(t); else if (t < S.s8.a) adegan7(t); else adegan8(t);
     if (!(t >= S.s6.ui - .05 && t < S.s7.a) && !VID.paused) VID.pause();
     if (window.MF && window.MF.tl && !window.MF.tl.paused() && t >= S.s6.ui && t < S.s7.a && Math.abs(VID.currentTime - vidWaktu(t)) > .35) VID.currentTime = vidWaktu(t);
-    BATAS.forEach(b => sapuan(t, b));
+    BATAS.forEach(b => irisTransisi(t, b));
     /* teks */
     popEl(B1, t, S.s1.pikir, S.s1.pikirOut);
     K1.querySelector('.pil').style.transform = `scale(${1 + .05 * Math.sin(seg(t, S.s1.silang, S.s1.silang + .3) * Math.PI)})`;
@@ -1039,6 +1070,9 @@ const SCENE = {
     popEl(B6, t, S.s6.balon, S.s7.a - .32);
     popEl(K7, t, S.s7.kinA, S.s8.a - .35); K7.querySelectorAll('.lk').forEach((e, i) => { e.style.opacity = t >= [S.s7.kinA, S.s7.kinB][i] ? 1 : 0; });
     popEl(LOGO, t, S.s8.logo, 99, .5); popEl(J8, t, S.s8.judul, 99, .6); popEl(S8, t, S.s8.judul + .5, 99, .8);
+    $$('.sorot').forEach(e => { const a = parseFloat(e.dataset.a); e.style.backgroundSize = `${E.io(seg(t, a, a + .45)) * 100}% 34%`; });
+    popEl(CH3, t, S.s3.kertas, S.s3.kin + .7, .5); popEl(CH5, t, S.s5.kurirMasuk + .1, S.s5.terima - .4, .5); popEl(CH6, t, S.vo.v6, S.s6.cek - .3, .5);
+    $('#t8 .kilap').style.transform = `translateX(${-200 + (((t - S.s8.tombol) % 1.8 + 1.8) % 1.8) / 1.8 * 900}px) skewX(-15deg)`;
     popEl(T8, t, S.s8.tombol, 99, .4); if (t > S.s8.tombol + .4) T8.style.transform = `scale(${1 + .045 * Math.sin((t - S.s8.tombol) * 6)})`;
   }
 };
