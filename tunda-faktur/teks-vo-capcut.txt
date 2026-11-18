@@ -1,0 +1,12 @@
+NASKAH VO – "Bocornya Bukan di Kasir" (Tunda Faktur, Apotek Digital)
+Suara: Zulfa (ElevenLabs, eleven_v4), tempo 1,25x. Format waktu = menit:detik dari awal video.
+Baris bertanda (*) = VO belum digenerate (ElevenLabs memblokir akun gratis), waktunya masih perkiraan.
+
+00:00 - 00:05  Owner apotek ini hampir nuduh kasirnya sendiri. Padahal bocornya bukan di kasir.
+00:05 - 00:12  Tiga bulan berturut-turut margin apoteknya turun, padahal omzet dan harga jual sama. Dia cek laci, cek struk, semuanya cocok.
+00:13 - 00:19  (*) Suatu malam, dia iseng bandingkan faktur PBF dengan yang diinput di sistem. Ternyata, di situlah masalahnya.
+00:19 - 00:27  Ada harga beli yang dinaikkan. Ada diskon yang nggak diinput, dan barang bonus yang nggak masuk stok. Bahkan ada satu faktur yang dibayar dua kali.
+00:27 - 00:36  Selama ini urusan faktur dipegang satu karyawan andalan. Terima barang, input, stok langsung ter-update. Nggak ada yang ngecek ulang, termasuk owner-nya sendiri.
+00:36 - 00:50  (*) Sekarang caranya diubah. Karyawan input dan cek barang datang, owner yang verifikasi. Di Apotek Digital ada fitur Tunda Faktur. Setelah faktur diinput, stok nggak langsung ter-update. Owner cek dulu, kalau sudah sesuai baru disimpan, dan stoknya otomatis ter-update.
+00:50 - 00:53  (*) Karyawan tetap kerja, owner tetap pegang kendali.
+00:53 - 00:59  (*) Celah kerugian bisa muncul di mana saja. Pastikan aplikasimu bisa mencegahnya. Coba gratis Apotek Digital sekarang!
