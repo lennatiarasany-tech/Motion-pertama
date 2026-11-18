@@ -1,0 +1,13 @@
+# Gaya: Sketchbook Owner Apotek (racikan, dasar 2d)
+- Dunia: halaman buku sketsa spiral (spiral di atas, zona tak aman), kertas krem #FBF6EA bergaris titik biru pudar, tepi halaman bayangan lembut
+- Garis: spidol navy #1B2B3B, sedikit goyah, "mendidih" (garis bergetar 8 kali/detik) seperti animasi tangan
+- Isi warna: pensil warna — blok warna brand sedikit meleset dari garis + arsir miring + bintik kertas
+- Palet: biru #3064D1 (utama) · biru tua #2C59AE · teal #4BA299 · hijau #5BAC72 (positif) · navy #1B2B3B (garis/teks) · merah #E2524A (hanya penanda masalah) · stabilo kuning #FFE16A (sorot kata kunci)
+- Tokoh: karakter dari zip user (Bu Owner jas putih + dasi biru, kasir hijab biru, karyawan hijau, kurir), diberi garis spidol + tekstur pensil
+- Tipografi: Kalam 700 (tulisan tangan; teks kinetik 84–120 px, balon 58–64 px) + Poppins 800 (subtitle 54 px, tombol CTA)
+- Kamera: dorong/geser pelan terus + "zoom kejut" ke wajah di momen kaget
+- Teks kinetik: ditulis seperti spidol, kata kunci disapu stabilo kuning / dicoret merah
+- Tanda tangan gerak: **halaman buku dibalik ke atas** tiap ganti babak + gambar "tergores" (garis menggambar sendiri)
+- Zona aman: teks penting di y 200–1640 (150 px atas & 250 px bawah bebas teks, sesuai brief TikTok)
+- Suara: VO perempuan hangat-cepat ElevenLabs, musik ringan penasaran → ceria di detik ±36, SFX pensil/pop/buzz/ding jarang
+- Beda dari video flat biasa: tekstur kertas + garis mendidih + balik halaman
