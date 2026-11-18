@@ -37,7 +37,7 @@
 /* == 1. PALET & WAKTU (detik layar, mengikuti tabel brief) == */
 const C = {ink: '#1B2B3B', biru: '#3064D1', biruTua: '#2C59AE', teal: '#4BA299', hijau: '#5BAC72', merah: '#E2524A',
   langit: '#DCE8FB', putih: '#F4F7FD', gedung: '#C3D3EE', gedung2: '#ADC2E6', pohon: '#9FD3B4', kuning: '#FFD45C', abu: '#7A8BA3'};
-const DUR = 59;
+const DUR = 78.2;   /* mengikuti VO (assets/audio/vo.mp3, mulai di detik 0,2) */
 
 /* == 2. ALAT == */
 const s = (tag, a, p) => svgEl(tag, a || {}, p);
@@ -130,7 +130,7 @@ const S = [];
 
 /* ---------- ADEGAN 1 · Hook (0–4) ---------- */
 S.push((() => {
-  const T = {w1: 0, w2: .75, w3: 1.3, seru: .3, panah: .85, lup: 1.35, wipe: 2.05, p1: 2.3, p2: 2.55, p3: 2.85, silang: 3.0, koin: 2.7};
+  const T = {w1: 0, w2: 1.0, w3: 1.9, seru: .3, panah: 1.2, lup: 1.9, wipe: 3.05, p1: 3.6, p2: 4.0, p3: 4.45, silang: 4.7, koin: 4.3};
   const L = lapis(10), B = L.bg, F = L.fg, r = rng(5);
   langit(B); const sinar = s('circle', {cx: 820, cy: 420, r: 420, fill: '#fff', opacity: .45}, B);
   const blob = s('circle', {cx: 140, cy: 560, r: 230, fill: '#fff', opacity: .5}, B);
@@ -182,7 +182,7 @@ S.push((() => {
       const kl = E.out(seg(t, T.lup, T.lup + .4)) * (1 - seg(t, T.wipe - .2, T.wipe)); lup.style.display = kl > 0 ? '' : 'none';
       lup.setAttribute('transform', `translate(${860 + Math.cos(t * 2.4) * 40},${1010 + Math.sin(t * 2.4) * 30}) scale(${kl})`);
     }
-    const kw = E.io(seg(t, T.wipe, T.wipe + .5)); tampil(M.d, kw > 0 && t < 4.4);
+    const kw = E.io(seg(t, T.wipe, T.wipe + .5)); tampil(M.d, kw > 0 && t < 6.5);
     if (kw > 0) {
       M.d.style.clipPath = kw >= 1 ? '' : `circle(${kw * 1500}px at 860px 1010px)`;
       MB.style.transform = `scale(${1 + (t - T.wipe) * .015})`; MB.style.transformOrigin = '50% 60%';
@@ -201,7 +201,7 @@ S.push((() => {
 
 /* ---------- ADEGAN 2 · Masalah (4–12) ---------- */
 S.push((() => {
-  const a = 4, T = {judul: 4.3, grafik: 4.6, bar: 4.8, garis: 5.6, label1: 5.2, label2: 6.1, balon: 6.6, balonOut: 8.0, geser: 8.0, laci: 8.4, cek1: 9.2, struk: 8.9, cek2: 9.9, cocok: 10.6};
+  const a = 6.1, T = {judul: 7.3, grafik: 7.5, bar: 7.7, garis: 8.9, label1: 10.8, label2: 9.5, balon: 11.7, balonOut: 13.2, geser: 13.2, laci: 13.35, cek1: 14.35, struk: 14.6, cek2: 15.15, cocok: 15.4};
   const L = lapis(12), B = L.bg, F = L.fg, r = rng(31);
   langit(B, '#E3EEFB', '#F7FAFE');
   const kota = gedungKota(B, '#D5E1F3', '#DCE6F5', 1500, r, .9);
@@ -261,7 +261,7 @@ S.push((() => {
 
 /* ---------- ADEGAN 3 · Mulai menemukan, malam (12–18) ---------- */
 S.push((() => {
-  const a = 12, T = {malam: 12.3, map: 12.8, vs: 13.5, tatap: 14.2, beda: 15.6, kaget: 16.0, balon: 16.3, situ: 16.7};
+  const a = 17.0, T = {malam: 17.2, map: 17.7, vs: 18.6, tatap: 19.6, beda: 21.6, kaget: 22.2, balon: 22.5, situ: 23.1};
   const L = lapis(13), B = L.bg, F = L.fg, r = rng(41);
   s('rect', {x: -600, y: -600, width: 2300, height: 3200, fill: '#18263A'}, B);
   const jendela = G0(B); s('rect', {x: 560, y: 470, width: 400, height: 470, rx: 24, fill: '#0F1A2A'}, jendela);
@@ -318,7 +318,7 @@ S.push((() => {
 
 /* ---------- ADEGAN 4 · Temuan (18–27) ---------- */
 S.push((() => {
-  const a = 18, T = {doc: 18.3, f: [18.9, 20.9, 22.9, 24.8], lunas: [25.3, 25.8]};
+  const a = 24.6, T = {doc: 24.7, f: [24.9, 26.75, 28.6, 31.0], lunas: [32.6, 33.3]};
   const L = lapis(14), B = L.bg, F = L.fg;
   s('rect', {x: -300, y: -300, width: 1700, height: 2600, fill: '#F1F5FC'}, B);
   const grid = G0(B); for (let x = -120; x < 1260; x += 60) s('line', {x1: x, y1: -200, x2: x, y2: 2200, stroke: '#DFE7F4', 'stroke-width': 2}, grid);
@@ -373,7 +373,7 @@ S.push((() => {
 
 /* ---------- ADEGAN 5 · Celahnya, flashback (27–36) ---------- */
 S.push((() => {
-  const a = 27, T = {flash: 27.2, p1: 27.5, terima: 28.2, p2: 29.9, ketik: 30.3, p3: 31.9, stok: 32.4, mundur: 33.5, satu: 34.1, gembok: 34.8};
+  const a = 34.6, T = {flash: 34.8, andalan: 35.6, p1: 39.0, terima: 39.2, p2: 40.4, ketik: 40.55, p3: 41.15, stok: 41.45, mundur: 42.2, satu: 42.55, gembok: 43.3, sibuk: 44.1};
   const L = lapis(15), B = L.bg, F = L.fg, r = rng(66);
   s('rect', {x: -2000, y: -2600, width: 7200, height: 8000, fill: '#ECE6D8'}, B);
   gedungKota(B, '#DBD0BB', '#E0D7C4', 1300, r, 1.0, -800, 4000); s('rect', {x: -2000, y: 1290, width: 7200, height: 4000, fill: '#F3EEE3'}, B);
@@ -393,7 +393,9 @@ S.push((() => {
   const sibuk = chip(L.d, '📱 sibuk sendiri…', 560, 1250, '#fff', C.ink, 4);
   const gk = gembok(L.top);
   const lab = chip(L.d, '⏪ FLASHBACK', 70, 200, C.ink, '#F2ECDF', -3); lab.style.fontSize = '34px';
-  const tA = [teks(L.d, 'terima barang', 300, 84), teks(L.d, 'input ke sistem', 300, 84), teks(L.d, 'stok langsung ter-update', 300, 76)];
+  const tA = teks(L.d, 'terima barang → input → stok <span style="color:#3064D1">ter-update</span>', 300, 70);
+  const tAnd = teks(L.d, 'urusan faktur dipegang <span style="color:#3064D1">1 karyawan andalan</span>', 290, 64);
+  const andC = chip(L.d, '⭐ andalan', 660, 740, C.kuning, C.ink, 4);
   const t1 = teks(L.d, '1 orang.', 250, 140, C.merah), t2 = teks(L.d, 'tanpa cek ulang.', 400, 96);
   const vin = mk('div', '', L.d); vin.style.cssText = 'position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(60,40,20,.35))';
   return {a, lays: [L], frame(t) {
@@ -401,7 +403,7 @@ S.push((() => {
     L.d.style.filter = 'sepia(.45) saturate(.8) contrast(.95)';
     const cx = t < T.p2 - .5 ? 540 : t < T.p3 - .5 ? lerp(540, 1620, E.io(seg(t, T.p2 - .5, T.p2))) : lerp(1620, 2700, E.io(seg(t, T.p3 - .5, T.p3)));
     const km = E.io(seg(t, T.mundur, T.mundur + .8));
-    kamera(L, lerp(cx, 1620, km), lerp(1000, 820, km), lerp(1, .34, km));
+    kamera(L, lerp(cx, 1620, km), lerp(1000, 820, km), lerp(1 + seg(t, a, T.p1) * .08, .34, km));
     const kt = E.io(seg(t, T.terima, T.terima + .7));
     taruh(kurir, lerp(300, 360, kt), 1700 + napas(t), 1.05); taruh(kar1, 780, 1700 + napas(t, 2), 1.05);
     dus.setAttribute('transform', `translate(${lerp(360, 720, kt)},${1240 - Math.sin(kt * Math.PI) * 90}) scale(1.6)`); dus.style.display = t < T.mundur ? '' : 'none';
@@ -415,10 +417,14 @@ S.push((() => {
     const ko = E.out(seg(t, T.mundur + .3, T.mundur + .9)), ox = lerp(1350, 860, ko);
     taruh(owner, ox, 1720 + napas(t), .8, Math.sin(t * 2) * 1.5);
     popSvg(hp, t, T.mundur + .6, ox + 62, 1340 + Math.sin(t * 3) * 4, 1e9, .8);
-    popAtur(sibuk, t, T.mundur + .9);
+    popAtur(sibuk, t, T.sibuk);
     popSvg(gk.g, t, T.gembok, 540, 1180 + Math.sin(t * 2) * 6, 1e9, 1.1); gk.buka(E.back(seg(t, T.gembok + .3, T.gembok + .6)));
     popAtur(lab, t, T.flash);
-    tA.forEach((d, i) => teksAtur(d, t, [T.p1, T.p2, T.p3][i], [T.p2 - .5, T.p3 - .5, T.mundur - .1][i], .1));
+    { const st = [T.p1, T.p1 + .12, T.p2 - .1, T.p2, T.p3 - .1, T.p3, T.p3 + .12]; const v = t >= T.p1 - .01 && t < T.mundur + .3; tampil(tA, v);
+      if (v) { tA._w.forEach((w, i) => { const k = seg(t, st[i], st[i] + .4), e = E.out(k); w.style.opacity = Math.min(1, k * 2.2); w.style.transform = `translateY(${(1 - e) * 55}px) scale(${lerp(.86, 1, E.back(k))})`; });
+        const k = E.in(seg(t, T.mundur - .1, T.mundur + .25)); tA.style.opacity = 1 - k; tA.style.transform = `translateY(${-k * 40}px)`; } }
+    teksAtur(tAnd, t, T.flash + .3, T.p1 - .3, .12);
+    popAtur(andC, t, T.andalan, T.p1 - .2);
     teksAtur(t1, t, T.satu, 1e9, .12); teksAtur(t2, t, T.satu + .5, 1e9, .12);
   }};
 })());
@@ -428,8 +434,10 @@ S.push((() => {
    klip 0–2.5 daftar → tombol Draft → daftar Draft Faktur · 2.5–4.3 faktur dibuka · 4.3–5.5 cek isi · 5.6 Simpan · 5.9+ Mohon Tunggu */
 const REK = {n: 244, img: []};
 S.push((() => {
-  const a = 36, K0 = 40.5;   /* detik layar saat klip mulai */
-  const T = {s1: 36.6, owner: 37.0, panah: 37.5, kunci: 38.6, zoom: 40.0, chipTF: 40.3, s2: K0 + .75, s3: K0 + 2.55, ok: K0 + 6.9, s4: K0 + 6.9, stok: K0 + 7.3, senang: K0 + 7.1, balon: K0 + 7.6};
+  const a = 45.95, K0 = 54.6;   /* klip mulai diputar; waktu klip lewat UKLIP (diperlambat/ditahan mengikuti VO) */
+  const UKLIP = [[0, 0], [54.6, 0], [55.6, 1.0], [58.0, 2.4], [59.0, 2.62], [61.0, 4.3], [61.4, 5.2], [61.8, 5.6], [62.4, 6.2], [64.2, 8.1]];
+  const klipU = t => { let i = 0; while (i < UKLIP.length - 2 && t >= UKLIP[i + 1][0]) i++; const [t0, u0] = UKLIP[i], [t1, u1] = UKLIP[i + 1]; return lerp(u0, u1, seg(t, t0, t1)); };
+  const T = {tj: 46.0, s1: 48.45, owner: 48.9, panah: 50.6, kunci: 51.3, zoom: 52.1, chipTF: 53.4, s2: 55.6, s3: 59.0, ok: 62.6, s4: 62.6, stok: 63.0, senang: 62.8, balon: 63.5};
   const L = lapis(16), B = L.bg, r = rng(77);
   langit(B, '#BFD6FA', '#F3F8FE'); const sinar = s('circle', {cx: 900, cy: 330, r: 220, fill: '#FFF4CF', opacity: .5}, B); s('circle', {cx: 900, cy: 330, r: 110, fill: '#FFE7A1'}, B);
   const aw = [awan(B, 120, 280), awan(B, 560, 200, .8)];
@@ -474,17 +482,17 @@ S.push((() => {
     gores(panah, t, T.panah, .5); panahK.style.opacity = seg(t, T.panah + .45, T.panah + .55) * (1 - kz); panah.style.opacity = 1 - kz;
     popSvg(gk.g, t, T.panah + .3, 540, 1250, T.zoom, .7); gk.buka(1 - E.back(seg(t, T.kunci, T.kunci + .3)));
     popAtur(kunciC, t, T.kunci + .2, T.zoom - .1);
-    teksAtur(tj, t, T.s1 - .3, T.zoom - .2, .12);
+    teksAtur(tj, t, T.tj, T.zoom - .2, .12);
     const kh = E.out(seg(t, T.zoom, T.zoom + .6));
     tab.style.display = kh > 0 ? '' : 'none';
     if (kh > 0) {
-      tab.style.transform = `translateY(${(1 - kh) * 1300}px) rotate(${(1 - kh) * 6 + Math.sin(t * .8) * .4}deg) scale(${1 + seg(t, K0, T.ok) * .03})`;
-      const fi = clamp(Math.floor((t - K0) * 30), 0, REK.n - 1), im = REK.img[fi];
-      const [zx, zy, zw] = zoomDi(t - K0), zh = zw * 531 / 960, f = 1.5;
+      tab.style.transform = `translateY(${(1 - kh) * 1300}px) rotate(${(1 - kh) * 6 + Math.sin(t * .8) * .4}deg) scale(${1 + seg(t, T.zoom, T.ok) * .03})`;
+      const fi = clamp(Math.floor(klipU(t) * 30), 0, REK.n - 1), im = REK.img[fi];
+      const [zx, zy, zw] = zoomDi(klipU(t)), zh = zw * 531 / 960, f = 1.5;
       if (im) cx.drawImage(im, zx * f, zy * f, zw * f, zh * f, 0, 0, 960, 531);
       const ke = (x, y) => [(x - zx) * 960 / zw, (y - zy) * 960 / zw], skz = 960 / zw;
       cv.style.filter = `brightness(${1 - seg(t, T.ok - .2, T.ok + .2) * .25})`;
-      const uk = t - K0, so = SOROT.find(o => uk >= o.a && uk < o.b);
+      const uk = klipU(t), so = SOROT.find(o => uk >= o.a && uk < o.b);
       sorot.style.display = so ? '' : 'none';
       if (so) { const [qx, qy] = ke(so.x, so.y); Object.assign(sorot.style, {left: 20 + qx + 'px', top: 20 + qy + 'px', width: so.w * skz + 'px', height: so.h * skz + 'px', transform: `scale(${1 + Math.sin(t * 9) * .02})`}); }
       const tp = SOROT.find(o => o.tap != null && uk >= o.tap - .25 && uk < o.tap + .35);
@@ -506,7 +514,7 @@ S.push((() => {
 
 /* ---------- ADEGAN 7 · Penutup (50–53) ---------- */
 S.push((() => {
-  const a = 50, L = lapis(17), B = L.bg, F = L.top, r = rng(88);
+  const a = 64.85, L = lapis(17), B = L.bg, F = L.top, r = rng(88);
   langit(B, '#CFE0FA', '#F3F8FE'); const kota = gedungKota(B, C.gedung, '#CCDAF1', 1400, r);
   s('rect', {x: -50, y: 1480, width: 1200, height: 600, fill: '#F6F9FE'}, B);
   const sinar = G0(B); for (let i = 0; i < 16; i++) s('path', {d: `M540,800 L${540 + Math.cos(i / 16 * 6.283) * 1600},${800 + Math.sin(i / 16 * 6.283) * 1600} L${540 + Math.cos((i + .45) / 16 * 6.283) * 1600},${800 + Math.sin((i + .45) / 16 * 6.283) * 1600} Z`, fill: '#fff', opacity: .35}, sinar);
@@ -521,7 +529,7 @@ S.push((() => {
     const k1 = E.back(seg(t, a + .1, a + .6)), k2 = E.back(seg(t, a + .3, a + .8));
     taruh(owner, 330, lerp(2400, 1960, k1) + napas(t), 1.15, Math.sin(t * 2) * 1.5); taruh(kar, 760, lerp(2400, 1960, k2) + napas(t, 2), 1.15, -Math.sin(t * 2) * 1.5);
     popSvg(tameng, t, a + .9, 540, 800 + Math.sin(t * 3) * 10);
-    teksAtur(t1, t, a + .2, 1e9, .12); teksAtur(t2, t, a + 1.0, 1e9, .12);
+    teksAtur(t1, t, a + .05, 1e9, .12); teksAtur(t2, t, a + 1.45, 1e9, .12);
     KONF.forEach(o => { const v = u - o.d; o.e.style.display = v > .6 ? '' : 'none'; const y = -60 + (v - .6) * o.v;
       o.e.setAttribute('transform', `translate(${o.x + Math.sin(t * 3 + o.f) * 30},${y}) rotate(${t * 220 + o.f * 60})`); });
   }};
@@ -529,7 +537,7 @@ S.push((() => {
 
 /* ---------- ADEGAN 8 · CTA (53–59) ---------- */
 S.push((() => {
-  const a = 53, T = {c1: 53.25, c2: 54.7, logo: 56.0, tombol: 56.6, tunjuk: 56.5};
+  const a = 68.2, T = {c1: 68.4, c2: 70.95, logo: 74.3, tombol: 74.9, tunjuk: 74.8};
   const L = lapis(18), B = L.bg, F = L.top, r = rng(99);
   langit(B, '#CFE0FA', '#EEF4FD'); const aw = [awan(B, 140, 300), awan(B, 700, 380, .9)];
   const kota = gedungKota(B, C.gedung, '#CCDAF1', 1500, r); const ph = G0(B); [80, 1000].forEach(x => pohon(ph, x, 1560, 1.3, C.pohon));
@@ -574,55 +582,51 @@ const SCENE = {
   muat: () => Promise.all([...Array(REK.n)].map((_, i) => muatImg(`assets/rekaman/f${String(i + 1).padStart(3, '0')}.jpg`).then(im => { REK.img[i] = im; }))
     .concat([muatImg('assets/gambar/logo.png')])),
   sub: {gaya: 'mati'},
-  audio: {vo: [], music: {src: 'assets/audio/musik.mp3', vol: .22}, sfx: [
-    {src: 'assets/audio/hmm.mp3', at: 0.3, vol: 0.45},
-    {src: 'assets/audio/whoosh.mp3', at: 2.0, vol: 0.35},
-    {src: 'assets/audio/buzz.mp3', at: 3.0, vol: 0.4},
-    {src: 'assets/audio/pop.mp3', at: 3.3, vol: 0.3},
-    {src: 'assets/audio/whoosh.mp3', at: 3.75, vol: 0.35},
-    {src: 'assets/audio/pop.mp3', at: 5.2, vol: 0.3},
-    {src: 'assets/audio/pop.mp3', at: 6.1, vol: 0.3},
-    {src: 'assets/audio/pop.mp3', at: 6.6, vol: 0.3},
-    {src: 'assets/audio/whoosh.mp3', at: 8.0, vol: 0.3},
-    {src: 'assets/audio/tick.mp3', at: 9.2, vol: 0.5},
-    {src: 'assets/audio/tick.mp3', at: 9.9, vol: 0.5},
-    {src: 'assets/audio/whoosh.mp3', at: 11.75, vol: 0.35},
-    {src: 'assets/audio/kertas.mp3', at: 12.8, vol: 0.4},
-    {src: 'assets/audio/kaget.mp3', at: 16.0, vol: 0.45},
-    {src: 'assets/audio/pop.mp3', at: 16.3, vol: 0.3},
-    {src: 'assets/audio/whoosh.mp3', at: 17.75, vol: 0.35},
-    {src: 'assets/audio/buzz.mp3', at: 18.9, vol: 0.4},
-    {src: 'assets/audio/buzz.mp3', at: 20.9, vol: 0.4},
-    {src: 'assets/audio/buzz.mp3', at: 22.9, vol: 0.4},
-    {src: 'assets/audio/buzz.mp3', at: 24.8, vol: 0.4},
-    {src: 'assets/audio/stempel.mp3', at: 25.3, vol: 0.55},
-    {src: 'assets/audio/stempel.mp3', at: 25.8, vol: 0.55},
-    {src: 'assets/audio/whoosh.mp3', at: 26.75, vol: 0.35},
-    {src: 'assets/audio/whoosh.mp3', at: 29.5, vol: 0.25},
-    {src: 'assets/audio/whoosh.mp3', at: 31.5, vol: 0.25},
-    {src: 'assets/audio/tick.mp3', at: 32.4, vol: 0.4},
-    {src: 'assets/audio/whoosh.mp3', at: 33.5, vol: 0.3},
-    {src: 'assets/audio/klik.mp3', at: 35.1, vol: 0.55},
-    {src: 'assets/audio/whoosh.mp3', at: 35.75, vol: 0.35},
-    {src: 'assets/audio/pop.mp3', at: 37.3, vol: 0.3},
-    {src: 'assets/audio/klik.mp3', at: 38.6, vol: 0.55},
-    {src: 'assets/audio/whoosh.mp3', at: 40.0, vol: 0.3},
-    {src: 'assets/audio/pop.mp3', at: 40.6, vol: 0.3},
-    {src: 'assets/audio/tick.mp3', at: 44.0, vol: 0.45},
-    {src: 'assets/audio/tick.mp3', at: 44.5, vol: 0.45},
-    {src: 'assets/audio/tick.mp3', at: 45.0, vol: 0.45},
-    {src: 'assets/audio/tick.mp3', at: 45.8, vol: 0.5},
-    {src: 'assets/audio/ding.mp3', at: 46.2, vol: 0.55},
-    {src: 'assets/audio/pop.mp3', at: 46.7, vol: 0.3},
-    {src: 'assets/audio/pop.mp3', at: 47.9, vol: 0.3},
-    {src: 'assets/audio/whoosh.mp3', at: 49.75, vol: 0.35},
-    {src: 'assets/audio/chime.mp3', at: 50.9, vol: 0.35},
-    {src: 'assets/audio/whoosh.mp3', at: 52.75, vol: 0.35},
-    {src: 'assets/audio/buzz.mp3', at: 53.6, vol: 0.2},
-    {src: 'assets/audio/ding.mp3', at: 55.2, vol: 0.35},
-    {src: 'assets/audio/whoosh.mp3', at: 55.9, vol: 0.3},
-    {src: 'assets/audio/chime.mp3', at: 56.0, vol: 0.45},
-    {src: 'assets/audio/pop.mp3', at: 56.6, vol: 0.35}]},
+  audio: {vo: [{src: 'assets/audio/vo.mp3', at: 0.2, vol: 1, teks: 'Owner apotek ini hampir nuduh kasirnya sendiri. Padahal bocornya bukan di kasir. Jadi gini ceritanya. Tiga bulan berturut-turut margin apoteknya turun, padahal omzet dan harga jual sama. Dia cek laci, cek struk, semuanya cocok. Suatu malam, dia iseng buka faktur PBF bulan lalu, lalu dibandingkan dengan yang diinput di sistem. Ternyata, di situlah masalahnya. Ada harga beli yang dinaikkan. Ada diskon yang nggak diinput, dan barang bonus yang nggak masuk stok. Bahkan ada satu faktur yang dibayar dua kali. Memang, selama ini urusan faktur dia percayakan ke satu karyawan andalannya. Mulai dari terima barang, input ke sistem, sampai stok langsung ter-update. Nggak ada yang ngecek ulang, termasuk owner-nya sendiri. Sekarang caranya diubah. Karyawan input dan cek barang datang, owner yang verifikasi. Untungnya, di Apotek Digital ada fitur Tunda Faktur. Setelah faktur diinput, stok nggak langsung ter-update. Owner cek dulu, kalau sudah sesuai baru disimpan, dan stoknya otomatis ter-update. Karyawan tetap kerja, owner tetap pegang kendali. Celah kerugian bisa muncul di mana saja. Pastikan aplikasimu bisa mencegahnya. Coba gratis Apotek Digital sekarang!'}],
+    music: {src: 'assets/audio/musik.mp3', vol: .13}, sfx: [
+    {src: 'assets/audio/hmm.mp3', at: 0.25, vol: 0.3},
+    {src: 'assets/audio/whoosh.mp3', at: 2.95, vol: 0.25},
+    {src: 'assets/audio/buzz.mp3', at: 4.7, vol: 0.3},
+    {src: 'assets/audio/whoosh.mp3', at: 5.85, vol: 0.25},
+    {src: 'assets/audio/pop.mp3', at: 9.5, vol: 0.2},
+    {src: 'assets/audio/pop.mp3', at: 10.8, vol: 0.2},
+    {src: 'assets/audio/pop.mp3', at: 11.7, vol: 0.2},
+    {src: 'assets/audio/whoosh.mp3', at: 13.15, vol: 0.2},
+    {src: 'assets/audio/tick.mp3', at: 14.35, vol: 0.4},
+    {src: 'assets/audio/tick.mp3', at: 15.15, vol: 0.4},
+    {src: 'assets/audio/whoosh.mp3', at: 16.75, vol: 0.3},
+    {src: 'assets/audio/kertas.mp3', at: 17.7, vol: 0.3},
+    {src: 'assets/audio/kaget.mp3', at: 22.15, vol: 0.35},
+    {src: 'assets/audio/whoosh.mp3', at: 24.35, vol: 0.3},
+    {src: 'assets/audio/buzz.mp3', at: 24.9, vol: 0.3},
+    {src: 'assets/audio/buzz.mp3', at: 26.75, vol: 0.3},
+    {src: 'assets/audio/buzz.mp3', at: 28.6, vol: 0.3},
+    {src: 'assets/audio/buzz.mp3', at: 31.0, vol: 0.3},
+    {src: 'assets/audio/stempel.mp3', at: 32.6, vol: 0.45},
+    {src: 'assets/audio/stempel.mp3', at: 33.3, vol: 0.45},
+    {src: 'assets/audio/whoosh.mp3', at: 34.35, vol: 0.3},
+    {src: 'assets/audio/pop.mp3', at: 35.6, vol: 0.2},
+    {src: 'assets/audio/whoosh.mp3', at: 40.0, vol: 0.18},
+    {src: 'assets/audio/whoosh.mp3', at: 40.75, vol: 0.18},
+    {src: 'assets/audio/tick.mp3', at: 41.45, vol: 0.35},
+    {src: 'assets/audio/whoosh.mp3', at: 42.2, vol: 0.22},
+    {src: 'assets/audio/klik.mp3', at: 43.6, vol: 0.45},
+    {src: 'assets/audio/whoosh.mp3', at: 45.7, vol: 0.3},
+    {src: 'assets/audio/pop.mp3', at: 48.9, vol: 0.2},
+    {src: 'assets/audio/klik.mp3', at: 51.3, vol: 0.45},
+    {src: 'assets/audio/whoosh.mp3', at: 52.1, vol: 0.25},
+    {src: 'assets/audio/pop.mp3', at: 53.4, vol: 0.2},
+    {src: 'assets/audio/tick.mp3', at: 55.0, vol: 0.35},
+    {src: 'assets/audio/tick.mp3', at: 61.8, vol: 0.4},
+    {src: 'assets/audio/ding.mp3', at: 62.6, vol: 0.45},
+    {src: 'assets/audio/pop.mp3', at: 63.0, vol: 0.2},
+    {src: 'assets/audio/whoosh.mp3', at: 64.6, vol: 0.3},
+    {src: 'assets/audio/chime.mp3', at: 65.8, vol: 0.25},
+    {src: 'assets/audio/whoosh.mp3', at: 67.95, vol: 0.3},
+    {src: 'assets/audio/ding.mp3', at: 71.2, vol: 0.25},
+    {src: 'assets/audio/whoosh.mp3', at: 74.1, vol: 0.25},
+    {src: 'assets/audio/chime.mp3', at: 74.3, vol: 0.35},
+    {src: 'assets/audio/pop.mp3', at: 74.9, vol: 0.25}]},
   frame(t) {
     S.forEach((sc, i) => {
       const nx = S[i + 1], v = t >= sc.a - .35 && t < (nx ? nx.a + .3 : 1e9);

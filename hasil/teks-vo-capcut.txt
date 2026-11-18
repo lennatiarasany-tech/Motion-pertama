@@ -1,43 +1,44 @@
 NASKAH VO — "Bocornya Bukan di Kasir" (Fitur Tunda Faktur)
-Format: [mulai – selesai] kalimat. Waktu mengikuti video-tunda-faktur-tanpa-vo.mp4 (59 detik).
-Tips: bacakan agak cepat & ceria (±2,9 kata/detik) supaya pas.
+Waktu mengikuti video-tunda-faktur-tanpa-vo.mp4 (78 detik) dan VO Zulfa yang mulai di detik 0,2.
+Format: [menit:detik mulai – selesai] kalimat
+
 
 ADEGAN 1 — HOOK
-[00:00 – 00:02] Owner apotek ini hampir nuduh kasirnya sendiri.
-[00:02 – 00:04] Padahal bocornya bukan di kasir.
+[00:00.20 – 00:03.21] Owner apotek ini hampir nuduh kasirnya sendiri.
+[00:03.65 – 00:05.75] Padahal bocornya bukan di kasir.
 
 ADEGAN 2 — MASALAH
-[00:04 – 00:05] Jadi gini ceritanya.
-[00:05 – 00:09] Tiga bulan berturut-turut margin apoteknya turun, padahal omzet dan harga jual sama.
-[00:09 – 00:12] Dia cek laci, cek struk, semuanya cocok.
+[00:06.15 – 00:07.07] Jadi gini ceritanya.
+[00:07.30 – 00:10.38] Tiga bulan berturut-turut margin apoteknya turun,
+[00:10.73 – 00:13.16] padahal omzet dan harga jual sama.
+[00:13.39 – 00:16.70] Dia cek laci, cek struk, semuanya cocok.
 
 ADEGAN 3 — MULAI MENEMUKAN
-[00:12 – 00:16] Suatu malam, dia iseng buka faktur PBF bulan lalu, lalu dibandingkan dengan yang diinput di sistem.
-[00:16 – 00:18] Ternyata, di situlah masalahnya.
+[00:17.20 – 00:21.78] Suatu malam, dia iseng buka faktur PBF bulan lalu, lalu dibandingkan dengan yang diinput di sistem.
+[00:22.22 – 00:24.49] Ternyata, di situlah masalahnya.
 
 ADEGAN 4 — TEMUAN
-[00:18 – 00:20] Ada harga beli yang dinaikkan.
-[00:20 – 00:22] Ada diskon yang nggak diinput,
-[00:22 – 00:24] dan barang bonus yang nggak masuk stok.
-[00:24 – 00:27] Bahkan ada satu faktur yang dibayar dua kali.
+[00:24.67 – 00:26.60] Ada harga beli yang dinaikkan.
+[00:26.72 – 00:28.55] Ada diskon yang nggak diinput,
+[00:28.60 – 00:30.58] dan barang bonus yang nggak masuk stok.
+[00:30.95 – 00:34.19] Bahkan ada satu faktur yang dibayar dua kali.
 
 ADEGAN 5 — CELAHNYA
-[00:27 – 00:29] Memang, selama ini urusan faktur dia percayakan ke satu karyawan andalannya.
-[00:29 – 00:33] Mulai dari terima barang, input ke sistem, sampai stok langsung ter-update.
-[00:33 – 00:36] Nggak ada yang ngecek ulang, termasuk owner-nya sendiri.
+[00:34.71 – 00:38.84] Memang, selama ini urusan faktur dia percayakan ke satu karyawan andalannya.
+[00:39.00 – 00:42.33] Mulai dari terima barang, input ke sistem, sampai stok langsung ter-update.
+[00:42.56 – 00:45.63] Nggak ada yang ngecek ulang, termasuk owner-nya sendiri.
 
 ADEGAN 6 — SOLUSI: TUNDA FAKTUR
-[00:36 – 00:37] Sekarang caranya diubah.
-[00:37 – 00:40] Karyawan input dan cek barang datang, owner yang verifikasi.
-[00:40 – 00:42] Untungnya, di Apotek Digital ada fitur Tunda Faktur.
-[00:42 – 00:44] Setelah faktur diinput, stok nggak langsung ter-update.
-[00:44 – 00:47] Owner cek dulu, kalau sudah sesuai baru disimpan,
-[00:47 – 00:50] dan stoknya otomatis ter-update.
+[00:46.01 – 00:48.09] Sekarang caranya diubah.
+[00:48.49 – 00:52.03] Karyawan input dan cek barang datang, owner yang verifikasi.
+[00:52.22 – 00:55.44] Untungnya, di Apotek Digital ada fitur Tunda Faktur.
+[00:55.62 – 00:58.73] Setelah faktur diinput, stok nggak langsung ter-update.
+[00:59.05 – 01:04.50] Owner cek dulu, kalau sudah sesuai baru disimpan, dan stoknya otomatis ter-update.
 
 ADEGAN 7 — PENUTUP
-[00:50 – 00:53] Karyawan tetap kerja, owner tetap pegang kendali.
+[01:04.89 – 01:07.97] Karyawan tetap kerja, owner tetap pegang kendali.
 
 ADEGAN 8 — CTA
-[00:53 – 00:55] Celah kerugian bisa muncul di mana saja.
-[00:55 – 00:56] Pastikan aplikasimu bisa mencegahnya.
-[00:56 – 00:59] Coba gratis Apotek Digital sekarang!
+[01:08.37 – 01:10.65] Celah kerugian bisa muncul di mana saja.
+[01:10.97 – 01:13.98] Pastikan aplikasimu bisa mencegahnya.
+[01:14.38 – 01:16.56] Coba gratis Apotek Digital sekarang!
