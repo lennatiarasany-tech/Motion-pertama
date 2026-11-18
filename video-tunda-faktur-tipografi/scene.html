@@ -1,0 +1,120 @@
+<!--@TITLE Tunda Faktur Tipografi-->
+<!--@RASIO 9:16-->
+<!--@HEAD-->
+<script src="assets/lib/gsap.min.js"></script>
+<script src="assets/karakter.js"></script>
+<style>
+@font-face{font-family:'Poppins';font-weight:700;font-display:block;src:url(assets/font/poppins-700.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:800;font-display:block;src:url(assets/font/poppins-800.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:900;font-display:block;src:url(assets/font/poppins-900.woff2) format('woff2')}
+#stage{background:#DCE8FB}
+.bg{position:absolute;inset:-200px}
+#kam{position:absolute;inset:0;transform-origin:50% 45%}
+.blok{position:absolute;left:0;width:100%;text-align:center;font-family:'Poppins';font-weight:900;line-height:.92;letter-spacing:-.03em;text-transform:uppercase;padding:0 110px 0 40px}
+.blok .b{display:block;white-space:nowrap}
+.blok .h{display:inline-block}
+.tok{position:absolute;width:640px;height:940px;transform-origin:50% 100%}
+.garis{position:absolute;height:34px;border-radius:17px;background:#E2524A;transform-origin:0 50%}
+.pil{position:absolute;font:800 46px/1 'Poppins';padding:14px 30px;border-radius:40px;letter-spacing:.02em}
+</style>
+<!--@BODY-->
+<div class="bg" id="bg0" style="background:#DCE8FB"></div>
+<div class="bg" id="bg1" style="background:#1B2B3B"></div>
+<div class="bg" id="bg2" style="background:#3064D1"></div>
+<div class="bg" id="bg3" style="background:#F4F7FD"></div>
+<div id="kam"></div>
+<!--@SCRIPT-->
+/* Contoh gaya TIPOGRAFI KINETIK — adegan 1 (hook) saja, untuk dibandingkan dengan versi sketchbook. */
+const C = {ink: '#1B2B3B', biru: '#3064D1', biruTua: '#2C59AE', teal: '#4BA299', hijau: '#5BAC72', merah: '#E2524A', muda: '#DCE8FB', putih: '#F4F7FD'};
+const K = $('#kam');
+/* ketukan (detik) mengikuti perkiraan VO adegan 1 */
+const T = {b1: 0, b2: .78, b3: 1.5, b4: 2.32, b5: 2.78, x: 3.35, akhir: 4.4};
+
+function blok(html, top, size, warna) {
+  const d = mk('div', 'blok', K, html); d.style.top = top + 'px'; d.style.fontSize = size + 'px'; d.style.color = warna;
+  /* pecah tiap baris jadi huruf */
+  $$('.b', d).forEach(b => { const s = b.textContent; b.innerHTML = [...s].map(ch => `<span class="h">${ch === ' ' ? '&nbsp;' : ch}</span>`).join(''); });
+  d._b = $$('.b', d); return d;
+}
+function tokoh(nama, x, y, s) {
+  const d = mk('div', 'tok', K, `<svg viewBox="0 0 640 940" width="640" height="940">${KAR[nama]}</svg>`);
+  d._x = x; d._y = y; d._s = s; return d;
+}
+const tampil = (e, v) => { e.style.display = v ? '' : 'none'; return v; };
+
+/* ketukan 1: OWNER APOTEK */
+const b1 = blok('<span class="b">Owner</span><span class="b" style="color:#3064D1">Apotek</span>', 330, 250, C.ink);
+const o1 = tokoh('bu-owner_curiga', 0, 0, 1);
+const pil1 = mk('div', 'pil', K, 'ini 👀'); pil1.style.cssText += `background:${C.ink};color:#fff;left:640px;top:270px`;
+/* ketukan 2: HAMPIR NUDUH */
+const b2 = blok('<span class="b">hampir</span><span class="b" style="color:#E2524A;font-size:1.65em">nuduh</span>', 560, 160, '#fff');
+/* ketukan 3: KASIRNYA SENDIRI */
+const k3 = tokoh('kasir_netral', 0, 0, 1);
+const b3 = blok('<span class="b">kasirnya</span><span class="b" style="color:#DCE8FB">sendiri</span>', 300, 190, '#fff');
+/* ketukan 4: PADAHAL… */
+const b4 = blok('<span class="b">padahal…</span>', 820, 150, C.ink);
+/* ketukan 5: BOCORNYA BUKAN DI KASIR */
+const b5 = blok('<span class="b">bocornya</span><span class="b" style="color:#E2524A;font-size:1.5em">bukan</span><span class="b" style="color:#3064D1">di kasir</span>', 260, 150, C.ink);
+const g5 = mk('div', 'garis', K); g5.style.cssText += 'left:190px;top:612px;width:640px';
+const k5 = tokoh('kasir_netral', 0, 0, 1), o5 = tokoh('bu-owner_bingung', 0, 0, 1);
+const xs = mk('div', '', K, `<svg viewBox="0 0 300 300" width="300" height="300"><path d="M40 40 L260 260 M260 40 L40 260" stroke="#E2524A" stroke-width="44" stroke-linecap="round" fill="none" pathLength="1"/></svg>`);
+xs.style.cssText = 'position:absolute;left:600px;top:1010px;width:300px;height:300px';
+const xp = $('path', xs);
+
+/* latar: sapuan diagonal tiap ganti ketukan */
+function sapu(id, a) { const e = $('#' + id), k = E.io(seg(t_, a - .16, a + .06)); e.style.clipPath = `polygon(${-30 + k * 160}% 0,${-60 + k * 160}% 100%,-100% 100%,-100% 0)`; e.style.display = k > 0 ? '' : 'none'; }
+let t_ = 0;
+/* huruf jatuh/menghantam satu per satu */
+function hantam(d, a, o = {}) {
+  let i = 0;
+  d._b.forEach((b, bi) => $$('.h', b).forEach(h => {
+    const k = seg(t_, a + i * (o.st ?? .025) + bi * (o.baris ?? .12), a + i * (o.st ?? .025) + bi * (o.baris ?? .12) + .28); i++;
+    const e = E.back(k); h.style.opacity = k > 0 ? 1 : 0;
+    h.style.transform = `translateY(${(1 - e) * (o.dy ?? 120)}%) scale(${lerp(o.s0 ?? 1.6, 1, e)}) rotate(${(1 - e) * (o.r ?? 12)}deg)`;
+  }));
+}
+/* keluar: zoom menembus kamera */
+function tembus(d, b) { const k = E.in(seg(t_, b - .18, b)); d.style.transform = `scale(${1 + k * 2.2})`; d.style.opacity = 1 - k; d.style.filter = `blur(${k * 14}px)`; }
+function tok(d, x, y, s, rot = 0) { d.style.transform = `translate(${x - 320}px,${y - 905}px) scale(${s}) rotate(${rot}deg)`; }
+
+const SCENE = {
+  dur: T.akhir,
+  sub: {gaya: 'mati'},
+  audio: {vo: [], sfx: [], music: null},
+  frame(t) {
+    t_ = t;
+    sapu('bg1', T.b2); sapu('bg2', T.b3); sapu('bg3', T.b4); sapu('bg0', T.b5);
+    $('#bg0').style.zIndex = t >= T.b5 - .16 ? 5 : 0;
+    ['bg1', 'bg2', 'bg3'].forEach((id, i) => $('#' + id).style.zIndex = t >= T.b5 + .06 ? 0 : i + 1);
+    K.style.zIndex = 9;
+    /* kamera: dorong pelan + miring halus, hentakan di tiap ketukan */
+    const hent = [T.b2, T.b3, T.b4, T.b5, T.x].reduce((m, a) => m + Math.exp(-Math.max(0, t - a) * 14) * (t >= a ? 1 : 0), 0);
+    K.style.transform = `scale(${1 + t * .018 + hent * .04}) rotate(${Math.sin(t * .9) * 1.2 - hent * .8}deg) translate(${nz(t * 10, 1) * hent * 10}px,${nz(t * 10, 2) * hent * 10}px)`;
+
+    /* 1 */
+    if (tampil(b1, t < T.b2)) { hantam(b1, .0, {st: .03}); tembus(b1, T.b2); }
+    if (tampil(o1, t < T.b2)) { const k = E.back(seg(t, .15, .55)); tok(o1, 300, lerp(2400, 1960, k), 1.25, lerp(8, -3, k)); o1.style.opacity = 1 - seg(t, T.b2 - .15, T.b2); }
+    if (tampil(pil1, t > .35 && t < T.b2)) { const k = E.back(seg(t, .35, .6)); pil1.style.transform = `scale(${k}) rotate(${-8 + Math.sin(t * 6) * 3}deg)`; }
+    /* 2 */
+    if (tampil(b2, t >= T.b2 - .02 && t < T.b3)) { hantam(b2, T.b2, {st: .03, s0: 2.4, dy: 0, r: 0}); tembus(b2, T.b3);
+      const n = $$('.b', b2)[1]; n.style.transform = `translate(${nz(t * 30, 4) * 8 * seg(t, T.b2 + .35, T.b2 + .4)}px,0)`; }
+    /* 3 */
+    if (tampil(b3, t >= T.b3 - .02 && t < T.b4)) { hantam(b3, T.b3, {st: .025, dy: 140, r: -10}); tembus(b3, T.b4); }
+    if (tampil(k3, t >= T.b3 && t < T.b4)) { const k = E.out(seg(t, T.b3, T.b3 + .4)); tok(k3, lerp(1400, 560, k), 1880, 1.15, lerp(10, 0, k)); k3.style.opacity = 1 - seg(t, T.b4 - .15, T.b4); }
+    /* 4 */
+    if (tampil(b4, t >= T.b4 - .02 && t < T.b5)) { hantam(b4, T.b4, {st: .035, s0: 1, dy: 60, r: 0}); tembus(b4, T.b5); }
+    /* 5 */
+    const v5 = t >= T.b5 - .02;
+    tampil(b5, v5); tampil(g5, v5); tampil(k5, v5); tampil(o5, v5); tampil(xs, t >= T.x);
+    if (v5) {
+      hantam(b5, T.b5, {st: .022, baris: .16, s0: 1.8, r: 6});
+      g5.style.transform = `scaleX(${E.out(seg(t, T.b5 + .35, T.b5 + .6))}) rotate(-2deg)`;
+      const k = E.back(seg(t, T.b5 + .1, T.b5 + .5));
+      tok(k5, 760, lerp(2300, 1560, k), .78);
+      const ko = E.back(seg(t, T.b5 + .25, T.b5 + .65));
+      tok(o5, 300, lerp(2400, 1700, ko), .95, Math.sin(t * 3) * 1.5);
+      xp.style.strokeDasharray = '1 1'; xp.style.strokeDashoffset = 1 - E.out(seg(t, T.x, T.x + .25));
+      xs.style.transform = `scale(${lerp(1.4, 1, E.out(seg(t, T.x, T.x + .3)))})`;
+    }
+  }
+};
