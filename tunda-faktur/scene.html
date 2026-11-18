@@ -1,0 +1,303 @@
+<!--@TITLE Bocornya Bukan di Kasir-->
+<!--@RASIO 9:16-->
+<!--@HEAD-->
+<style>
+@font-face{font-family:'Poppins';font-weight:600;src:url(assets/font/poppins-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;src:url(assets/font/poppins-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:800;src:url(assets/font/poppins-latin-800-normal.woff2) format('woff2')}
+#stage{background:#EAF2FB;font-family:'Poppins',sans-serif}
+#dunia{position:absolute;inset:0}
+.balon{position:absolute;background:#fff;color:#111;font:700 54px/1.25 'Poppins';padding:34px 54px;border-radius:90px;
+  box-shadow:0 10px 0 rgba(27,43,59,.10);opacity:0;transform-origin:50% 100%;text-align:center;white-space:nowrap}
+.balon .ekor{position:absolute;background:#fff;border-radius:50%}
+.kin{position:absolute;left:0;width:100%;text-align:center;opacity:0}
+.kin .pil{display:inline-block;background:#fff;color:#1B2B3B;font:800 82px/1.12 'Poppins';padding:22px 46px 26px;border-radius:40px;
+  box-shadow:0 12px 0 rgba(27,43,59,.14);letter-spacing:-.01em;opacity:0;visibility:hidden}
+.kin em{font-style:normal;color:#E5484D}
+.kin b{color:#3064D1}
+</style>
+<!--@BODY-->
+<div id="dunia"></div>
+<div class="balon" id="bPikir1">Jangan-jangan kasir…?<i class="ekor" style="width:46px;height:46px;left:150px;bottom:-62px"></i><i class="ekor" style="width:26px;height:26px;left:118px;bottom:-104px"></i></div>
+<div class="kin" id="k1"><span class="pil">Bocornya <em>bukan</em><br>di kasir.</span></div>
+<!--@SCRIPT-->
+/* =====================================================================
+   Bocornya Bukan di Kasir — Apotek Digital · Tunda Faktur
+   Gaya: flat vektor (lihat gaya.md). Semua gerak = fungsi dari t.
+   ===================================================================== */
+
+/* == 1. WAKTU (detik layar). Disesuaikan ke VO setelah suara jadi == */
+const WAKTU = {
+  s1: {a: 0, pikir: .25, seru: .55, pikirOut: 2.25, kin: 2.55, silang: 2.85, akhir: 4.4},
+};
+
+/* == 2. PALET == */
+const C = {
+  biru: '#3064D1', biruTua: '#2C59AE', teal: '#4BA299', hijau: '#5BAC72', navy: '#1B2B3B', merah: '#E5484D',
+  langit: '#DCEBFB', gedung1: '#C7DBF4', gedung2: '#B3CBEC', jendelaG: '#E3EEFB', pohon1: '#A6D9AE', pohon2: '#79C38E',
+  dinding: '#EEF4FB', dinding2: '#E1EAF6', lantai: '#8F8DC2', lantai2: '#8482B8',
+  kayu: '#F4C9A2', kayu2: '#FBE6D2', putih: '#FFFFFF',
+};
+const TOKOH = {
+  owner: {kulit: '#E3A276', kulit2: '#CB8A60', rambut: '#1F1D2B', atas: C.biru, atas2: C.biruTua, bawah: '#1B2B3B', sepatu: '#131D29', rambutTipe: 'panjang', anting: true, lengan: 'pendek'},
+  kasir: {kulit: '#F1C29A', kulit2: '#DCA67C', rambut: '#232232', atas: C.teal, atas2: '#3F8D85', jas: '#FFFFFF', jas2: '#DDE6F3', bawah: '#34495E', sepatu: '#1E2A36', rambutTipe: 'pendek', lengan: 'panjang'},
+  pembeli: {kulit: '#E9B28A', kulit2: '#D29873', rambut: '#2A2433', atas: '#F3D98B', atas2: '#E2C46F', bawah: '#2B3550', sepatu: '#1E2A36', rambutTipe: 'ikat', lengan: 'pendek'},
+};
+
+/* == 3. ALAT GAMBAR == */
+const cv = kanvas(W, H, $('#dunia')), c = cv.getContext('2d');
+const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect(x, y, w, h, r); };
+const el = (x, y, rx, ry, rot = 0) => { c.beginPath(); c.ellipse(x, y, Math.max(.5, rx), Math.max(.5, ry), rot, 0, 7); };
+const isi = (warna) => { c.fillStyle = warna; c.fill(); };
+const garis = (pts, w, warna) => { c.beginPath(); c.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]);
+  c.lineWidth = w; c.strokeStyle = warna; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(); };
+const pop = (t, a, d = .4) => { const k = seg(t, a, a + d); return k <= 0 ? 0 : E.back(k); };
+const kedip = (t, benih) => { const p = 3.1 + hash(benih) * 1.4, f = ((t + hash(benih + 9) * 3) % p) / p * p; return f < .13 ? 1 - Math.abs(f - .065) / .065 : 0; };
+
+/* kamera berlapis: d = kedalaman (0 diam · 1 tokoh) */
+let CAM = {x: W / 2, y: H / 2, z: 1, gx: 0, gy: 0};
+function pasang(d) {
+  const z = 1 + (CAM.z - 1) * d, cx = W / 2 + (CAM.x - W / 2) * d, cy = H / 2 + (CAM.y - H / 2) * d;
+  c.setTransform(z, 0, 0, z, W / 2 - cx * z + CAM.gx, H / 2 - cy * z + CAM.gy);
+}
+
+/* IK lengan: bahu S → tangan T, siku ke sisi `sisi` (+1/-1) */
+function ik(S, T, L1, L2, sisi) {
+  const dx = T[0] - S[0], dy = T[1] - S[1], d = clamp(Math.hypot(dx, dy), Math.abs(L1 - L2) + 1, L1 + L2 - 1);
+  const a = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1)), b = Math.atan2(dy, dx);
+  const e = [S[0] + L1 * Math.cos(b + a * sisi), S[1] + L1 * Math.sin(b + a * sisi)];
+  return {e, h: [S[0] + d * Math.cos(b), S[1] + d * Math.sin(b)]};
+}
+
+/* == 4. TOKOH FLAT ==
+   o = {x, y (kaki), s, w: TOKOH.x, t, lihat (-1..1 arah wajah), tilt, belakang,
+        tangan: {ki:[x,y,sisi], ka:[x,y,sisi]} (lokal; y negatif ke atas), eks: {...}, bicara 0..1, pegang: fn(c, tangan)}
+   Lokal: kaki y=0, bahu y≈-775, wajah y≈-875. Tinggi ≈ 1000·s. */
+const EKS = {
+  netral: {buka: 1, alis: 0, miring: 0, senyum: .3, mulut: 0, pipi: .3, lx: 0, ly: 0},
+  senyum: {buka: .9, alis: -2, miring: -.05, senyum: .9, mulut: .25, pipi: .5, lx: 0, ly: 0},
+  curiga: {buka: .38, alis: 7, miring: .22, senyum: -.25, mulut: 0, pipi: .2, lx: .9, ly: 0},
+  bingung: {buka: .85, alis: -4, miring: -.28, senyum: -.55, mulut: 0, pipi: .35, lx: -.2, ly: -.3},
+  kaget: {buka: 1.45, alis: -14, miring: -.1, senyum: 0, mulut: .85, pipi: .25, lx: 0, ly: 0},
+  lega: {buka: .2, alis: -6, miring: -.15, senyum: 1, mulut: .2, pipi: .6, lx: 0, ly: 0, senyumMata: 1},
+};
+const campur = (a, b, k) => { const o = {}; for (const key of new Set([...Object.keys(a), ...Object.keys(b)])) o[key] = lerp(a[key] ?? 0, b[key] ?? 0, k); return o; };
+/* kunci ekspresi/pose berurutan: [[detik, nilai, durasi]] */
+function kunciEks(t, daftar) { let cur = EKS[daftar[0][1]] || daftar[0][1];
+  for (let i = 1; i < daftar.length; i++) { const [a, v, d = .25] = daftar[i]; if (t < a) break; const nxt = EKS[v] || v; cur = campur(cur, nxt, E.io(seg(t, a, a + d))); }
+  return cur; }
+
+function tokoh(o) {
+  const w = o.w, t = o.t || 0, s = o.s || 1, L = o.lihat || 0, napas = Math.sin(t * 2.2 + (o.benih || 0)) * 3;
+  c.save(); c.translate(o.x, o.y); c.scale(s, s);
+  const fx = L * 13;                    // geser fitur wajah (3/4)
+  const kepalaY = -875 + napas * .6, bahuY = -775 + napas;
+  /* -- rambut belakang -- */
+  if (w.rambutTipe === 'panjang' && !o.belakang) { c.save(); c.translate(0, kepalaY); c.rotate(o.tilt || 0);
+    rr(-84 + fx * .3, -70, 168, 290, [80, 80, 50, 50]); isi(w.rambut); c.restore(); }
+  /* -- kaki & celana -- */
+  const pinggul = -485;
+  c.beginPath(); c.moveTo(-80, pinggul); c.lineTo(-74, -40); c.lineTo(-10, -40); c.lineTo(-4, pinggul + 60); c.lineTo(4, pinggul + 60); c.lineTo(10, -40); c.lineTo(74, -40); c.lineTo(80, pinggul); c.closePath(); isi(w.bawah);
+  c.beginPath(); c.moveTo(40, pinggul); c.lineTo(80, pinggul); c.lineTo(74, -40); c.lineTo(48, -40); c.closePath(); c.globalAlpha = .18; isi('#000'); c.globalAlpha = 1;
+  el(-46, -22, 46, 22); isi(w.sepatu); el(46, -22, 46, 22); isi(w.sepatu);
+  /* -- badan -- */
+  const badan = () => { c.beginPath(); c.moveTo(-60, bahuY - 12); c.quadraticCurveTo(-100, bahuY - 10, -102, bahuY + 40);
+    c.lineTo(-86, pinggul + 10); c.quadraticCurveTo(0, pinggul + 22, 86, pinggul + 10); c.lineTo(102, bahuY + 40); c.quadraticCurveTo(100, bahuY - 10, 60, bahuY - 12); c.closePath(); };
+  /* leher */
+  rr(-20, kepalaY + 50, 40, 70, 12); isi(w.kulit2);
+  badan(); isi(w.atas);
+  c.save(); badan(); c.clip(); c.fillStyle = w.atas2; c.fillRect(48, bahuY - 30, 80, 400); c.restore();
+  if (!o.belakang) { c.beginPath(); c.moveTo(-26, bahuY - 10); c.quadraticCurveTo(0, bahuY + 26, 26, bahuY - 10); c.closePath(); isi(w.kulit2); }
+  if (w.jas) {   /* jas putih apotek terbuka */
+    const jas = (sx) => { c.beginPath(); c.moveTo(sx * 30, bahuY - 12); c.quadraticCurveTo(sx * 104, bahuY - 12, sx * 106, bahuY + 40);
+      c.lineTo(sx * 96, pinggul + 90); c.lineTo(sx * 26, pinggul + 96); c.lineTo(sx * 22, bahuY + 150); c.closePath(); };
+    jas(-1); isi(w.jas); jas(1); isi(w.jas); c.save(); jas(1); c.clip(); c.fillStyle = w.jas2; c.fillRect(56, bahuY - 30, 80, 600); c.restore();
+    rr(-84, bahuY + 110, 40, 12, 4); isi(C.biru);   /* papan nama */
+    rr(46, pinggul - 40, 36, 44, 6); isi(w.jas2);   /* saku */
+  }
+  if (w.rompi) { const r = (sx) => { c.beginPath(); c.moveTo(sx * 26, bahuY - 8); c.quadraticCurveTo(sx * 96, bahuY - 6, sx * 98, bahuY + 50);
+      c.lineTo(sx * 86, pinggul + 30); c.lineTo(sx * 18, pinggul + 34); c.lineTo(sx * 14, bahuY + 110); c.closePath(); };
+    r(-1); isi(w.rompi); r(1); isi(w.rompi2); rr(-78, bahuY + 100, 44, 14, 4); isi('#fff'); }
+  /* -- lengan (setelah badan) -- */
+  const tangan = {};
+  const lengan = (sisi, key) => {
+    const S = [sisi * 92, bahuY + 10], spec = o.tangan && o.tangan[key];
+    const ayun = Math.sin(t * 2.2 + sisi) * 4;
+    const T = spec ? [spec[0], spec[1] + napas] : [sisi * 112 + ayun, bahuY + 320];
+    const {e, h} = ik(S, T, 170, 160, spec ? (spec[2] ?? -sisi) : -sisi);
+    const kulit = w.kulit, baju = w.jas || w.atas;
+    if (w.lengan === 'panjang') { garis([S, e, [lerp(e[0], h[0], .82), lerp(e[1], h[1], .82)]], 46, baju); }
+    else { garis([S, e, h], 38, kulit); garis([S, [lerp(S[0], e[0], .5), lerp(S[1], e[1], .5)]], 52, baju); }
+    el(h[0], h[1], 24, 24); isi(kulit);
+    tangan[key] = h;
+  };
+  lengan(-1, 'ki'); lengan(1, 'ka');
+  if (o.pegang) o.pegang(c, tangan);
+  /* -- kepala -- */
+  c.save(); c.translate(0, kepalaY); c.rotate((o.tilt || 0) + Math.sin(t * 1.3 + (o.benih || 0)) * .015);
+  const e = o.eks || EKS.netral, kd = kedip(t, o.benih || 1);
+  if (o.belakang) {
+    el(0, 0, 62, 76); isi(w.kulit); el(-60, 4, 10, 16); isi(w.kulit2); el(60, 4, 10, 16); isi(w.kulit2);
+    el(0, -14, 68, 72); isi(w.rambut);
+    if (w.rambutTipe === 'ikat') { el(0, 64, 26, 30); isi(w.rambut); }
+  } else {
+    el(-60 + fx * .4, 4, 11, 17); isi(w.kulit2); el(60 + fx * .4, 4, 11, 17); isi(w.kulit2);
+    if (w.anting) { el(-60 + fx * .4, 24, 5, 5); isi('#fff'); el(60 + fx * .4, 24, 5, 5); isi('#fff'); }
+    el(fx * .25, 0, 62, 76); isi(w.kulit);
+    /* bayang pipi kanan */
+    c.save(); el(fx * .25, 0, 62, 76); c.clip(); el(fx * .25 + 66, 6, 30, 90); c.globalAlpha = .25; isi(w.kulit2); c.globalAlpha = 1; c.restore();
+    /* pipi merona */
+    c.globalAlpha = .28 * (e.pipi ?? .3) / .3 * .7; el(-34 + fx, 24, 13, 8); isi('#E4626A'); el(34 + fx, 24, 13, 8); isi('#E4626A'); c.globalAlpha = 1;
+    /* mata */
+    const buka = (e.buka ?? 1) * (1 - kd), my = -6;
+    [-1, 1].forEach(sx => { const mx = sx * 26 + fx;
+      if ((e.senyumMata || 0) > .5) { c.beginPath(); c.arc(mx, my + 4, 11, Math.PI * 1.1, Math.PI * 1.9); c.lineWidth = 5; c.strokeStyle = '#1B1A26'; c.lineCap = 'round'; c.stroke(); return; }
+      if (buka < .12) { garis([[mx - 11, my], [mx + 11, my]], 5, '#1B1A26'); return; }
+      el(mx, my, 13, 10 * buka); isi('#FFFFFF');
+      c.save(); el(mx, my, 13, 10 * buka); c.clip(); el(mx + (e.lx || 0) * 5, my + (e.ly || 0) * 3, 7.5, 8.5); isi('#1B1A26'); el(mx + (e.lx || 0) * 5 + 2.5, my - 3, 2.2, 2.2); isi('#fff'); c.restore();
+      garis([[mx - 14, my - 10 * buka + 2], [mx, my - 10 * buka - 1], [mx + 14, my - 10 * buka + 2]], 4.5, '#1B1A26');
+    });
+    /* alis */
+    [-1, 1].forEach(sx => { const ax = sx * 27 + fx, ay = -30 + (e.alis || 0), m = (e.miring || 0) * sx;
+      c.save(); c.translate(ax, ay); c.rotate(-m * sx); rr(-17, -4.5, 34, 9, 5); isi('#1B1A26'); c.restore(); });
+    /* hidung */
+    c.beginPath(); c.moveTo(fx * 1.2 + 2, 6); c.quadraticCurveTo(fx * 1.2 + 9, 22, fx * 1.2 - 1, 24); c.lineWidth = 4; c.strokeStyle = w.kulit2; c.lineCap = 'round'; c.stroke();
+    /* mulut */
+    const mb = Math.max(e.mulut || 0, o.bicara || 0), sm = e.senyum || 0, mx0 = fx * 1.1, my0 = 44;
+    if (mb > .15) { el(mx0, my0 + 2, 11 + sm * 5, 4 + 11 * mb); isi('#7A2632'); c.save(); el(mx0, my0 + 2, 11 + sm * 5, 4 + 11 * mb); c.clip(); el(mx0, my0 + 10 * mb + 4, 9, 6); isi('#E36A72'); c.restore(); }
+    else { c.beginPath(); c.moveTo(mx0 - 14, my0 - sm * 3); c.quadraticCurveTo(mx0, my0 + sm * 12, mx0 + 14, my0 - sm * 3); c.lineWidth = 4.5; c.strokeStyle = '#7A2632'; c.lineCap = 'round'; c.stroke(); }
+    /* rambut depan */
+    if (w.rambutTipe === 'panjang') {
+      c.beginPath(); c.moveTo(-68 + fx * .2, 30); c.quadraticCurveTo(-76, -78, 0, -84); c.quadraticCurveTo(76, -80, 68 + fx * .2, 20);
+      c.quadraticCurveTo(54, -44, 10 + fx, -48); c.quadraticCurveTo(-30 + fx, -46, -52 + fx * .5, -18); c.quadraticCurveTo(-56, 6, -60, 40); c.closePath(); isi(w.rambut);
+      /* helai depan bahu */
+      rr(-80 + fx * .2, -10, 26, 190, 13); isi(w.rambut);
+    } else if (w.rambutTipe === 'pendek') {
+      c.beginPath(); c.moveTo(-64, 6); c.quadraticCurveTo(-72, -84, 0, -86); c.quadraticCurveTo(70, -86, 66, 2);
+      c.quadraticCurveTo(58, -40, 30 + fx, -46); c.quadraticCurveTo(-10 + fx, -36, -30 + fx, -50); c.quadraticCurveTo(-52, -36, -58, 8); c.closePath(); isi(w.rambut);
+    } else if (w.rambutTipe === 'ikat') {
+      c.beginPath(); c.moveTo(-64, 6); c.quadraticCurveTo(-70, -84, 0, -86); c.quadraticCurveTo(70, -84, 64, 6); c.quadraticCurveTo(40, -50, 0, -48); c.quadraticCurveTo(-40, -50, -64, 6); c.closePath(); isi(w.rambut);
+    }
+  }
+  c.restore();
+  c.restore();
+  /* kembalikan titik tangan dalam koordinat dunia */
+  const keDunia = p => p && [o.x + p[0] * s, o.y + p[1] * s];
+  return {ki: keDunia(tangan.ki), ka: keDunia(tangan.ka), kepala: [o.x, o.y + kepalaY * s], s};
+}
+
+/* == 5. LATAR: interior apotek siang == */
+const RG = rng(11);
+const KOTAK = Array.from({length: 40}, (_, i) => ({w: 34 + RG() * 34, h: 50 + RG() * 50, c: ['#3064D1', '#4BA299', '#5BAC72', '#F2C14E', '#F49AA3', '#FFFFFF', '#8FB7F2', '#E7EEF8'][Math.floor(RG() * 8)]}));
+function luarJendela(x0, y0, w, h) {
+  c.save(); rr(x0, y0, w, h, 18); c.clip();
+  const g = c.createLinearGradient(0, y0, 0, y0 + h); g.addColorStop(0, '#CFE3FA'); g.addColorStop(1, '#EAF3FD'); c.fillStyle = g; c.fillRect(x0, y0, w, h);
+  const ged = [[.02, .22, .5], [.2, .14, .72], [.36, .2, .4], [.58, .16, .8], [.76, .22, .55]];
+  ged.forEach(([fx, fw, fh], i) => { const gx = x0 + fx * w, gw = fw * w, gh = fh * h, gy = y0 + h - gh;
+    c.fillStyle = i % 2 ? C.gedung1 : C.gedung2; c.fillRect(gx, gy, gw, gh);
+    c.fillStyle = C.jendelaG; for (let yy = gy + 18; yy < y0 + h - 10; yy += 22) c.fillRect(gx + 10, yy, gw - 20, 7); });
+  /* pohon */
+  [[.1, .86, 90], [.42, .9, 110], [.85, .88, 95]].forEach(([fx, fy, r], i) => { const px = x0 + fx * w, py = y0 + fy * h;
+    el(px, py, r, r * 1.1); isi(i % 2 ? C.pohon2 : C.pohon1); el(px - r * .25, py - r * .3, r * .55, r * .55); c.globalAlpha = .35; isi('#fff'); c.globalAlpha = 1; });
+  c.restore();
+  /* kusen */
+  c.lineWidth = 16; c.strokeStyle = '#FFFFFF'; rr(x0, y0, w, h, 18); c.stroke();
+  c.fillStyle = '#FFFFFF'; c.fillRect(x0 + w / 2 - 6, y0, 12, h);
+}
+function rak(x0, y0, w, baris) {
+  rr(x0 - 14, y0 - 20, w + 28, baris * 190 + 30, 14); isi('#F7E4CF');
+  for (let b = 0; b < baris; b++) { const by = y0 + b * 190 + 150; let xx = x0 + 6, i = b * 9;
+    while (xx < x0 + w - 30) { const k = KOTAK[i++ % KOTAK.length]; rr(xx, by - k.h, k.w, k.h, 6); isi(k.c); c.globalAlpha = .12; c.fillStyle = '#000'; c.fillRect(xx + k.w * .65, by - k.h, k.w * .35, k.h); c.globalAlpha = 1; xx += k.w + 8; }
+    rr(x0 - 14, by, w + 28, 16, 4); isi('#E9C7A2'); }
+}
+function apotekSiang(t) {
+  pasang(.25);
+  c.fillStyle = C.dinding; c.fillRect(-200, -200, W + 400, H + 400);
+  c.fillStyle = C.dinding2; c.fillRect(-200, 1180, W + 400, 80);
+  luarJendela(330, 250, 700, 640);
+  /* tanda salib hijau apotek */
+  c.save(); c.translate(180, 230); rr(-70, -70, 140, 140, 28); isi(C.hijau); rr(-16, -48, 32, 96, 8); isi('#fff'); rr(-48, -16, 96, 32, 8); isi('#fff'); c.restore();
+  rak(30, 360, 240, 4);
+  pasang(.6);
+  c.fillStyle = C.lantai; c.fillRect(-300, 1250, W + 600, H);
+  for (let i = -3; i < 14; i++) { c.fillStyle = C.lantai2; c.fillRect(i * 120, 1250, 4, H); }
+}
+function meja(t) {
+  /* meja kasir bergaris seperti kios di referensi */
+  const x0 = 420, y0 = 1080, w = 760, h = 400;
+  rr(x0 - 10, y0 - 22, w, 36, 10); isi('#FFFFFF');
+  c.save(); rr(x0, y0 + 14, w, h, [0, 0, 10, 10]); c.clip();
+  for (let i = 0; i < 15; i++) { c.fillStyle = i % 2 ? C.kayu2 : C.kayu; c.fillRect(x0, y0 + 14 + i * 28, w, 28); }
+  c.restore();
+  /* monitor & mesin kasir */
+  rr(470, 900, 190, 130, 14); isi(C.navy); rr(482, 912, 166, 106, 8); isi('#2F4A66'); rr(550, 1030, 30, 34, 4); isi('#9AA9BB'); rr(515, 1052, 100, 12, 6); isi('#9AA9BB');
+  rr(495, 935, 90, 12, 6); isi('#6FA0E8'); rr(495, 960, 120, 10, 5); isi('#4E6E92'); rr(495, 980, 70, 10, 5); isi('#4E6E92');
+}
+function tasObat(cx, cy, s = 1) {
+  c.save(); c.translate(cx, cy); c.scale(s, s);
+  c.beginPath(); c.moveTo(-22, 0); c.quadraticCurveTo(0, -60, 22, 0); c.lineWidth = 8; c.strokeStyle = C.biruTua; c.stroke();
+  rr(-55, 0, 110, 120, 10); isi('#FFFFFF'); c.fillStyle = '#E3EAF5'; c.fillRect(25, 0, 30, 120);
+  rr(-14, 34, 28, 52, 4); isi(C.hijau); rr(-26, 48, 52, 24, 4); isi(C.hijau);
+  c.restore();
+}
+function tandaSeru(x, y, k, t) { if (k <= 0) return;
+  c.save(); c.translate(x, y); c.scale(k, k); c.rotate(Math.sin(t * 9) * .06);
+  rr(-27, -120, 54, 100, 27); isi('#fff'); el(0, -6, 28, 28); isi('#fff');
+  rr(-17, -110, 34, 80, 17); isi(C.merah); el(0, -6, 18, 18); isi(C.merah);
+  c.restore(); }
+function silangBesar(x, y, k, t) { if (k <= 0) return;
+  c.save(); c.translate(x, y); c.scale(k, k);
+  el(0, 0, 150, 150); c.globalAlpha = .16; isi(C.merah); c.globalAlpha = 1;
+  [[-1], [1]].forEach(([sx]) => { c.save(); c.rotate(sx * Math.PI / 4); rr(-130, -26, 260, 52, 26); isi(C.merah); c.restore(); });
+  c.restore(); }
+
+/* == 6. ADEGAN == */
+function adegan1(t) {
+  const A = WAKTU.s1;
+  /* kamera: dorong pelan ke tengah, sentak kecil saat silang */
+  const sh = seg(t, A.silang, A.silang + .35), getar = (1 - sh) * (sh > 0 ? 1 : 0);
+  CAM = {x: 540 - 20 * E.io(seg(t, 0, 4)), y: 980, z: 1.0 + .07 * E.io(seg(t, 0, 4.4)), gx: Math.sin(t * 70) * 10 * getar, gy: Math.cos(t * 63) * 6 * getar};
+  apotekSiang(t);
+  pasang(.85);
+  /* kasir di balik meja */
+  const kasirEks = kunciEks(t, [[0, {...EKS.senyum, buka: 1, alis: -8, miring: -.15, mulut: 0, senyum: 1.1, lx: .5}], [A.silang + .2, {...EKS.netral, alis: -8, miring: -.15, senyum: .6, lx: .6}, .3]]);
+  tokoh({x: 760, y: 1480, s: .88, t, benih: 2, w: TOKOH.kasir, lihat: .45, eks: kasirEks, bicara: 0,
+    tangan: {ka: [215 + Math.sin(t * 2) * 6, -690, 1]},
+    pegang: (cc, h) => tasObat(h.ka[0] + 10, h.ka[1] - 4, .9)});
+  meja(t);
+  /* pembeli (dari belakang) */
+  tokoh({x: 1015, y: 1660, s: .95, t, benih: 5, w: TOKOH.pembeli, belakang: true, tangan: {ki: [-120, -620, -1]}});
+  pasang(1);
+  /* Bu Owner di depan, menyipit curiga */
+  const ownEks = kunciEks(t, [[0, 'curiga'], [A.silang + .15, 'kaget', .18], [A.silang + .75, 'bingung', .35]]);
+  const tilt = lerp(-.06, .05, E.io(seg(t, A.silang + .6, A.silang + 1)));
+  const own = tokoh({x: 300, y: 2075, s: 1.25, t, benih: 1, w: TOKOH.owner, lihat: lerp(.75, .3, E.io(seg(t, A.silang + .6, A.silang + 1))), tilt, eks: ownEks,
+    tangan: t < A.silang + .6 ? {ka: [22, -800, -1], ki: [-96, -520, 1]} : {ka: [70, -930, -1], ki: [-96, -520, 1]}});
+  tandaSeru(own.kepala[0] + 125, own.kepala[1] - 95, pop(t, A.seru, .35) * (1 - seg(t, A.pikirOut, A.pikirOut + .2)), t);
+  silangBesar(780, 860, pop(t, A.silang, .35), t);
+  return own;
+}
+
+/* == 7. TEKS (balon & kinetik) == */
+const B1 = $('#bPikir1'); B1.style.left = '80px'; B1.style.top = '470px';
+const K1 = $('#k1'); K1.style.top = '1470px';
+function popEl(elx, t, a, b, dari = .3) {
+  const k = pop(t, a, .35), h = 1 - E.in(seg(t, b, b + .22));
+  elx.style.opacity = Math.min(1, seg(t, a, a + .12) * 1.5) * h;
+  elx.style.transform = `scale(${lerp(dari, 1, k) * lerp(.85, 1, h)})`;
+}
+
+const SCENE = {
+  dur: WAKTU.s1.akhir,
+  sub: {gaya: 'mati'},
+  audio: {vo: [], sfx: [], music: null},
+  build(tl) {
+    K1.style.opacity = 1; wIn(tl, K1.querySelector('.pil'), WAKTU.s1.kin, {st: .09, y: 60});
+  },
+  frame(t) {
+    c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, W, H);
+    adegan1(t);
+    popEl(B1, t, WAKTU.s1.pikir, WAKTU.s1.pikirOut);
+    const kp = K1.querySelector('.pil'); kp.style.transform = `scale(${1 + .05 * Math.sin(seg(t, WAKTU.s1.silang, WAKTU.s1.silang + .3) * Math.PI)})`;
+  }
+};
