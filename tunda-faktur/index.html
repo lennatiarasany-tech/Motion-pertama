@@ -145,7 +145,7 @@ function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEa
 
 /* == 1. WAKTU (detik layar). Disesuaikan ke VO setelah suara jadi == */
 const WAKTU = {
-  s1: {a: 0, pikir: .25, seru: .55, pikirOut: 2.25, kin: 2.55, silang: 2.85, akhir: 4.4},
+  s1: {a: 0, pikir: .25, seru: .6, pikirOut: 2.4, kin: 2.6, silang: 3.75, akhir: 5.4},
 };
 
 /* == 2. PALET (dari referensi + brand) == */
@@ -451,7 +451,11 @@ function popEl(elx, t, a, b, dari = .3) {
 const SCENE = {
   dur: WAKTU.s1.akhir,
   sub: {gaya: 'mati'},
-  audio: {vo: [], sfx: [], music: null},
+  audio: {
+    vo: [{src: 'assets/audio/vo-01.mp3', at: .1, teks: 'Owner apotek ini hampir nuduh kasirnya sendiri. Padahal bocornya bukan di kasir.'}],
+    sfx: [{src: 'assets/audio/sfx-pop.mp3', at: .22, vol: .35}, {src: 'assets/audio/sfx-hmm.mp3', at: .55, vol: .3},
+          {src: 'assets/audio/sfx-buzz.mp3', at: 3.75, vol: .3}],
+    music: null},
   build(tl) { K1.style.opacity = 1; wIn(tl, K1.querySelector('.pil'), WAKTU.s1.kin, {st: .09, y: 60}); },
   frame(t) {
     c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, W, H);
