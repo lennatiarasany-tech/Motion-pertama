@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<title>Cover Tunda Faktur</title>
+<script src="../assets/karakter.js"></script>
+<style>
+@font-face{font-family:'Poppins';font-weight:700;src:url(../assets/font/poppins-700.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:800;src:url(../assets/font/poppins-800.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:900;src:url(../assets/font/poppins-900.woff2) format('woff2')}
+html,body{margin:0;background:#000}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:'Poppins';background:#2F6CE0}
+.latar{position:absolute;inset:-80px;background:url(latar.jpg) center/cover;filter:blur(26px) saturate(1.1)}
+.biru{position:absolute;inset:0;background:linear-gradient(180deg,rgba(214,230,252,.92) 0%,rgba(120,170,245,.78) 14%,rgba(48,108,224,.86) 34%,rgba(36,92,210,.9) 70%,rgba(30,78,190,.95) 100%)}
+.cahaya{position:absolute;left:-200px;top:820px;width:1500px;height:900px;background:radial-gradient(ellipse at 50% 50%,rgba(255,255,255,.28),transparent 60%)}
+.logo{position:absolute;left:50%;top:250px;transform:translateX(-50%);width:430px}
+.judul{position:absolute;left:0;right:0;top:400px;text-align:center}
+.lbl{display:inline-block;padding:6px 26px 10px;font-weight:900;letter-spacing:-.02em;line-height:1.05;white-space:nowrap}
+.putih{background:#fff;color:#1B2B3B;font-size:94px;transform:rotate(-1.5deg);box-shadow:0 8px 0 rgba(27,43,59,.18)}
+.hijau{background:#5BAC72;color:#1B2B3B;font-size:86px;transform:rotate(-1deg);margin-top:-6px}
+.kecil{display:block;color:#fff;font-weight:900;font-size:70px;line-height:1.05;letter-spacing:-.02em;text-shadow:0 4px 0 rgba(20,40,110,.35);margin-bottom:12px}
+.sub{display:block;color:#fff;font-weight:800;font-size:42px;margin-top:22px;text-shadow:0 3px 8px rgba(10,30,90,.4)}
+.merah{color:#E2524A}
+.tok{position:absolute;width:640px;height:940px;transform-origin:320px 905px}
+.tok svg{display:block;width:640px;height:940px}
+svg.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:visible}
+.kaki{position:absolute;bottom:250px;left:0;right:0;text-align:center}
+.pil{display:inline-block;background:#5BAC72;color:#fff;font-weight:800;font-size:30px;padding:10px 26px;border-radius:30px}
+</style></head><body>
+<div id="c">
+  <div class="latar"></div><div class="biru"></div><div class="cahaya"></div>
+  <img class="logo" src="../assets/gambar/logo.png" alt="Apotek Digital x digikes">
+  <div class="judul">
+    <span class="kecil">Margin Turun Terus?</span>
+    <span class="lbl putih">Bocornya <span class="merah">BUKAN</span></span><br>
+    <span class="lbl hijau">di Kasir!</span>
+    <span class="sub">Cek celah faktur pakai Tunda Faktur</span>
+  </div>
+  <svg class="fx" id="fx" viewBox="0 0 1080 1920"></svg>
+  <div class="tok" id="owner"></div>
+  <div class="kaki"><span class="pil">🌐 apotekdigital.com</span></div>
+</div>
+<script>
+const NS = 'http://www.w3.org/2000/svg', fx = document.getElementById('fx');
+const el = (t, a, p = fx) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+const txt = (p, x, y, s, o) => { const e = el('text', Object.assign({x, y, 'font-family': 'Poppins'}, o), p); e.textContent = s; return e; };
+/* faktur besar miring dengan temuan merah */
+const doc = el('g', {transform: 'translate(310,1230) rotate(-8)'});
+el('rect', {x: -230, y: -300, width: 460, height: 600, rx: 26, fill: '#fff'}, doc);
+el('rect', {x: -230, y: -300, width: 460, height: 90, rx: 26, fill: '#3064D1'}, doc); el('rect', {x: -230, y: -230, width: 460, height: 20, fill: '#3064D1'}, doc);
+txt(doc, -196, -240, 'FAKTUR PBF', {'font-weight': 900, 'font-size': 38, fill: '#fff'});
+[['Harga beli', 'Rp 48.500'], ['Diskon', '5%'], ['Bonus', '+2 box'], ['Total', 'Rp 4,6 jt']].forEach(([k, v], i) => {
+  const y = -140 + i * 105; if (i < 3) el('rect', {x: -212, y: y - 44, width: 424, height: 70, rx: 16, fill: '#E2524A', opacity: .14}, doc);
+  txt(doc, -196, y, k, {'font-weight': 700, 'font-size': 30, fill: '#7A8BA3'}); txt(doc, 196, y, v, {'font-weight': 900, 'font-size': 32, fill: '#1B2B3B', 'text-anchor': 'end'});
+  if (i < 3) { const g = el('g', {transform: `translate(200,${y - 52})`}, doc); el('circle', {r: 26, fill: '#E2524A'}, g); txt(g, 0, 11, '✕', {'font-weight': 900, 'font-size': 30, fill: '#fff', 'text-anchor': 'middle'}); } });
+/* cap LUNAS 2x */
+[0, 1].forEach(i => { const g = el('g', {transform: `translate(${300 + i * 40},${1430 - i * 46}) rotate(${-18 + i * 9})`}); el('rect', {x: -150, y: -52, width: 300, height: 104, rx: 16, fill: 'none', stroke: '#E2524A', 'stroke-width': 11}, g);
+  txt(g, 0, 24, 'LUNAS', {'font-weight': 900, 'font-size': 64, fill: '#E2524A', 'text-anchor': 'middle', 'letter-spacing': 5}); });
+/* koin bocor dari faktur */
+[[520, 1470, .95], [470, 1560, .8], [545, 1600, .7]].forEach(([x, y, s]) => { const g = el('g', {transform: `translate(${x},${y}) scale(${s}) rotate(${x % 40})`});
+  el('circle', {r: 44, fill: '#FFD45C'}, g); el('circle', {r: 33, fill: 'none', stroke: '#E8B63A', 'stroke-width': 6}, g); txt(g, 0, 12, 'Rp', {'font-weight': 900, 'font-size': 32, fill: '#B9831B', 'text-anchor': 'middle'}); });
+/* garis kejut ala cover Shorts */
+const kejut = (x, y, r, a0) => [0, 1, 2].forEach(i => { const a = a0 + i * .5; el('line', {x1: x + Math.cos(a) * r, y1: y + Math.sin(a) * r, x2: x + Math.cos(a) * (r + 46), y2: y + Math.sin(a) * (r + 46), stroke: '#1B2B3B', 'stroke-width': 11, 'stroke-linecap': 'round'}); el('line', {x1: x + Math.cos(a) * r, y1: y + Math.sin(a) * r, x2: x + Math.cos(a) * (r + 46), y2: y + Math.sin(a) * (r + 46), stroke: '#fff', 'stroke-width': 5, 'stroke-linecap': 'round'}); });
+kejut(860, 1060, 150, -2.6); kejut(140, 960, 40, -2.2);
+/* tanda seru */
+const sr = el('g', {transform: 'translate(930,960) rotate(10)'}); el('circle', {r: 54, fill: '#E2524A', stroke: '#fff', 'stroke-width': 8}, sr); txt(sr, 0, 28, '!', {'font-weight': 900, 'font-size': 82, fill: '#fff', 'text-anchor': 'middle'});
+/* Bu Owner kaget */
+const o = document.getElementById('owner'); o.innerHTML = `<svg viewBox="0 0 640 940">${KAR['bu-owner_kaget']}</svg>`;
+o.style.transform = 'translate(470px,1225px) scale(1.25)';
+o.style.left = '0'; o.style.top = '0';
+o.style.filter = 'drop-shadow(0 18px 24px rgba(10,30,90,.35))';
+</script>
+</body></html>
