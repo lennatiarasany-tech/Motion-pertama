@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 940" width="640" height="940"><g transform="translate(120,40)"><rect x="140" y="520" width="56" height="320" rx="14" fill="#1B2B3B"/>
+<rect x="204" y="520" width="56" height="320" rx="14" fill="#1B2B3B"/>
+<rect x="196" y="520" width="8" height="60" fill="#1B2B3B"/>
+<ellipse cx="164" cy="848" rx="36" ry="15" fill="#2B2F3A"/>
+<ellipse cx="236" cy="848" rx="36" ry="15" fill="#2B2F3A"/>
+<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L280,545 L120,545 Z" fill="#4BA299"/>
+<path d="M150,262 L250,262 L262,545 L138,545 Z" fill="#FFFFFF" opacity="0.92"/>
+<rect x="168" y="420" width="64" height="40" rx="6" fill="#4BA299" opacity="0.25"/>
+<rect x="183" y="222" width="34" height="48" rx="10" fill="#AE7248"/>
+<circle cx="141" cy="178" r="13" fill="#AE7248"/><circle cx="259" cy="178" r="13" fill="#AE7248"/>
+<ellipse cx="200" cy="170" rx="60" ry="70" fill="#C98A5E"/>
+<path d="M128,178 Q126,88 200,86 Q274,88 272,178 Q276,260 300,330 Q200,365 100,330 Q124,260 128,178 Z" fill="#2C59AE"/>
+<ellipse cx="200" cy="178" rx="54" ry="62" fill="#C98A5E"/>
+<path d="M146,160 Q150,112 200,110 Q250,112 254,160 Q236,128 200,126 Q164,128 146,160 Z" fill="#2C59AE"/>
+<ellipse cx="178" cy="174" rx="6.5" ry="8.5" fill="#1B2B3B"/><circle cx="180" cy="171" r="2.2" fill="#fff"/>
+<ellipse cx="222" cy="174" rx="6.5" ry="8.5" fill="#1B2B3B"/><circle cx="224" cy="171" r="2.2" fill="#fff"/>
+<path d="M166,152 Q177,145 189,150" stroke="#1B2B3B" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M211,150 Q223,145 234,152" stroke="#1B2B3B" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M186,204 Q200,215 214,204" stroke="#1B2B3B" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M200,182 Q195,192 202,194" stroke="#AE7248" stroke-width="3" stroke-linecap="round" fill="none"/>
+<circle cx="166" cy="196" r="9" fill="#F07A7A" opacity="0.3"/><circle cx="234" cy="196" r="9" fill="#F07A7A" opacity="0.3"/>
+
+<g id="arm-left" transform="translate(138,285) rotate(10)">
+  <rect x="-17" y="-12" width="34" height="142" rx="17" fill="#4BA299"/>
+  <g id="arm-left-forearm" transform="translate(0,125) rotate(-4)">
+    <rect x="-15" y="-14" width="30" height="122" rx="15" fill="#4BA299"/>
+    <rect x="-15" y="88" width="30" height="14" rx="5" fill="#000" opacity="0.08"/>
+    
+    <circle cx="0" cy="118" r="19" fill="#C98A5E"/>
+  </g>
+</g>
+<g id="arm-right" transform="translate(262,285) rotate(-10)">
+  <rect x="-17" y="-12" width="34" height="142" rx="17" fill="#4BA299"/>
+  <g id="arm-right-forearm" transform="translate(0,125) rotate(4)">
+    <rect x="-15" y="-14" width="30" height="122" rx="15" fill="#4BA299"/>
+    <rect x="-15" y="88" width="30" height="14" rx="5" fill="#000" opacity="0.08"/>
+    
+    <circle cx="0" cy="118" r="19" fill="#C98A5E"/>
+  </g>
+</g></g></svg>
