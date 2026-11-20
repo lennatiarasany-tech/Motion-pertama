@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contoh C · Kolase Kertas Stop-Motion</title>
+<!-- Motion Format · mesin adegan. File ini DIRAKIT oleh `python3 scripts/mf.py rakit <proyek>`
+     dari scene.html + assets/mesin/core.html. Jangan edit index.html langsung: edit scene.html lalu rakit ulang.
+     Buka di browser: autoplay + loop. ?debug=1 = penggeser waktu · ?t=4.2 = berhenti di detik 4,2 ·
+     ?clean=1 = diam untuk render. Tombol: R = ulang, Spasi = jeda. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@900&display=swap">
+<style>
+#dunia{position:absolute;inset:0}
+
+.jdl{position:absolute;left:0;width:100%;top:255px;text-align:center;font:400 76px/1.05 'Lilita One';color:#1E1A24}
+.jdl span,.jdl b{display:inline-block;background:#FBF4E2;padding:6px 26px;box-shadow:6px 10px 14px rgba(20,10,0,.45);transform:rotate(-3deg)}
+.jdl b{display:table;margin:14px auto 0;font-size:138px;font-weight:400;background:#F6C445;transform:rotate(2deg)}
+.bal{position:absolute;left:80px;width:850px;bottom:300px;background:#FFFFFF;padding:34px 42px;font:900 54px/1.22 Nunito;color:#1E1A24;transform:rotate(-1.5deg);box-shadow:8px 14px 18px rgba(20,10,0,.45)}
+.bal em{font-style:normal;color:#E94F37}
+.bal .nm{position:absolute;top:-40px;right:44px;background:#8E5BB5;color:#fff;font:400 42px 'Lilita One';padding:4px 22px;transform:rotate(4deg);box-shadow:4px 7px 10px rgba(20,10,0,.4)}
+
+</style>
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1080px;height:1920px;transform-origin:50% 50%;overflow:hidden;-webkit-font-smoothing:antialiased}
+#stage *{box-sizing:border-box}
+.abs{position:absolute}
+.wd{display:inline-block;white-space:nowrap}.wi{display:inline-block;will-change:transform}
+#grain{position:absolute;inset:-64px;pointer-events:none;z-index:90;mix-blend-mode:overlay;opacity:0}
+#mfSub{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:80;text-align:center}
+#mfSub .sw{display:inline-block;margin:0 .14em;transform-origin:50% 85%}
+#mfLab{position:absolute;inset:0;pointer-events:none;z-index:70;overflow:visible}
+#dbg{position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;padding:8px 12px;background:rgba(0,0,0,.75);color:#fff;font:13px/1 monospace;z-index:999}
+#dbg input{flex:1}
+</style>
+</head>
+<body>
+<div id="stage">
+<div id="dunia"></div>
+<div class="jdl" id="jdl"><span>Nenek mau</span><b>BELI OBAT</b></div>
+<div class="bal"><div class="nm">NENEK</div>Yang <em>putih</em>, <em>bulet</em> itu loh, Nak.</div>
+<svg id="mfLab" viewBox="0 0 1080 1920"></svg>
+<div id="mfSub"></div>
+<div id="grain"></div>
+</div>
+<div id="dbg"><button id="dPlay">⏯</button><input id="dScrub" type="range" min="0" max="1000" value="0"><span id="dClock">0.00</span></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>window.gsap||document.write('<script src="gsap.min.js"><\/script>')</script>
+<script src="kata.js" onerror="window.KATA=window.KATA||null"></script>
+<script>
+/* ================= MESIN MOTION FORMAT =================
+   Aturan emas: semua gerak adalah fungsi dari waktu t (detik). Jangan pakai Date, performance.now,
+   requestAnimationFrame, setTimeout, atau Math.random tanpa benih: render MP4 = lompat ke tiap frame. */
+window.__errs=[];addEventListener('error',e=>__errs.push(String(e.message)));addEventListener('unhandledrejection',e=>__errs.push('Promise: '+String(e.reason&&e.reason.stack||e.reason)));
+const W=1080,H=1920,RASIO='9:16',TEGAK=H>W,q=new URLSearchParams(location.search);
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);$('#stage').style.transform=`translate(-50%,-50%) scale(${s})`;}
+addEventListener('resize',fit);fit();
+
+/* ---------- matematika kecil ---------- */
+const lerp=(a,b,k)=>a+(b-a)*k,clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const sstep=(a,b,x)=>{const k=clamp((x-a)/(b-a));return k*k*(3-2*k);};
+const seg=(t,a,b)=>clamp((t-a)/(b-a));                 // 0..1 di rentang [a,b]
+const E={lin:k=>k,out:k=>1-Math.pow(1-k,3),in:k=>k*k*k,io:k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2,
+  s:k=>k*k*(3-2*k),ox:k=>k>=1?1:1-Math.pow(2,-10*k),
+  back:k=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2);},
+  pegas:k=>k>=1?1:1-Math.exp(-6*k)*Math.cos(12*k)};
+const nz=(t,s=0)=>Math.sin(t*1.31+s*7.13)*.5+Math.sin(t*2.71+s*3.37)*.3+Math.sin(t*.613+s*1.71)*.2; // goyang halus -1..1
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const hash=n=>{const s=Math.sin(n*127.1+31.7)*43758.5453;return s-Math.floor(s);};
+
+/* ---------- DOM & SVG ---------- */
+function mk(tag,cls,parent,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;(parent||$('#stage')).appendChild(e);return e;}
+function svgEl(tag,attrs,parent){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function kanvas(w=W,h=H,parent){const c=document.createElement('canvas');c.width=w;c.height=h;if(parent){c.style.cssText=`position:absolute;left:0;top:0;width:${w}px;height:${h}px`;parent.appendChild(c);}return c;}
+
+/* ---------- teks per kata: masuk/keluar dengan blur berarah ---------- */
+function split(el){const out=[];(function walk(n){[...n.childNodes].forEach(c=>{if(c.nodeType===3){const parts=c.textContent.split(/(\s+)/);const frag=document.createDocumentFragment();parts.forEach(p=>{if(!p)return;if(/^\s+$/.test(p)){frag.appendChild(document.createTextNode(' '));return;}const wd=document.createElement('span');wd.className='wd';const wi=document.createElement('span');wi.className='wi';wi.textContent=p;wd.appendChild(wi);frag.appendChild(wd);out.push(wi);});c.replaceWith(frag);}else if(c.nodeType===1&&!c.classList.contains('wd'))walk(c);});})(el);return out;}
+const W8=el=>el._w||(el._w=split(el));
+function wIn(tl,el,at,o={}){const ws=W8(el);tl.set(el,{autoAlpha:1},at);tl.fromTo(ws,{yPercent:o.y??80,xPercent:o.x??0,opacity:0,filter:`blur(${o.b??12}px)`,scaleY:o.sy??1.25},{yPercent:0,xPercent:0,opacity:1,filter:'blur(0px)',scaleY:1,duration:o.d??.6,ease:o.ease??'power3.out',stagger:o.st??.07},at);return tl;}
+function wOut(tl,el,at,o={}){const ws=W8(el);tl.to(ws,{yPercent:o.y??-70,xPercent:o.x??0,opacity:0,filter:`blur(${o.b??10}px)`,duration:o.d??.35,ease:'power2.in',stagger:o.st??.025},at);tl.set(el,{autoAlpha:0},at+(o.d??.35)+ws.length*(o.st??.025));return tl;}
+
+/* ---------- butiran film ---------- */
+function grainOn(opacity=.3,blend='overlay'){const c=kanvas(220,220),x=c.getContext('2d'),d=x.createImageData(220,220),r=rng(7);for(let i=0;i<d.data.length;i+=4){const v=r()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}x.putImageData(d,0,0);const g=$('#grain');g.style.backgroundImage=`url(${c.toDataURL()})`;g.style.opacity=opacity;g.style.mixBlendMode=blend;}
+function grainFrame(t){const k=Math.floor(t*12);$('#grain').style.transform=`translate(${(k*37)%64-32}px,${(k*53)%64-32}px)`;}
+
+/* ---------- zona aman: tempat teks penting boleh berada ---------- */
+const AMAN=TEGAK?{atas:180,bawah:H-300,kiri:70,kanan:W-150}:{atas:70,bawah:H-90,kiri:110,kanan:W-110};
+
+/* ---------- LABEL PENUNJUK: titik + garis + teks, tanpa kotak ----------
+   const L=label({x:540,y:900,dx:180,dy:-160,teks:'pompa air',warna:'#FFD27A'});
+   di frame(t): L.atur(t, muncul, hilang)            -> garis menggambar, teks masuk
+   objek bergerak / 3D: L.atur(t, muncul, hilang, xLayar, yLayar)  -> titik ikut objek, sisi teks dijaga di zona aman */
+function label(o){const g=svgEl('g',{opacity:0},$('#mfLab'));const w=o.warna||'#FFE7B0',fs=o.ukuran||(TEGAK?54:44);
+  const halo=svgEl('circle',{r:22,fill:w,opacity:.25},g),dot=svgEl('circle',{r:8,fill:w},g);
+  const ln=svgEl('polyline',{fill:'none',stroke:w,'stroke-width':4,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  const tt=svgEl('text',{fill:o.warnaTeks||'#FFFFFF','font-size':fs,'font-weight':o.tebal||800,style:'paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:10px;stroke-linejoin:round'},g);tt.textContent=o.teks;
+  let len=0,kunci='';
+  function tata(x,y){const kk=Math.round(x)+','+Math.round(y);if(kk===kunci)return;kunci=kk;
+    const d0=Math.abs(o.dx??160),lebar=fs*.58*String(o.teks).length+56;
+    const muatKanan=x+d0+lebar<=AMAN.kanan,muatKiri=x-d0-lebar>=AMAN.kiri;
+    let kanan=(o.dx??160)>=0?(muatKanan||!muatKiri&&AMAN.kanan-x>=x-AMAN.kiri):!(muatKiri||!muatKanan&&x-AMAN.kiri>=AMAN.kanan-x);
+    let tx=kanan?Math.min(x+d0,AMAN.kanan-lebar):Math.max(x-d0,AMAN.kiri+lebar);   // tak ada sisi lega: siku digeser ke dalam
+    const ty=clamp(y+(o.dy??-140),AMAN.atas+fs,AMAN.bawah-fs);
+    halo.setAttribute('cx',x);halo.setAttribute('cy',y);dot.setAttribute('cx',x);dot.setAttribute('cy',y);
+    ln.setAttribute('points',`${x},${y} ${tx},${ty} ${tx+(kanan?40:-40)},${ty}`);len=Math.hypot(tx-x,ty-y)+40;ln.setAttribute('stroke-dasharray',len);
+    tt.setAttribute('x',tx+(kanan?56:-56));tt.setAttribute('y',ty+fs*.35);tt.setAttribute('text-anchor',kanan?'start':'end');}
+  tata(o.x??W/2,o.y??H/2);
+  return{g,atur(t,a,b=1e9,x,y){if(!tt._f){tt._f=1;tt.setAttribute('font-family',o.font||(SUB.cfg?SUB.cfg.font.replace(/^.*?\d+px\s*/,''):'system-ui,sans-serif'));}
+    if(x!=null)tata(x,y);const k=E.out(seg(t,a,a+.5)),h=1-seg(t,b,b+.3);g.setAttribute('opacity',Math.min(1,k*3)*h);
+    ln.setAttribute('stroke-dashoffset',len*(1-k));tt.setAttribute('opacity',E.out(seg(t,a+.25,a+.6)));halo.setAttribute('r',22+8*Math.sin(t*4));}};}
+
+const MFlabel=label;   // nama cadangan bila adegan memakai nama `label` sendiri
+
+/* ---------- SUBTITLE dinamis per kata ----------
+   Sumber kata: SCENE.kata, atau window.KATA dari kata.js (dibuat `mf.py kata`). Format [{w,t0,t1}] detik layar.
+   SCENE.sub = { gaya:'polos'|'pil'|'mati', maks:4, y:0.68 (pecahan tinggi) atau fungsi(t,frasa)->{x,y},
+                 font:"800 64px 'Plus Jakarta Sans'", warna:'#fff', aksen:'#FFB547', kunci:['kata','kunci'] } */
+const SUB={frasa:[],cfg:null};
+function subSiapkan(kata,cfg){SUB.cfg=Object.assign({gaya:'polos',maks:TEGAK?4:6,y:TEGAK?.68:.84,warna:'#FFFFFF',aksen:'#FFB547',kunci:[],
+  font:`800 ${TEGAK?64:52}px system-ui,sans-serif`},cfg||{});if(!kata||!kata.length||SUB.cfg.gaya==='mati')return;
+  const c=SUB.cfg,box=$('#mfSub');box.style.font=c.font;box.style.color=c.warna;
+  if(c.gaya==='pil'){box.style.textShadow='none';}else{box.style.textShadow='0 2px 2px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.75),0 0 40px rgba(0,0,0,.5)';}
+  const norm=w=>String(w).toLowerCase().replace(/[^\p{L}\p{N}]/gu,''),kunci=new Set(c.kunci.map(norm));let cur=[];
+  const tutup=()=>{if(cur.length)SUB.frasa.push(cur);cur=[];};
+  kata.forEach((k,i)=>{const prev=kata[i-1];if(cur.length&&(cur.length>=c.maks||/[.,!?;:…]$/.test(prev.w)||k.t0-prev.t1>.35))tutup();cur.push(k);});tutup();
+  SUB.frasa=SUB.frasa.map((ws,i)=>{const el=mk('div','sf',box);el.style.cssText=`position:absolute;left:0;width:100%;opacity:0;padding:0 ${W-AMAN.kanan}px 0 ${AMAN.kiri}px`;
+    const inner=c.gaya==='pil'?mk('span','',el):el;if(c.gaya==='pil')inner.style.cssText='display:inline-block;padding:.12em .5em .18em;border-radius:.6em;background:rgba(12,12,20,.72)';
+    const spans=ws.map(k=>{const s=mk('span','sw',inner);s.textContent=k.w;if(kunci.has(norm(k.w)))s.style.color=c.aksen;return s;});
+    const nxt=kata.indexOf(ws[ws.length-1])+1;const akhir=Math.min(ws[ws.length-1].t1+.35,kata[nxt]?kata[nxt].t0-.07:1e9);
+    return{el,spans,ws,a:ws[0].t0-.06,b:akhir};});}
+function subFrame(t){if(!SUB.frasa.length)return;const c=SUB.cfg;SUB.frasa.forEach(f=>{const on=t>=f.a&&t<f.b;f.el.style.opacity=on?1:0;if(!on)return;
+  let p=typeof c.y==='function'?c.y(t,f):{x:W/2,y:H*c.y};f.el.style.top=(p.y-f.el.offsetHeight/2)+'px';
+  if(p.x!=null&&p.x!==W/2){f.el.style.left=(p.x-W/2)+'px';}else f.el.style.left='0px';
+  f.spans.forEach((s,i)=>{const k=f.ws[i],m=E.back(seg(t,k.t0-.04,k.t0+.14));s.style.opacity=t<k.t0-.04?(c.gaya==='pil'?.35:0):1;s.style.transform=`translateY(${(1-m)*18}px) scale(${.86+.14*m})`;});});}
+</script>
+<script>
+const GAYA = 'kertas';
+const TEKS = {papan: "62px 'Lilita One'"};
+/* ===== Adegan kunci "Nenek beli obat" — satu susunan, tiga cara melukis (GAYA) ===== */
+const PAL = {
+  cel: {
+    tinta: '#2B1A3F', dinding: ['#E9F6FF', '#D3ECFF', '#B5DBF7'], rak: ['#FFFFFF', '#DCEAF7', '#A9C3E0'],
+    kotak: [['#FF7A88', '#FF4F64', '#C9304A'], ['#7FDCFF', '#2EC5FF', '#1590C4'], ['#FFE07A', '#FFC93C', '#E39A12'], ['#B39BFF', '#7A4DFF', '#5330C4'], ['#7EF0AE', '#2ED67A', '#1A9E58'], ['#FFFFFF', '#E8EEF7', '#BFCBDD']],
+    meja: ['#7CC3FF', '#44A1EE', '#2A70C2'], mejaAtas: ['#FFFFFF', '#E3EEFA', '#B9CCE4'],
+    jas: ['#FFFFFF', '#E6ECF7', '#B4C0DA'], dalam: ['#5FE3D0', '#16C5B0', '#0E8F80'], hijab: ['#FF8FA0', '#FF4F64', '#C9304A'], ciput: ['#C9304A', '#9E1F38', '#7A1529'],
+    kulit: ['#FFE2C8', '#FFC9A4', '#E39C78'], kulitN: ['#FBD7BC', '#EDB28E', '#C98564'], uban: ['#FFFFFF', '#E1E3EC', '#AEB2C4'],
+    kebaya: ['#C7B2FF', '#9B7BFF', '#6A49D6'], tas: ['#D99A5E', '#B0703A', '#7E4B22'], strip: ['#FFFFFF', '#DDE4EE', '#A3AEC0'],
+    pil: ['#FFFFFF', '#F3F5F9', '#CBD3E0'], iris: '#6B3A1E', bibir: '#E0566D', pipi: 'rgba(255,110,140,.45)', papan: ['#3BE08E', '#18B56A', '#0E7E49'], tulisan: '#FFFFFF'
+  },
+  catair: {
+    tinta: '#3A2E2A', dinding: ['#F3EDE0', '#E8DFCB', '#D6C9AE'], rak: ['#F7F2E8', '#E3D8C2', '#C2B395'],
+    kotak: [['#E9B6A8', '#C98B7A', '#A4553A'], ['#B9CBE6', '#7F9CC8', '#5B77AE'], ['#E8D8B0', '#DCC29C', '#B89A6A'], ['#B8CDBF', '#8BAA95', '#6D8C7B'], ['#D8C2DE', '#B497BE', '#8E6FA8'], ['#F6F1E6', '#E5DCCB', '#C7BBA3']],
+    meja: ['#A9BFD9', '#7F9CC8', '#5B77AE'], mejaAtas: ['#F7F2E8', '#E6DCC8', '#C7B9A0'],
+    jas: ['#FBF8F1', '#E6E0D3', '#BDB3A1'], dalam: ['#A9C7B6', '#7FA894', '#5D8371'], hijab: ['#9FBBA9', '#6D8C7B', '#4C6B5A'], ciput: ['#4C6B5A', '#3B5647', '#2C4236'],
+    kulit: ['#F8DEC8', '#EDC3A4', '#CF9878'], kulitN: ['#F3D3BC', '#DFB094', '#BA8668'], uban: ['#FBFAF6', '#E2DFD8', '#B5AFA4'],
+    kebaya: ['#C9B3D6', '#A285B5', '#7A5F92'], tas: ['#C99A72', '#A4704A', '#7A4E30'], strip: ['#F4F4F2', '#D9DBDD', '#A9ADB3'],
+    pil: ['#FFFFFF', '#F2F0EA', '#D2CDC2'], iris: '#5A3A28', bibir: '#C2675B', pipi: 'rgba(214,120,110,.35)', papan: ['#9FBBA9', '#6D8C7B', '#4C6B5A'], tulisan: '#FBF6EA'
+  },
+  kertas: {
+    tinta: '#1E1A24', dinding: ['#4F7FB0', '#2F5D8C', '#1F4268'], rak: ['#FBF4E2', '#F3E9D2', '#D9C9A6'],
+    kotak: [['#FF7A63', '#E94F37', '#B9341F'], ['#FFD970', '#F6C445', '#D19D1C'], ['#62D394', '#3BB273', '#258A54'], ['#FFFFFF', '#F2F0EA', '#CFCAC0'], ['#B58BD8', '#8E5BB5', '#6A3D8E'], ['#7FC8F2', '#3FA7E0', '#2A7DB0']],
+    meja: ['#FF7A63', '#E94F37', '#B9341F'], mejaAtas: ['#FBF4E2', '#F3E9D2', '#D9C9A6'],
+    jas: ['#FFFFFF', '#FBFBF7', '#DCDAD2'], dalam: ['#7FC8F2', '#3FA7E0', '#2A7DB0'], hijab: ['#62D394', '#3BB273', '#258A54'], ciput: ['#258A54', '#1C6E42', '#155432'],
+    kulit: ['#FFDCC0', '#F7C29E', '#DE9C76'], kulitN: ['#F7D0B4', '#E8AE88', '#C98564'], uban: ['#FFFFFF', '#E9E7E2', '#C2BFB8'],
+    kebaya: ['#B58BD8', '#8E5BB5', '#6A3D8E'], tas: ['#C98A52', '#A0652F', '#74461D'], strip: ['#F5F7FA', '#D8DEE6', '#AAB3C0'],
+    pil: ['#FFFFFF', '#FFFFFF', '#DAD6CE'], iris: '#3B2414', bibir: '#D9465C', pipi: 'rgba(240,90,110,.55)', papan: ['#FFD970', '#F6C445', '#D19D1C'], tulisan: '#1E1A24'
+  }
+}[GAYA];
+
+/* ---------- tekstur (dibuat sekali) ---------- */
+function tekstur(jenis, seed) {
+  const c = kanvas(512, 512), x = c.getContext('2d'), r = rng(seed);
+  x.fillStyle = '#fff'; x.fillRect(0, 0, 512, 512);
+  if (jenis === 'granul') {
+    for (let i = 0; i < 900; i++) { const px = r() * 512, py = r() * 512, rr = 3 + r() * 26; const g = x.createRadialGradient(px, py, 0, px, py, rr);
+      g.addColorStop(0, `rgba(120,100,80,${.06 + r() * .1})`); g.addColorStop(1, 'rgba(120,100,80,0)'); x.fillStyle = g; x.fillRect(px - rr, py - rr, rr * 2, rr * 2); }
+    for (let i = 0; i < 5000; i++) { x.fillStyle = `rgba(90,70,50,${r() * .18})`; x.fillRect(r() * 512, r() * 512, 1.4, 1.4); }
+  } else if (jenis === 'serat') {
+    for (let i = 0; i < 1400; i++) { const px = r() * 512, py = r() * 512, a = r() * 6.3, l = 4 + r() * 16;
+      x.strokeStyle = `rgba(${r() < .5 ? '255,255,255' : '80,60,40'},${.08 + r() * .2})`; x.lineWidth = .6 + r(); x.beginPath(); x.moveTo(px, py); x.lineTo(px + Math.cos(a) * l, py + Math.sin(a) * l); x.stroke(); }
+    for (let i = 0; i < 6000; i++) { x.fillStyle = `rgba(70,50,30,${r() * .12})`; x.fillRect(r() * 512, r() * 512, 1.2, 1.2); }
+  } else {
+    for (let i = 0; i < 8000; i++) { x.fillStyle = `rgba(100,85,70,${r() * .16})`; x.fillRect(r() * 512, r() * 512, 1.3, 1.3); }
+    for (let i = 0; i < 260; i++) { const px = r() * 512, py = r() * 512, rr = 20 + r() * 60; const g = x.createRadialGradient(px, py, 0, px, py, rr);
+      g.addColorStop(0, `rgba(150,120,90,${r() * .05})`); g.addColorStop(1, 'rgba(150,120,90,0)'); x.fillStyle = g; x.fillRect(px - rr, py - rr, rr * 2, rr * 2); }
+  }
+  return c;
+}
+const cv = kanvas(W, H, $('#dunia')), c = cv.getContext('2d');
+const POLA = c.createPattern(tekstur(GAYA === 'catair' ? 'granul' : GAYA === 'kertas' ? 'serat' : 'kertas', 11), 'repeat');
+const KERTAS = c.createPattern(tekstur('kertas', 23), 'repeat');
+
+/* ---------- bentuk dasar ---------- */
+const elp = (cx, cy, rx, ry, rot = 0) => { const p = new Path2D(); p.ellipse(cx, cy, rx, ry, rot, 0, Math.PI * 2); const m = Math.max(rx, ry); return {p, bb: [cx - m, cy - m, cx + m, cy + m]}; };
+const kot = (x, y, w, h, r = 0) => { const p = new Path2D(); p.roundRect(x, y, w, h, r); return {p, bb: [x, y, x + w, y + h]}; };
+function pol(pts, halus = true) {
+  const p = new Path2D(), n = pts.length; let bb = [1e9, 1e9, -1e9, -1e9];
+  pts.forEach(([x, y]) => { bb = [Math.min(bb[0], x), Math.min(bb[1], y), Math.max(bb[2], x), Math.max(bb[3], y)]; });
+  if (!halus) { p.moveTo(...pts[0]); pts.slice(1).forEach(q => p.lineTo(...q)); p.closePath(); return {p, bb}; }
+  const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  p.moveTo(...mid(pts[n - 1], pts[0]));
+  for (let i = 0; i < n; i++) { const m = mid(pts[i], pts[(i + 1) % n]); p.quadraticCurveTo(pts[i][0], pts[i][1], m[0], m[1]); }
+  p.closePath(); return {p, bb};
+}
+function kapsul(x1, y1, x2, y2, r) {
+  const a = Math.atan2(y2 - y1, x2 - x1), p = new Path2D();
+  p.arc(x1, y1, r, a + Math.PI / 2, a - Math.PI / 2); p.arc(x2, y2, r, a - Math.PI / 2, a + Math.PI / 2); p.closePath();
+  return {p, bb: [Math.min(x1, x2) - r, Math.min(y1, y2) - r, Math.max(x1, x2) + r, Math.max(y1, y2) + r]};
+}
+
+/* ---------- cara melukis per gaya ---------- */
+let BAYANG = 1;
+function bentuk(S, w, o = {}) {
+  const [x0, y0, x1, y1] = S.bb;
+  if (GAYA === 'cel') {
+    c.save(); c.clip(S.p);
+    const g = c.createLinearGradient(x0, y0, x1, y1), a = o.terang ?? .3, b = o.gelap ?? .7;
+    g.addColorStop(0, w[0]); g.addColorStop(a, w[0]); g.addColorStop(a, w[1]); g.addColorStop(b, w[1]); g.addColorStop(b, w[2]); g.addColorStop(1, w[2]);
+    c.fillStyle = g; c.fillRect(x0 - 4, y0 - 4, x1 - x0 + 8, y1 - y0 + 8); c.restore();
+    if (!o.latar) { c.lineWidth = o.lw || 5; c.strokeStyle = PAL.tinta; c.lineJoin = 'round'; c.stroke(S.p); }
+  } else if (GAYA === 'catair') {
+    const g = c.createLinearGradient(x0, y0, x1, y1);
+    g.addColorStop(0, w[0]); g.addColorStop(.5, w[1]); g.addColorStop(1, w[2]);
+    c.save(); c.globalAlpha = o.latar ? .8 : .95; c.fillStyle = g; c.fill(S.p); c.globalAlpha = .2; c.translate(4, -5); c.fill(S.p); c.restore();
+    c.save(); c.clip(S.p); c.globalCompositeOperation = 'multiply'; c.globalAlpha = .4; c.fillStyle = POLA; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    c.globalCompositeOperation = 'source-over'; const gb = c.createLinearGradient(0, y0 + (y1 - y0) * .55, 0, y1);
+    gb.addColorStop(0, 'rgba(244,239,228,0)'); gb.addColorStop(1, 'rgba(244,239,228,.12)'); c.globalAlpha = 1; c.fillStyle = gb; c.fillRect(x0, y0, x1 - x0, y1 - y0); c.restore();
+    c.save(); c.strokeStyle = w[2]; c.lineJoin = 'round'; c.globalAlpha = o.latar ? .06 : .12; c.lineWidth = 9; c.stroke(S.p); c.globalAlpha = o.latar ? .25 : .5; c.lineWidth = 2.4; c.stroke(S.p); c.restore();
+  } else {
+    c.save(); if (BAYANG) { c.shadowColor = 'rgba(25,12,0,.42)'; c.shadowBlur = o.latar ? 10 : 18; c.shadowOffsetX = o.latar ? 3 : 6; c.shadowOffsetY = o.latar ? 6 : 11; }
+    c.fillStyle = w[1]; c.fill(S.p); c.restore();
+    c.save(); c.clip(S.p); const g = c.createLinearGradient(x0, y0, x0, y1);
+    g.addColorStop(0, 'rgba(255,255,255,.16)'); g.addColorStop(1, 'rgba(0,0,0,.1)'); c.fillStyle = g; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    c.globalCompositeOperation = 'multiply'; c.globalAlpha = .5; c.fillStyle = POLA; c.fillRect(x0, y0, x1 - x0, y1 - y0); c.restore();
+  }
+}
+/* garis wajah: tinta (cel/catair) atau potongan kertas tebal */
+function garis(fn, lw = 5, warna = PAL.tinta) {
+  c.save(); c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = warna;
+  if (GAYA === 'catair') { c.globalAlpha = .8; c.lineWidth = lw * .7; }
+  else if (GAYA === 'kertas') { c.lineWidth = lw * 1.5; c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 4; c.shadowOffsetY = 3; }
+  else c.lineWidth = lw;
+  c.beginPath(); fn(); c.stroke(); c.restore();
+}
+function titik(x, y, rx, ry, warna) { c.save(); if (GAYA === 'kertas') { c.shadowColor = 'rgba(0,0,0,.3)'; c.shadowBlur = 4; c.shadowOffsetY = 3; } c.fillStyle = warna; c.beginPath(); c.ellipse(x, y, rx, ry, 0, 0, 7); c.fill(); c.restore(); }
+function mata(x, y, rx, ry, lx, ly, kedip = 0) {
+  if (kedip > .5) { garis(() => { c.moveTo(x - rx, y); c.quadraticCurveTo(x, y + ry * .5, x + rx, y); }, 5); return; }
+  bentuk(elp(x, y, rx, ry), ['#FFFFFF', '#FFFFFF', '#E4E8F2'], {lw: 4});
+  c.save(); c.clip(elp(x, y, rx, ry).p);
+  titik(x + lx, y + ly, rx * .62, ry * .62, PAL.iris); titik(x + lx, y + ly, rx * .3, ry * .3, '#160B05');
+  titik(x + lx - rx * .25, y + ly - ry * .3, rx * .2, ry * .2, '#FFFFFF'); titik(x + lx + rx * .2, y + ly + ry * .25, rx * .09, ry * .09, '#FFFFFF');
+  c.restore();
+}
+function papanTeks(teks, x, y, ukuran, warna, font) {
+  c.save(); c.font = `${font}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = warna;
+  if (GAYA === 'kertas') { c.shadowColor = 'rgba(0,0,0,.3)'; c.shadowBlur = 3; c.shadowOffsetY = 3; }
+  c.fillText(teks, x, y); c.restore();
+}
+
+/* ---------- latar: dinding + rak obat ---------- */
+const RR = rng(5), RAK = [];
+[[40, 330], [380, 330], [720, 330]].forEach(([rx]) => {
+  for (let s = 0; s < 6; s++) { const yb = 470 + s * 170; let x = rx + 14;
+    while (x < rx + 310) { const w = 34 + RR() * 46, h = 70 + RR() * 75; if (x + w > rx + 316) break; RAK.push({x, y: yb - h, w, h, k: Math.floor(RR() * PAL.kotak.length), pita: RR() < .5}); x += w + 3 + RR() * 6; } }
+});
+function latar(t) {
+  bentuk(kot(-200, -200, W + 400, H + 400), PAL.dinding, {latar: 1, terang: .1, gelap: .85});
+  // papan nama apotek
+  bentuk(kot(150, 150, 780, 150, GAYA === 'cel' ? 22 : 10), PAL.papan, {latar: GAYA !== 'cel' ? 0 : 0});
+  const pc = [235, 225]; bentuk(kot(pc[0] - 18, pc[1] - 48, 36, 96, 6), [PAL.tulisan, PAL.tulisan, PAL.tulisan], {lw: 3}); bentuk(kot(pc[0] - 48, pc[1] - 18, 96, 36, 6), [PAL.tulisan, PAL.tulisan, PAL.tulisan], {lw: 3});
+  papanTeks('APOTEK SEHAT', 600, 228, 0, PAL.tulisan, TEKS.papan);
+  [[40], [380], [720]].forEach(([rx]) => {
+    bentuk(kot(rx, 300, 330, 1000, 6), PAL.rak, {latar: 1});
+    c.save(); c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(rx + 12, 312, 306, 980); c.restore();
+  });
+  RAK.forEach(b => { bentuk(kot(b.x, b.y, b.w, b.h, 3), PAL.kotak[b.k], {latar: 1, terang: .25, gelap: .75});
+    if (b.pita) { c.save(); c.globalAlpha = .75; c.fillStyle = '#FFFFFF'; c.fillRect(b.x + 4, b.y + b.h * .35, b.w - 8, b.h * .14); c.restore(); } });
+  for (let s = 0; s < 6; s++) [40, 380, 720].forEach(rx => bentuk(kot(rx - 6, 470 + s * 170, 342, 18, 4), PAL.rak, {latar: 1, terang: .5, gelap: .5}));
+}
+
+/* ---------- tokoh ---------- */
+const lompat = id => GAYA === 'kertas' ? [(hash(Math.floor(T * 8) * 13 + id) - .5) * 5, (hash(Math.floor(T * 8) * 7 + id + 50) - .5) * 4] : [0, 0];
+let T = 0;
+function apoteker(t) {
+  const napas = Math.sin(t * 2.2) * 3, [jx, jy] = lompat(1);
+  c.save(); c.translate(320 + jx, 770 + napas * .3 + jy);
+  // badan jas
+  bentuk(pol([[-150, 175], [150, 175], [205, 560], [-205, 560]]), PAL.jas);
+  bentuk(pol([[-62, 182], [62, 182], [0, 330]], false), PAL.dalam, {lw: 4});
+  bentuk(pol([[-62, 182], [-22, 182], [-48, 380], [-100, 300]], false), PAL.jas, {lw: 4});
+  bentuk(pol([[62, 182], [22, 182], [48, 380], [100, 300]], false), PAL.jas, {lw: 4});
+  bentuk(kot(-130, 360, 70, 26, 5), PAL.dalam, {lw: 3});
+  // lengan kiri (turun)
+  bentuk(kapsul(-150, 215, -195, 470, 44), PAL.jas);
+  // hijab
+  const hj = new Path2D(); hj.moveTo(0, -165); hj.bezierCurveTo(100, -165, 150, -85, 145, 20); hj.bezierCurveTo(155, 120, 190, 185, 180, 250);
+  hj.quadraticCurveTo(0, 315, -180, 250); hj.bezierCurveTo(-190, 185, -155, 120, -145, 20); hj.bezierCurveTo(-150, -85, -100, -165, 0, -165);
+  bentuk({p: hj, bb: [-190, -165, 190, 315]}, PAL.hijab);
+  bentuk(elp(0, 12, 104, 124), PAL.ciput, {lw: 4});
+  // wajah
+  bentuk(elp(0, 22, 92, 110), PAL.kulit, {lw: 4, terang: .25, gelap: .78});
+  titik(-55, 62, 22, 12, PAL.pipi); titik(55, 62, 22, 12, PAL.pipi);
+  mata(-38, 12, 25, 31, 7, 6); mata(38, 12, 25, 31, 7, 6);
+  garis(() => { c.moveTo(-62, -38); c.quadraticCurveTo(-40, -56, -16, -44); c.moveTo(16, -44); c.quadraticCurveTo(40, -56, 62, -38); }, 6);
+  garis(() => { c.moveTo(2, 40); c.lineTo(-4, 52); }, 3.5);
+  bentuk(elp(0, 84, 13, 17), [PAL.bibir, '#8E2234', '#5E1020'], {lw: 3.5});
+  // tetes keringat
+  bentuk(pol([[112, -78], [128, -40], [112, -26], [96, -40]]), ['#E7F7FF', '#9BDDFF', '#4FB2E8'], {lw: 3.5});
+  // lengan kanan memegang strip obat
+  bentuk(kapsul(150, 215, 215, 400, 44), PAL.jas);
+  bentuk(kapsul(215, 400, 232, 262, 40), PAL.jas);
+  c.restore();
+}
+function stripObat(t) {
+  const [jx, jy] = lompat(3), gy = Math.sin(t * 2.4) * 4;
+  c.save(); c.translate(585 + jx, 905 + gy + jy); c.rotate(.12 + Math.sin(t * 1.3) * .02);
+  bentuk(kot(-78, -112, 156, 224, 16), PAL.strip, {lw: 5, terang: .35, gelap: .8});
+  c.save(); c.globalAlpha = .5; c.strokeStyle = PAL.strip[2]; c.lineWidth = 2; c.setLineDash([6, 7]); c.strokeRect(-62, -96, 124, 192); c.restore();
+  bentuk(elp(0, 0, 50, 50), PAL.pil, {lw: 4, terang: .35, gelap: .78});
+  garis(() => { c.moveTo(-28, 0); c.lineTo(28, 0); }, 3, PAL.strip[2]);
+  // kilau
+  if (GAYA !== 'kertas') { c.save(); c.globalAlpha = .7 * (.5 + .5 * Math.sin(t * 3)); c.fillStyle = '#FFFFFF'; c.beginPath(); const s = 22;
+    c.moveTo(70, -120 - s); c.lineTo(76, -126); c.lineTo(70 + s, -120); c.lineTo(76, -114); c.lineTo(70, -120 + s); c.lineTo(64, -114); c.lineTo(70 - s, -120); c.lineTo(64, -126); c.closePath(); c.fill(); c.restore(); }
+  c.restore();
+  // tangan apoteker
+  const [ax, ay] = lompat(1); c.save(); c.translate(320 + ax, 770 + ay);
+  bentuk(elp(228, 236, 38, 34, -.4), PAL.kulit, {lw: 4}); bentuk(elp(250, 200, 13, 24, .5), PAL.kulit, {lw: 4});
+  c.restore();
+}
+function nenek(t) {
+  const [jx, jy] = lompat(2), angguk = Math.sin(t * 1.6) * 4;
+  c.save(); c.translate(810 + jx, 905 + jy);
+  // badan kebaya membungkuk
+  bentuk(pol([[-150, 140], [140, 130], [215, 470], [-195, 470]]), PAL.kebaya);
+  c.save(); c.clip(pol([[-150, 140], [140, 130], [215, 470], [-195, 470]]).p); c.globalAlpha = .35;
+  for (let i = 0; i < 9; i++) for (let j = 0; j < 5; j++) titik(-170 + i * 45 + (j % 2) * 22, 170 + j * 70, 8, 8, PAL.kebaya[0]);
+  c.restore();
+  garis(() => { c.moveTo(-10, 150); c.quadraticCurveTo(-20, 300, 10, 470); }, 4);
+  bentuk(elp(-12, 215, 16, 16), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3});
+  // lengan menyodorkan telapak
+  bentuk(kapsul(-130, 175, -205, 330, 40), PAL.kebaya);
+  bentuk(elp(-225, 340, 36, 26, -.3), PAL.kulitN, {lw: 4});
+  c.translate(0, angguk);
+  // sanggul + rambut uban
+  bentuk(elp(30, -128, 58, 46), PAL.uban); bentuk(elp(0, -20, 102, 100), PAL.uban);
+  // wajah
+  bentuk(elp(-6, 18, 86, 96), PAL.kulitN, {lw: 4, terang: .25, gelap: .78});
+  garis(() => { c.moveTo(-40, -42); c.quadraticCurveTo(-6, -50, 28, -42); c.moveTo(-30, -28); c.quadraticCurveTo(-6, -34, 18, -28); }, 3, PAL.kulitN[2]);
+  // mata tersenyum "^ ^" + kacamata
+  garis(() => { c.moveTo(-58, 18); c.quadraticCurveTo(-42, 2, -26, 18); c.moveTo(12, 18); c.quadraticCurveTo(28, 2, 44, 18); }, 5);
+  garis(() => { c.arc(-42, 16, 32, 0, 7); c.moveTo(42, 16); c.arc(28, 16, 32, Math.PI, Math.PI * 3); c.moveTo(-10, 12); c.lineTo(-4, 12); }, 4.5, GAYA === 'kertas' ? '#B9341F' : '#7A3B2E');
+  titik(-62, 58, 20, 11, PAL.pipi); titik(44, 58, 20, 11, PAL.pipi);
+  garis(() => { c.moveTo(-6, 34); c.lineTo(-12, 48); c.lineTo(-2, 50); }, 3.5);
+  garis(() => { c.moveTo(-36, 72); c.quadraticCurveTo(-8, 96, 22, 72); }, 5);
+  garis(() => { c.moveTo(-70, 82); c.quadraticCurveTo(-62, 92, -52, 92); c.moveTo(38, 92); c.quadraticCurveTo(48, 92, 56, 82); }, 3, PAL.kulitN[2]);
+  c.restore();
+}
+function meja(t) {
+  bentuk(kot(-80, 1255, W + 160, 700), PAL.meja, {latar: GAYA === 'cel' ? 0 : 1, terang: .15, gelap: .85});
+  bentuk(kot(-80, 1225, W + 160, 56, 10), PAL.mejaAtas, {terang: .5, gelap: .7});
+  // tas nenek di meja
+  const [jx, jy] = lompat(4); c.save(); c.translate(905 + jx, 1180 + jy);
+  garis(() => { c.moveTo(-60, -20); c.bezierCurveTo(-55, -110, 55, -110, 60, -20); }, 9, PAL.tas[2]);
+  bentuk(pol([[-120, -30], [120, -30], [140, 70], [-140, 70]]), PAL.tas);
+  bentuk(kot(-14, -10, 28, 30, 6), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3});
+  c.restore();
+  // kunci & kacamata cadangan yang tumpah dari tas
+  c.save(); c.translate(705, 1238); c.rotate(-.2); bentuk(elp(0, 0, 18, 18), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3}); bentuk(kot(10, -6, 50, 12, 4), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3}); c.restore();
+}
+function pasca(t) {
+  if (GAYA === 'catair') {
+    c.save(); c.globalCompositeOperation = 'multiply'; c.globalAlpha = .35; c.fillStyle = KERTAS; c.fillRect(0, 0, W, H); c.restore();
+    const g = c.createRadialGradient(W / 2, H * .5, H * .3, W / 2, H * .5, H * .75); g.addColorStop(0, 'rgba(120,90,60,0)'); g.addColorStop(1, 'rgba(120,90,60,.28)');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+  } else if (GAYA === 'cel') {
+    c.save(); c.globalCompositeOperation = 'screen'; c.globalAlpha = .22;
+    for (let i = 0; i < 4; i++) { const x0 = -200 + i * 260 + Math.sin(t * .4 + i) * 20; c.fillStyle = '#FFF6D6'; c.beginPath(); c.moveTo(x0, 0); c.lineTo(x0 + 120, 0); c.lineTo(x0 + 520, H); c.lineTo(x0 + 300, H); c.closePath(); c.fill(); }
+    c.restore();
+    const g = c.createRadialGradient(W / 2, H * .5, H * .35, W / 2, H * .5, H * .8); g.addColorStop(0, 'rgba(30,60,140,0)'); g.addColorStop(1, 'rgba(30,60,140,.2)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  } else {
+    const g = c.createRadialGradient(W / 2, H * .45, H * .25, W / 2, H * .5, H * .8); g.addColorStop(0, 'rgba(255,230,180,0)'); g.addColorStop(1, 'rgba(20,10,0,.35)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  }
+}
+function gambar(t) {
+  T = t; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, W, H);
+  const s = 1.2 + .035 * E.io(seg(t, 0, 4)), kx = nz(t * .3, 1) * 6, ky = nz(t * .3, 2) * 5;
+  c.setTransform(s, 0, 0, s, W / 2 * (1 - s) + kx, 1300 * (1 - s) + 150 + ky);
+  latar(t);
+  if (GAYA === 'catair') { c.save(); c.fillStyle = 'rgba(244,239,228,.22)'; c.fillRect(-300, -300, W + 600, H + 600); c.restore(); }
+  apoteker(t); nenek(t); stripObat(t); meja(t);
+  c.setTransform(1, 0, 0, 1, 0, 0); pasca(t);
+}
+
+const SCENE = {
+  dur: 4,
+  sub: {gaya: 'mati'},
+  muat: () => document.fonts.ready,
+  frame(t) { gambar(t); }
+};
+</script>
+<script>
+/* ---------- boot: timeline, audio pratinjau, autoplay + loop, penggeser debug, API render ---------- */
+(function(){
+const DUR=SCENE.dur;const tl=gsap.timeline({paused:true});
+if(SCENE.build)SCENE.build(tl);tl.set({},{},DUR);
+window.AUDIO_PLAN=Object.assign({dur:DUR,vo:[],sfx:[],music:null,loops:[]},SCENE.audio||{});
+subSiapkan(SCENE.kata||window.KATA,SCENE.sub);
+const P=window.AUDIO_PLAN,EV=[];const A=src=>{const a=new Audio(src);a.preload='auto';return a;};
+P.vo.forEach(v=>EV.push({at:v.at,el:A(v.src),vol:v.vol??1}));
+if(P.music)EV.push({at:P.music.at||0,el:A(P.music.src),vol:Math.min(1,P.music.vol??.15),music:1});
+P.sfx.forEach(s=>EV.push({at:s.at,el:A(s.src),vol:Math.min(1,s.vol??.5)}));
+let live=false,lastT=0;const dbgOn=q.has('debug');
+function frame(t){SCENE.frame&&SCENE.frame(t);subFrame(t);grainFrame(t);}
+tl.eventCallback('onUpdate',()=>{const t=tl.time();frame(t);
+  if(live&&!tl.paused())EV.forEach(e=>{if(e.at>=lastT&&e.at<t&&t-e.at<.25){e.el.volume=e.vol;e.el.currentTime=0;e.el.play().catch(()=>{});}});
+  lastT=t;if(dbgOn){$('#dScrub').value=t/DUR*1000;$('#dClock').textContent=t.toFixed(2);}});
+const stopAudio=()=>EV.forEach(e=>e.el.pause());
+function start(){stopAudio();lastT=-1;live=true;tl.play(0);}
+tl.eventCallback('onComplete',()=>start());
+async function seek(t){live=false;tl.pause(t,true);frame(t);if(SCENE.siap)await SCENE.siap(t);}
+window.MF={W,H,RASIO,DURATION:DUR,tl,ready:false,seek,play:start};
+addEventListener('keydown',e=>{if(/^[rR]$/.test(e.key))start();if(e.code==='Space'){e.preventDefault();if(tl.paused())tl.play();else{tl.pause();stopAudio();}}});
+if(dbgOn){$('#dbg').style.display='flex';const sc=$('#dScrub');sc.addEventListener('input',()=>{live=false;stopAudio();tl.pause();tl.time(sc.value/1000*DUR);frame(tl.time());});$('#dPlay').onclick=()=>{if(tl.paused()){live=true;lastT=tl.time();tl.play();}else{tl.pause();stopAudio();}};}
+const muatAwal=SCENE.muat?Promise.resolve(SCENE.muat()):Promise.resolve();
+Promise.all([document.fonts.ready,muatAwal]).then(()=>new Promise(r=>setTimeout(r,80))).then(()=>{
+  try{tl.pause(0,true);frame(0);}catch(err){__errs.push('frame(0): '+String(err&&err.stack||err));}window.MF.ready=true;
+  if(q.has('t')){seek(parseFloat(q.get('t'))||0);return;}
+  if(q.has('clean'))return;
+  const probe=EV.find(e=>e.music)||EV[0];if(!probe){start();return;}
+  probe.el.volume=0;probe.el.play().then(()=>{probe.el.pause();start();}).catch(()=>{const go=()=>{removeEventListener('pointerdown',go);removeEventListener('keydown',go);start();};addEventListener('pointerdown',go);addEventListener('keydown',go);});
+});
+})();
+</script>
+</body>
+</html>

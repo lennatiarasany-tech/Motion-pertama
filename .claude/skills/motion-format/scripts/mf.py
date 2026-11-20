@@ -256,6 +256,8 @@ def rakit(p):
     out = (core.replace('{{TITLE}}', judul).replace('{{RASIO}}', rasio).replace('{{W}}', str(w)).replace('{{H}}', str(h))
            .replace('{{HEAD}}', head).replace('{{BODY}}', body).replace('{{SCRIPT}}', script))
     (p / 'index.html').write_text(out, encoding='utf-8')
+    if (MESIN / 'gsap.min.js').exists() and not (p / 'gsap.min.js').exists():
+        shutil.copy(MESIN / 'gsap.min.js', p / 'gsap.min.js')   # cadangan bila CDN tidak terjangkau
     return p / 'index.html'
 
 

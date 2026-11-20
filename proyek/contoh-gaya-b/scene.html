@@ -1,0 +1,283 @@
+<!--@TITLE Contoh B · Cat Air Buku Cerita-->
+<!--@RASIO 9:16-->
+<!--@HEAD-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Alegreya+Sans:wght@700;800&display=swap">
+<style>
+#dunia{position:absolute;inset:0}
+
+.jdl{position:absolute;left:0;width:100%;top:265px;text-align:center;font:400 74px/1.05 'Gilda Display';color:#3A2E2A;text-shadow:0 2px 14px rgba(244,239,228,.9)}
+.jdl b{display:block;font-size:132px;color:#A4553A;font-weight:400;font-style:italic}
+.bal{position:absolute;left:80px;width:850px;bottom:300px;background:#F4EFE4;padding:40px 46px;font:800 56px/1.22 'Alegreya Sans';color:#3A2E2A;
+ clip-path:polygon(0 6%,4% 0,12% 4%,22% 1%,35% 5%,48% 0,60% 4%,74% 1%,86% 5%,96% 0,100% 8%,98% 30%,100% 55%,98% 80%,100% 96%,90% 100%,76% 96%,62% 100%,48% 97%,34% 100%,20% 96%,8% 100%,0 94%,2% 70%,0 45%,2% 22%)}
+.bal em{font-style:normal;color:#A4553A}
+.nm{position:absolute;bottom:525px;right:110px;font:italic 400 44px 'Gilda Display';color:#F4EFE4;background:#6D8C7B;padding:6px 26px;border-radius:4px}
+
+</style>
+<!--@BODY-->
+<div id="dunia"></div>
+<div class="jdl" id="jdl">Nenek mau<b>BELI OBAT</b></div>
+<div class="bal">Yang <em>putih</em>, <em>bulet</em> itu loh, Nak.</div><div class="nm">NENEK</div>
+<!--@SCRIPT-->
+const GAYA = 'catair';
+const TEKS = {papan: "italic 62px 'Gilda Display'"};
+/* ===== Adegan kunci "Nenek beli obat" — satu susunan, tiga cara melukis (GAYA) ===== */
+const PAL = {
+  cel: {
+    tinta: '#2B1A3F', dinding: ['#E9F6FF', '#D3ECFF', '#B5DBF7'], rak: ['#FFFFFF', '#DCEAF7', '#A9C3E0'],
+    kotak: [['#FF7A88', '#FF4F64', '#C9304A'], ['#7FDCFF', '#2EC5FF', '#1590C4'], ['#FFE07A', '#FFC93C', '#E39A12'], ['#B39BFF', '#7A4DFF', '#5330C4'], ['#7EF0AE', '#2ED67A', '#1A9E58'], ['#FFFFFF', '#E8EEF7', '#BFCBDD']],
+    meja: ['#7CC3FF', '#44A1EE', '#2A70C2'], mejaAtas: ['#FFFFFF', '#E3EEFA', '#B9CCE4'],
+    jas: ['#FFFFFF', '#E6ECF7', '#B4C0DA'], dalam: ['#5FE3D0', '#16C5B0', '#0E8F80'], hijab: ['#FF8FA0', '#FF4F64', '#C9304A'], ciput: ['#C9304A', '#9E1F38', '#7A1529'],
+    kulit: ['#FFE2C8', '#FFC9A4', '#E39C78'], kulitN: ['#FBD7BC', '#EDB28E', '#C98564'], uban: ['#FFFFFF', '#E1E3EC', '#AEB2C4'],
+    kebaya: ['#C7B2FF', '#9B7BFF', '#6A49D6'], tas: ['#D99A5E', '#B0703A', '#7E4B22'], strip: ['#FFFFFF', '#DDE4EE', '#A3AEC0'],
+    pil: ['#FFFFFF', '#F3F5F9', '#CBD3E0'], iris: '#6B3A1E', bibir: '#E0566D', pipi: 'rgba(255,110,140,.45)', papan: ['#3BE08E', '#18B56A', '#0E7E49'], tulisan: '#FFFFFF'
+  },
+  catair: {
+    tinta: '#3A2E2A', dinding: ['#F3EDE0', '#E8DFCB', '#D6C9AE'], rak: ['#F7F2E8', '#E3D8C2', '#C2B395'],
+    kotak: [['#E9B6A8', '#C98B7A', '#A4553A'], ['#B9CBE6', '#7F9CC8', '#5B77AE'], ['#E8D8B0', '#DCC29C', '#B89A6A'], ['#B8CDBF', '#8BAA95', '#6D8C7B'], ['#D8C2DE', '#B497BE', '#8E6FA8'], ['#F6F1E6', '#E5DCCB', '#C7BBA3']],
+    meja: ['#A9BFD9', '#7F9CC8', '#5B77AE'], mejaAtas: ['#F7F2E8', '#E6DCC8', '#C7B9A0'],
+    jas: ['#FBF8F1', '#E6E0D3', '#BDB3A1'], dalam: ['#A9C7B6', '#7FA894', '#5D8371'], hijab: ['#9FBBA9', '#6D8C7B', '#4C6B5A'], ciput: ['#4C6B5A', '#3B5647', '#2C4236'],
+    kulit: ['#F8DEC8', '#EDC3A4', '#CF9878'], kulitN: ['#F3D3BC', '#DFB094', '#BA8668'], uban: ['#FBFAF6', '#E2DFD8', '#B5AFA4'],
+    kebaya: ['#C9B3D6', '#A285B5', '#7A5F92'], tas: ['#C99A72', '#A4704A', '#7A4E30'], strip: ['#F4F4F2', '#D9DBDD', '#A9ADB3'],
+    pil: ['#FFFFFF', '#F2F0EA', '#D2CDC2'], iris: '#5A3A28', bibir: '#C2675B', pipi: 'rgba(214,120,110,.35)', papan: ['#9FBBA9', '#6D8C7B', '#4C6B5A'], tulisan: '#FBF6EA'
+  },
+  kertas: {
+    tinta: '#1E1A24', dinding: ['#4F7FB0', '#2F5D8C', '#1F4268'], rak: ['#FBF4E2', '#F3E9D2', '#D9C9A6'],
+    kotak: [['#FF7A63', '#E94F37', '#B9341F'], ['#FFD970', '#F6C445', '#D19D1C'], ['#62D394', '#3BB273', '#258A54'], ['#FFFFFF', '#F2F0EA', '#CFCAC0'], ['#B58BD8', '#8E5BB5', '#6A3D8E'], ['#7FC8F2', '#3FA7E0', '#2A7DB0']],
+    meja: ['#FF7A63', '#E94F37', '#B9341F'], mejaAtas: ['#FBF4E2', '#F3E9D2', '#D9C9A6'],
+    jas: ['#FFFFFF', '#FBFBF7', '#DCDAD2'], dalam: ['#7FC8F2', '#3FA7E0', '#2A7DB0'], hijab: ['#62D394', '#3BB273', '#258A54'], ciput: ['#258A54', '#1C6E42', '#155432'],
+    kulit: ['#FFDCC0', '#F7C29E', '#DE9C76'], kulitN: ['#F7D0B4', '#E8AE88', '#C98564'], uban: ['#FFFFFF', '#E9E7E2', '#C2BFB8'],
+    kebaya: ['#B58BD8', '#8E5BB5', '#6A3D8E'], tas: ['#C98A52', '#A0652F', '#74461D'], strip: ['#F5F7FA', '#D8DEE6', '#AAB3C0'],
+    pil: ['#FFFFFF', '#FFFFFF', '#DAD6CE'], iris: '#3B2414', bibir: '#D9465C', pipi: 'rgba(240,90,110,.55)', papan: ['#FFD970', '#F6C445', '#D19D1C'], tulisan: '#1E1A24'
+  }
+}[GAYA];
+
+/* ---------- tekstur (dibuat sekali) ---------- */
+function tekstur(jenis, seed) {
+  const c = kanvas(512, 512), x = c.getContext('2d'), r = rng(seed);
+  x.fillStyle = '#fff'; x.fillRect(0, 0, 512, 512);
+  if (jenis === 'granul') {
+    for (let i = 0; i < 900; i++) { const px = r() * 512, py = r() * 512, rr = 3 + r() * 26; const g = x.createRadialGradient(px, py, 0, px, py, rr);
+      g.addColorStop(0, `rgba(120,100,80,${.06 + r() * .1})`); g.addColorStop(1, 'rgba(120,100,80,0)'); x.fillStyle = g; x.fillRect(px - rr, py - rr, rr * 2, rr * 2); }
+    for (let i = 0; i < 5000; i++) { x.fillStyle = `rgba(90,70,50,${r() * .18})`; x.fillRect(r() * 512, r() * 512, 1.4, 1.4); }
+  } else if (jenis === 'serat') {
+    for (let i = 0; i < 1400; i++) { const px = r() * 512, py = r() * 512, a = r() * 6.3, l = 4 + r() * 16;
+      x.strokeStyle = `rgba(${r() < .5 ? '255,255,255' : '80,60,40'},${.08 + r() * .2})`; x.lineWidth = .6 + r(); x.beginPath(); x.moveTo(px, py); x.lineTo(px + Math.cos(a) * l, py + Math.sin(a) * l); x.stroke(); }
+    for (let i = 0; i < 6000; i++) { x.fillStyle = `rgba(70,50,30,${r() * .12})`; x.fillRect(r() * 512, r() * 512, 1.2, 1.2); }
+  } else {
+    for (let i = 0; i < 8000; i++) { x.fillStyle = `rgba(100,85,70,${r() * .16})`; x.fillRect(r() * 512, r() * 512, 1.3, 1.3); }
+    for (let i = 0; i < 260; i++) { const px = r() * 512, py = r() * 512, rr = 20 + r() * 60; const g = x.createRadialGradient(px, py, 0, px, py, rr);
+      g.addColorStop(0, `rgba(150,120,90,${r() * .05})`); g.addColorStop(1, 'rgba(150,120,90,0)'); x.fillStyle = g; x.fillRect(px - rr, py - rr, rr * 2, rr * 2); }
+  }
+  return c;
+}
+const cv = kanvas(W, H, $('#dunia')), c = cv.getContext('2d');
+const POLA = c.createPattern(tekstur(GAYA === 'catair' ? 'granul' : GAYA === 'kertas' ? 'serat' : 'kertas', 11), 'repeat');
+const KERTAS = c.createPattern(tekstur('kertas', 23), 'repeat');
+
+/* ---------- bentuk dasar ---------- */
+const elp = (cx, cy, rx, ry, rot = 0) => { const p = new Path2D(); p.ellipse(cx, cy, rx, ry, rot, 0, Math.PI * 2); const m = Math.max(rx, ry); return {p, bb: [cx - m, cy - m, cx + m, cy + m]}; };
+const kot = (x, y, w, h, r = 0) => { const p = new Path2D(); p.roundRect(x, y, w, h, r); return {p, bb: [x, y, x + w, y + h]}; };
+function pol(pts, halus = true) {
+  const p = new Path2D(), n = pts.length; let bb = [1e9, 1e9, -1e9, -1e9];
+  pts.forEach(([x, y]) => { bb = [Math.min(bb[0], x), Math.min(bb[1], y), Math.max(bb[2], x), Math.max(bb[3], y)]; });
+  if (!halus) { p.moveTo(...pts[0]); pts.slice(1).forEach(q => p.lineTo(...q)); p.closePath(); return {p, bb}; }
+  const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  p.moveTo(...mid(pts[n - 1], pts[0]));
+  for (let i = 0; i < n; i++) { const m = mid(pts[i], pts[(i + 1) % n]); p.quadraticCurveTo(pts[i][0], pts[i][1], m[0], m[1]); }
+  p.closePath(); return {p, bb};
+}
+function kapsul(x1, y1, x2, y2, r) {
+  const a = Math.atan2(y2 - y1, x2 - x1), p = new Path2D();
+  p.arc(x1, y1, r, a + Math.PI / 2, a - Math.PI / 2); p.arc(x2, y2, r, a - Math.PI / 2, a + Math.PI / 2); p.closePath();
+  return {p, bb: [Math.min(x1, x2) - r, Math.min(y1, y2) - r, Math.max(x1, x2) + r, Math.max(y1, y2) + r]};
+}
+
+/* ---------- cara melukis per gaya ---------- */
+let BAYANG = 1;
+function bentuk(S, w, o = {}) {
+  const [x0, y0, x1, y1] = S.bb;
+  if (GAYA === 'cel') {
+    c.save(); c.clip(S.p);
+    const g = c.createLinearGradient(x0, y0, x1, y1), a = o.terang ?? .3, b = o.gelap ?? .7;
+    g.addColorStop(0, w[0]); g.addColorStop(a, w[0]); g.addColorStop(a, w[1]); g.addColorStop(b, w[1]); g.addColorStop(b, w[2]); g.addColorStop(1, w[2]);
+    c.fillStyle = g; c.fillRect(x0 - 4, y0 - 4, x1 - x0 + 8, y1 - y0 + 8); c.restore();
+    if (!o.latar) { c.lineWidth = o.lw || 5; c.strokeStyle = PAL.tinta; c.lineJoin = 'round'; c.stroke(S.p); }
+  } else if (GAYA === 'catair') {
+    const g = c.createLinearGradient(x0, y0, x1, y1);
+    g.addColorStop(0, w[0]); g.addColorStop(.5, w[1]); g.addColorStop(1, w[2]);
+    c.save(); c.globalAlpha = o.latar ? .8 : .95; c.fillStyle = g; c.fill(S.p); c.globalAlpha = .2; c.translate(4, -5); c.fill(S.p); c.restore();
+    c.save(); c.clip(S.p); c.globalCompositeOperation = 'multiply'; c.globalAlpha = .4; c.fillStyle = POLA; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    c.globalCompositeOperation = 'source-over'; const gb = c.createLinearGradient(0, y0 + (y1 - y0) * .55, 0, y1);
+    gb.addColorStop(0, 'rgba(244,239,228,0)'); gb.addColorStop(1, 'rgba(244,239,228,.12)'); c.globalAlpha = 1; c.fillStyle = gb; c.fillRect(x0, y0, x1 - x0, y1 - y0); c.restore();
+    c.save(); c.strokeStyle = w[2]; c.lineJoin = 'round'; c.globalAlpha = o.latar ? .06 : .12; c.lineWidth = 9; c.stroke(S.p); c.globalAlpha = o.latar ? .25 : .5; c.lineWidth = 2.4; c.stroke(S.p); c.restore();
+  } else {
+    c.save(); if (BAYANG) { c.shadowColor = 'rgba(25,12,0,.42)'; c.shadowBlur = o.latar ? 10 : 18; c.shadowOffsetX = o.latar ? 3 : 6; c.shadowOffsetY = o.latar ? 6 : 11; }
+    c.fillStyle = w[1]; c.fill(S.p); c.restore();
+    c.save(); c.clip(S.p); const g = c.createLinearGradient(x0, y0, x0, y1);
+    g.addColorStop(0, 'rgba(255,255,255,.16)'); g.addColorStop(1, 'rgba(0,0,0,.1)'); c.fillStyle = g; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    c.globalCompositeOperation = 'multiply'; c.globalAlpha = .5; c.fillStyle = POLA; c.fillRect(x0, y0, x1 - x0, y1 - y0); c.restore();
+  }
+}
+/* garis wajah: tinta (cel/catair) atau potongan kertas tebal */
+function garis(fn, lw = 5, warna = PAL.tinta) {
+  c.save(); c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = warna;
+  if (GAYA === 'catair') { c.globalAlpha = .8; c.lineWidth = lw * .7; }
+  else if (GAYA === 'kertas') { c.lineWidth = lw * 1.5; c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 4; c.shadowOffsetY = 3; }
+  else c.lineWidth = lw;
+  c.beginPath(); fn(); c.stroke(); c.restore();
+}
+function titik(x, y, rx, ry, warna) { c.save(); if (GAYA === 'kertas') { c.shadowColor = 'rgba(0,0,0,.3)'; c.shadowBlur = 4; c.shadowOffsetY = 3; } c.fillStyle = warna; c.beginPath(); c.ellipse(x, y, rx, ry, 0, 0, 7); c.fill(); c.restore(); }
+function mata(x, y, rx, ry, lx, ly, kedip = 0) {
+  if (kedip > .5) { garis(() => { c.moveTo(x - rx, y); c.quadraticCurveTo(x, y + ry * .5, x + rx, y); }, 5); return; }
+  bentuk(elp(x, y, rx, ry), ['#FFFFFF', '#FFFFFF', '#E4E8F2'], {lw: 4});
+  c.save(); c.clip(elp(x, y, rx, ry).p);
+  titik(x + lx, y + ly, rx * .62, ry * .62, PAL.iris); titik(x + lx, y + ly, rx * .3, ry * .3, '#160B05');
+  titik(x + lx - rx * .25, y + ly - ry * .3, rx * .2, ry * .2, '#FFFFFF'); titik(x + lx + rx * .2, y + ly + ry * .25, rx * .09, ry * .09, '#FFFFFF');
+  c.restore();
+}
+function papanTeks(teks, x, y, ukuran, warna, font) {
+  c.save(); c.font = `${font}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = warna;
+  if (GAYA === 'kertas') { c.shadowColor = 'rgba(0,0,0,.3)'; c.shadowBlur = 3; c.shadowOffsetY = 3; }
+  c.fillText(teks, x, y); c.restore();
+}
+
+/* ---------- latar: dinding + rak obat ---------- */
+const RR = rng(5), RAK = [];
+[[40, 330], [380, 330], [720, 330]].forEach(([rx]) => {
+  for (let s = 0; s < 6; s++) { const yb = 470 + s * 170; let x = rx + 14;
+    while (x < rx + 310) { const w = 34 + RR() * 46, h = 70 + RR() * 75; if (x + w > rx + 316) break; RAK.push({x, y: yb - h, w, h, k: Math.floor(RR() * PAL.kotak.length), pita: RR() < .5}); x += w + 3 + RR() * 6; } }
+});
+function latar(t) {
+  bentuk(kot(-200, -200, W + 400, H + 400), PAL.dinding, {latar: 1, terang: .1, gelap: .85});
+  // papan nama apotek
+  bentuk(kot(150, 150, 780, 150, GAYA === 'cel' ? 22 : 10), PAL.papan, {latar: GAYA !== 'cel' ? 0 : 0});
+  const pc = [235, 225]; bentuk(kot(pc[0] - 18, pc[1] - 48, 36, 96, 6), [PAL.tulisan, PAL.tulisan, PAL.tulisan], {lw: 3}); bentuk(kot(pc[0] - 48, pc[1] - 18, 96, 36, 6), [PAL.tulisan, PAL.tulisan, PAL.tulisan], {lw: 3});
+  papanTeks('APOTEK SEHAT', 600, 228, 0, PAL.tulisan, TEKS.papan);
+  [[40], [380], [720]].forEach(([rx]) => {
+    bentuk(kot(rx, 300, 330, 1000, 6), PAL.rak, {latar: 1});
+    c.save(); c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(rx + 12, 312, 306, 980); c.restore();
+  });
+  RAK.forEach(b => { bentuk(kot(b.x, b.y, b.w, b.h, 3), PAL.kotak[b.k], {latar: 1, terang: .25, gelap: .75});
+    if (b.pita) { c.save(); c.globalAlpha = .75; c.fillStyle = '#FFFFFF'; c.fillRect(b.x + 4, b.y + b.h * .35, b.w - 8, b.h * .14); c.restore(); } });
+  for (let s = 0; s < 6; s++) [40, 380, 720].forEach(rx => bentuk(kot(rx - 6, 470 + s * 170, 342, 18, 4), PAL.rak, {latar: 1, terang: .5, gelap: .5}));
+}
+
+/* ---------- tokoh ---------- */
+const lompat = id => GAYA === 'kertas' ? [(hash(Math.floor(T * 8) * 13 + id) - .5) * 5, (hash(Math.floor(T * 8) * 7 + id + 50) - .5) * 4] : [0, 0];
+let T = 0;
+function apoteker(t) {
+  const napas = Math.sin(t * 2.2) * 3, [jx, jy] = lompat(1);
+  c.save(); c.translate(320 + jx, 770 + napas * .3 + jy);
+  // badan jas
+  bentuk(pol([[-150, 175], [150, 175], [205, 560], [-205, 560]]), PAL.jas);
+  bentuk(pol([[-62, 182], [62, 182], [0, 330]], false), PAL.dalam, {lw: 4});
+  bentuk(pol([[-62, 182], [-22, 182], [-48, 380], [-100, 300]], false), PAL.jas, {lw: 4});
+  bentuk(pol([[62, 182], [22, 182], [48, 380], [100, 300]], false), PAL.jas, {lw: 4});
+  bentuk(kot(-130, 360, 70, 26, 5), PAL.dalam, {lw: 3});
+  // lengan kiri (turun)
+  bentuk(kapsul(-150, 215, -195, 470, 44), PAL.jas);
+  // hijab
+  const hj = new Path2D(); hj.moveTo(0, -165); hj.bezierCurveTo(100, -165, 150, -85, 145, 20); hj.bezierCurveTo(155, 120, 190, 185, 180, 250);
+  hj.quadraticCurveTo(0, 315, -180, 250); hj.bezierCurveTo(-190, 185, -155, 120, -145, 20); hj.bezierCurveTo(-150, -85, -100, -165, 0, -165);
+  bentuk({p: hj, bb: [-190, -165, 190, 315]}, PAL.hijab);
+  bentuk(elp(0, 12, 104, 124), PAL.ciput, {lw: 4});
+  // wajah
+  bentuk(elp(0, 22, 92, 110), PAL.kulit, {lw: 4, terang: .25, gelap: .78});
+  titik(-55, 62, 22, 12, PAL.pipi); titik(55, 62, 22, 12, PAL.pipi);
+  mata(-38, 12, 25, 31, 7, 6); mata(38, 12, 25, 31, 7, 6);
+  garis(() => { c.moveTo(-62, -38); c.quadraticCurveTo(-40, -56, -16, -44); c.moveTo(16, -44); c.quadraticCurveTo(40, -56, 62, -38); }, 6);
+  garis(() => { c.moveTo(2, 40); c.lineTo(-4, 52); }, 3.5);
+  bentuk(elp(0, 84, 13, 17), [PAL.bibir, '#8E2234', '#5E1020'], {lw: 3.5});
+  // tetes keringat
+  bentuk(pol([[112, -78], [128, -40], [112, -26], [96, -40]]), ['#E7F7FF', '#9BDDFF', '#4FB2E8'], {lw: 3.5});
+  // lengan kanan memegang strip obat
+  bentuk(kapsul(150, 215, 215, 400, 44), PAL.jas);
+  bentuk(kapsul(215, 400, 232, 262, 40), PAL.jas);
+  c.restore();
+}
+function stripObat(t) {
+  const [jx, jy] = lompat(3), gy = Math.sin(t * 2.4) * 4;
+  c.save(); c.translate(585 + jx, 905 + gy + jy); c.rotate(.12 + Math.sin(t * 1.3) * .02);
+  bentuk(kot(-78, -112, 156, 224, 16), PAL.strip, {lw: 5, terang: .35, gelap: .8});
+  c.save(); c.globalAlpha = .5; c.strokeStyle = PAL.strip[2]; c.lineWidth = 2; c.setLineDash([6, 7]); c.strokeRect(-62, -96, 124, 192); c.restore();
+  bentuk(elp(0, 0, 50, 50), PAL.pil, {lw: 4, terang: .35, gelap: .78});
+  garis(() => { c.moveTo(-28, 0); c.lineTo(28, 0); }, 3, PAL.strip[2]);
+  // kilau
+  if (GAYA !== 'kertas') { c.save(); c.globalAlpha = .7 * (.5 + .5 * Math.sin(t * 3)); c.fillStyle = '#FFFFFF'; c.beginPath(); const s = 22;
+    c.moveTo(70, -120 - s); c.lineTo(76, -126); c.lineTo(70 + s, -120); c.lineTo(76, -114); c.lineTo(70, -120 + s); c.lineTo(64, -114); c.lineTo(70 - s, -120); c.lineTo(64, -126); c.closePath(); c.fill(); c.restore(); }
+  c.restore();
+  // tangan apoteker
+  const [ax, ay] = lompat(1); c.save(); c.translate(320 + ax, 770 + ay);
+  bentuk(elp(228, 236, 38, 34, -.4), PAL.kulit, {lw: 4}); bentuk(elp(250, 200, 13, 24, .5), PAL.kulit, {lw: 4});
+  c.restore();
+}
+function nenek(t) {
+  const [jx, jy] = lompat(2), angguk = Math.sin(t * 1.6) * 4;
+  c.save(); c.translate(810 + jx, 905 + jy);
+  // badan kebaya membungkuk
+  bentuk(pol([[-150, 140], [140, 130], [215, 470], [-195, 470]]), PAL.kebaya);
+  c.save(); c.clip(pol([[-150, 140], [140, 130], [215, 470], [-195, 470]]).p); c.globalAlpha = .35;
+  for (let i = 0; i < 9; i++) for (let j = 0; j < 5; j++) titik(-170 + i * 45 + (j % 2) * 22, 170 + j * 70, 8, 8, PAL.kebaya[0]);
+  c.restore();
+  garis(() => { c.moveTo(-10, 150); c.quadraticCurveTo(-20, 300, 10, 470); }, 4);
+  bentuk(elp(-12, 215, 16, 16), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3});
+  // lengan menyodorkan telapak
+  bentuk(kapsul(-130, 175, -205, 330, 40), PAL.kebaya);
+  bentuk(elp(-225, 340, 36, 26, -.3), PAL.kulitN, {lw: 4});
+  c.translate(0, angguk);
+  // sanggul + rambut uban
+  bentuk(elp(30, -128, 58, 46), PAL.uban); bentuk(elp(0, -20, 102, 100), PAL.uban);
+  // wajah
+  bentuk(elp(-6, 18, 86, 96), PAL.kulitN, {lw: 4, terang: .25, gelap: .78});
+  garis(() => { c.moveTo(-40, -42); c.quadraticCurveTo(-6, -50, 28, -42); c.moveTo(-30, -28); c.quadraticCurveTo(-6, -34, 18, -28); }, 3, PAL.kulitN[2]);
+  // mata tersenyum "^ ^" + kacamata
+  garis(() => { c.moveTo(-58, 18); c.quadraticCurveTo(-42, 2, -26, 18); c.moveTo(12, 18); c.quadraticCurveTo(28, 2, 44, 18); }, 5);
+  garis(() => { c.arc(-42, 16, 32, 0, 7); c.moveTo(42, 16); c.arc(28, 16, 32, Math.PI, Math.PI * 3); c.moveTo(-10, 12); c.lineTo(-4, 12); }, 4.5, GAYA === 'kertas' ? '#B9341F' : '#7A3B2E');
+  titik(-62, 58, 20, 11, PAL.pipi); titik(44, 58, 20, 11, PAL.pipi);
+  garis(() => { c.moveTo(-6, 34); c.lineTo(-12, 48); c.lineTo(-2, 50); }, 3.5);
+  garis(() => { c.moveTo(-36, 72); c.quadraticCurveTo(-8, 96, 22, 72); }, 5);
+  garis(() => { c.moveTo(-70, 82); c.quadraticCurveTo(-62, 92, -52, 92); c.moveTo(38, 92); c.quadraticCurveTo(48, 92, 56, 82); }, 3, PAL.kulitN[2]);
+  c.restore();
+}
+function meja(t) {
+  bentuk(kot(-80, 1255, W + 160, 700), PAL.meja, {latar: GAYA === 'cel' ? 0 : 1, terang: .15, gelap: .85});
+  bentuk(kot(-80, 1225, W + 160, 56, 10), PAL.mejaAtas, {terang: .5, gelap: .7});
+  // tas nenek di meja
+  const [jx, jy] = lompat(4); c.save(); c.translate(905 + jx, 1180 + jy);
+  garis(() => { c.moveTo(-60, -20); c.bezierCurveTo(-55, -110, 55, -110, 60, -20); }, 9, PAL.tas[2]);
+  bentuk(pol([[-120, -30], [120, -30], [140, 70], [-140, 70]]), PAL.tas);
+  bentuk(kot(-14, -10, 28, 30, 6), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3});
+  c.restore();
+  // kunci & kacamata cadangan yang tumpah dari tas
+  c.save(); c.translate(705, 1238); c.rotate(-.2); bentuk(elp(0, 0, 18, 18), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3}); bentuk(kot(10, -6, 50, 12, 4), ['#FFE58A', '#F2C230', '#B98A10'], {lw: 3}); c.restore();
+}
+function pasca(t) {
+  if (GAYA === 'catair') {
+    c.save(); c.globalCompositeOperation = 'multiply'; c.globalAlpha = .35; c.fillStyle = KERTAS; c.fillRect(0, 0, W, H); c.restore();
+    const g = c.createRadialGradient(W / 2, H * .5, H * .3, W / 2, H * .5, H * .75); g.addColorStop(0, 'rgba(120,90,60,0)'); g.addColorStop(1, 'rgba(120,90,60,.28)');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+  } else if (GAYA === 'cel') {
+    c.save(); c.globalCompositeOperation = 'screen'; c.globalAlpha = .22;
+    for (let i = 0; i < 4; i++) { const x0 = -200 + i * 260 + Math.sin(t * .4 + i) * 20; c.fillStyle = '#FFF6D6'; c.beginPath(); c.moveTo(x0, 0); c.lineTo(x0 + 120, 0); c.lineTo(x0 + 520, H); c.lineTo(x0 + 300, H); c.closePath(); c.fill(); }
+    c.restore();
+    const g = c.createRadialGradient(W / 2, H * .5, H * .35, W / 2, H * .5, H * .8); g.addColorStop(0, 'rgba(30,60,140,0)'); g.addColorStop(1, 'rgba(30,60,140,.2)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  } else {
+    const g = c.createRadialGradient(W / 2, H * .45, H * .25, W / 2, H * .5, H * .8); g.addColorStop(0, 'rgba(255,230,180,0)'); g.addColorStop(1, 'rgba(20,10,0,.35)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  }
+}
+function gambar(t) {
+  T = t; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, W, H);
+  const s = 1.2 + .035 * E.io(seg(t, 0, 4)), kx = nz(t * .3, 1) * 6, ky = nz(t * .3, 2) * 5;
+  c.setTransform(s, 0, 0, s, W / 2 * (1 - s) + kx, 1300 * (1 - s) + 150 + ky);
+  latar(t);
+  if (GAYA === 'catair') { c.save(); c.fillStyle = 'rgba(244,239,228,.22)'; c.fillRect(-300, -300, W + 600, H + 600); c.restore(); }
+  apoteker(t); nenek(t); stripObat(t); meja(t);
+  c.setTransform(1, 0, 0, 1, 0, 0); pasca(t);
+}
+
+const SCENE = {
+  dur: 4,
+  sub: {gaya: 'mati'},
+  muat: () => document.fonts.ready,
+  frame(t) { gambar(t); }
+};
