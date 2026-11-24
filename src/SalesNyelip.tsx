@@ -81,6 +81,15 @@ export const SalesNyelip: React.FC = () => {
 
       {/* Audio: hanya dipasang bila file ada di public/ */}
       {has('vo.mp3') && <Audio src={staticFile('vo.mp3')} />}
+      {/* VO per scene: public/vo-s1.mp3 … vo-s7.mp3, mulai tepat di awal scene-nya */}
+      {ORDER.map((k, i) => {
+        const name = `vo-s${i + 1}.mp3`;
+        return has(name) ? (
+          <Sequence key={name} from={START[k]} layout="none">
+            <Audio src={staticFile(name)} />
+          </Sequence>
+        ) : null;
+      })}
       {has('bgm.mp3') && (
         <Audio
           src={staticFile('bgm.mp3')}
@@ -88,7 +97,8 @@ export const SalesNyelip: React.FC = () => {
           volume={(f) => {
             // BGM 20% saat VO ada, hening total saat jeda twist
             if (f >= silenceFrom && f < silenceTo) return 0;
-            const base = has('vo.mp3') ? 0.2 : 0.5;
+            const anyVo = has('vo.mp3') || ORDER.some((_, i) => has(`vo-s${i + 1}.mp3`));
+            const base = anyVo ? 0.2 : 0.5;
             return base * interpolate(f, [0, 30], [0, 1], {extrapolateRight: 'clamp'});
           }}
         />
