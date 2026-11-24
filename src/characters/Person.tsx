@@ -18,7 +18,8 @@ export type Pose =
   | 'holdPaper'
   | 'sign'
   | 'walk'
-  | 'phone';
+  | 'phone'
+  | 'carry';
 
 export type Expression = 'neutral' | 'smile' | 'worried' | 'shocked' | 'suspicious';
 
@@ -37,6 +38,7 @@ export const POSES: Record<Pose, PoseDef> = {
   sign: {L: {elbow: [-20, 78], hand: [36, 104]}, R: {elbow: [34, 80], hand: [-20, 92]}},
   walk: {L: {elbow: [-30, 80], hand: [-46, 160]}, R: {elbow: [30, 80], hand: [50, 158]}, legSwing: 1},
   phone: {L: {elbow: [-12, 86], hand: [-16, 168]}, R: {elbow: [54, -4], hand: [14, -94]}},
+  carry: {L: {elbow: [-20, 78], hand: [36, 104]}, R: {elbow: [20, 78], hand: [-36, 104]}, legSwing: 1},
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -75,6 +77,8 @@ export type PersonProps = {
   /** benda di depan dada (clipboard/faktur), digambar di atas badan, di bawah tangan */
   chestProp?: React.ReactNode;
   walkPhase?: number;
+  /** mulut bergerak seperti sedang bicara */
+  talking?: boolean;
 };
 
 const HEAD_Y = -488;
@@ -150,8 +154,11 @@ const Brows: React.FC<{expression: Expression}> = ({expression}) => {
   }
 };
 
-const Mouth: React.FC<{expression: Expression}> = ({expression}) => {
+const Mouth: React.FC<{expression: Expression; talk?: number}> = ({expression, talk = 0}) => {
   const y = HEAD_Y + 38;
+  if (talk > 0.05) {
+    return <ellipse cx={0} cy={y + 4} rx={13} ry={3 + 12 * talk} fill="#7A2E2A" />;
+  }
   switch (expression) {
     case 'smile':
       return (
@@ -245,6 +252,7 @@ export const Person: React.FC<PersonProps & {look: Look}> = ({
   leftProp,
   chestProp,
   walkPhase,
+  talking = false,
 }) => {
   const frame = useCurrentFrame();
 
@@ -264,7 +272,8 @@ export const Person: React.FC<PersonProps & {look: Look}> = ({
     }
   }
 
-  const def = fromPose ? mixPose(POSES[fromPose], POSES[pose], poseT) : POSES[pose];
+  const def0 = fromPose ? mixPose(POSES[fromPose], POSES[pose], poseT) : POSES[pose];
+  const def = def0;
   const phase = walkPhase ?? frame / 7;
   const swing = (def.legSwing ?? 0) * Math.sin(phase) * 16;
   const bob = (def.legSwing ?? 0) * Math.abs(Math.cos(phase)) * -6;
@@ -332,7 +341,7 @@ export const Person: React.FC<PersonProps & {look: Look}> = ({
             <ellipse cx={46} cy={HEAD_Y + 26} rx={15} ry={9} fill={CHAR.blush} opacity={0.45} />
             <Eyes expression={expression} blink={blink} />
             <Brows expression={expression} />
-            <Mouth expression={expression} />
+            <Mouth expression={expression} talk={talking ? Math.abs(Math.sin(frame / 3.1 + random(seed + Math.floor(frame / 9)) * 2)) : 0} />
             {expression === 'worried' && (
               <path d={`M 82 ${HEAD_Y - 40} q 10 18 0 26 q -10 -8 0 -26 Z`} fill="#8EC5F5" />
             )}

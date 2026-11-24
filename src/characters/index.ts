@@ -3,3 +3,4 @@ export * from './Owner';
 export * from './Karyawan';
 export * from './Sales';
 export * from './Kasir';
+export * from './Pasien';
