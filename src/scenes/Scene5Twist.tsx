@@ -43,7 +43,7 @@ const PartA: React.FC = () => {
         <div style={{position: 'relative', fontFamily: FONT, fontWeight: 800, fontSize: 160, color: C.NAVY, letterSpacing: 1, transform: `scale(${retur})`}}>
           RETUR?
           <svg width="112%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style={{position: 'absolute', left: '-6%', top: 0, overflow: 'visible'}}>
-            <line x1={0} y1={64} x2={100 * strike} y2={64 - 22 * strike} stroke={C.ALERT_RED} strokeLinecap="round" style={{strokeWidth: 18}} vectorEffect="non-scaling-stroke" />
+            {strike > 0.01 && <line x1={0} y1={64} x2={100 * strike} y2={64 - 22 * strike} stroke={C.ALERT_RED} strokeLinecap="round" style={{strokeWidth: 18}} vectorEffect="non-scaling-stroke" />}
           </svg>
         </div>
       </div>
