@@ -18,13 +18,17 @@ export const Headline: React.FC<{
   size?: number;
   color?: string;
   delay?: number;
-}> = ({kicker, kickerColor = C.KICKER, lines, size = 108, color = C.NAVY, delay = 0}) => {
+  /** frame mulai keluar (8 frame) */
+  out?: number;
+}> = ({kicker, kickerColor = C.KICKER, lines, size = 108, color = C.NAVY, delay = 0, out}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const words = lines.map((l) => l.split(' ').map((w) => colorOf(w, color)));
   const plainCount = words.flat().filter((w) => !w.key).length;
   let idx = 0;
   let keyIdx = 0;
+  const ex = out === undefined ? 0 : Math.min(1, Math.max(0, (frame - out) / 8));
+  if (out !== undefined && ex >= 1) return null;
   return (
     <div
       style={{
@@ -39,6 +43,8 @@ export const Headline: React.FC<{
         justifyContent: 'center',
         textAlign: 'center',
         fontFamily: FONT,
+        opacity: 1 - ex,
+        transform: `translateY(${-30 * ex}px)`,
       }}
     >
       {kicker && (

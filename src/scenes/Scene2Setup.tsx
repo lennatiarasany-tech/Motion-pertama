@@ -2,10 +2,12 @@ import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Karyawan, Kasir, PasienBapak, PasienIbu, PasienMas, Pose, Sales} from '../characters';
 import {Chip} from '../components/Chip';
+import {HeadScrim} from '../components/Camera';
 import {Headline} from '../components/Headline';
 import {PharmacyRoom} from '../components/PharmacyRoom';
 import {Box, CashierDesk, Clipboard} from '../components/Props';
-import {Subtitle} from '../components/Subtitle';
+import {Subs} from '../components/Subtitle';
+import {SUBS} from '../script';
 import {C, FONT, ZONE} from '../theme';
 
 /**
@@ -175,9 +177,10 @@ export const Scene2Setup: React.FC = () => {
         }}
       />
 
+      <HeadScrim />
       {/* LAYAR (tidak ikut kamera): headline selalu di zona teks */}
       <Headline kicker="SETIAP HARI" lines={['APOTEK RAMAI,', 'YANG JAGA', 'CUMA *2* *ORANG*']} size={100} />
-      <Subtitle text={frame < 90 ? 'Apotek ini selalu *ramai*' : 'Jam sibuk, *sales* *datang*'} />
+      <Subs subs={SUBS.s2} />
     </AbsoluteFill>
   );
 };

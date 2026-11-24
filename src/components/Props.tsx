@@ -17,14 +17,15 @@ export const Box: React.FC<{x: number; y: number; w?: number; h?: number; rot?: 
     <rect x={-14} y={-h} width={28} height={h * 0.45} fill={CHAR.boxTape} />
     {label && (
       <g>
-        <rect x={-w / 2 + 14} y={-h * 0.42} width={w * 0.62} height={38} rx={8} fill={C.ALERT_RED} />
+        <rect x={-w / 2 + 8} y={-h * 0.5} width={w - 16} height={46} rx={10} fill={C.ALERT_RED} />
         <text
-          x={-w / 2 + 14 + (w * 0.62) / 2}
-          y={-h * 0.42 + 27}
+          x={0}
+          y={-h * 0.5 + 34}
           textAnchor="middle"
           fontFamily={FONT}
-          fontWeight={700}
-          fontSize={24}
+          fontWeight={800}
+          fontSize={32}
+          letterSpacing={-0.5}
           fill="#FFFFFF"
         >
           {label}

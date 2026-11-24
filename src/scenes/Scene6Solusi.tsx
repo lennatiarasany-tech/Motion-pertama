@@ -1,10 +1,12 @@
 import React from 'react';
 import {AbsoluteFill, Freeze, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Karyawan, Owner, Place} from '../characters';
-import {Background} from '../components/Background';
+import {HeadScrim, Stage, useDolly} from '../components/Camera';
+import {PharmacyRoom} from '../components/PharmacyRoom';
 import {Chip} from '../components/Chip';
 import {Headline} from '../components/Headline';
-import {Subtitle} from '../components/Subtitle';
+import {Subs} from '../components/Subtitle';
+import {CHIPS, HEAD, SUBS} from '../script';
 import {C} from '../theme';
 
 /**
@@ -135,23 +137,25 @@ export const Scene6Solusi: React.FC = () => {
   const ownerIn = spring({frame: frame - 270, fps, durationInFrames: 36, config: {damping: 200}});
   const ownerX = interpolate(ownerIn, [0, 1], [-160, 250]);
   const thumbs = spring({frame: frame - 306, fps, config: {damping: 16, mass: 0.75}});
+  const room = useDolly({fx: 300, z: 1.3}, [{at: 0, dur: 390, fx: 760, z: 1.22}]);
   const kPose = spring({frame: frame - 10, fps, config: {damping: 16, mass: 0.75}});
-  const sub =
-    frame < 120 ? 'Barang masuk *langsung* *dicocokkan*' : frame < 250 ? 'Di luar SP? *Langsung* *ketahuan*' : 'Cek cepat walau *lagi* *ramai*';
   return (
-    <Background sun clouds>
+    <AbsoluteFill>
+      <Stage cam={room} room={<PharmacyRoom frame={frame} />} blur={20} />
+      <AbsoluteFill style={{background: 'rgba(230,238,250,0.35)'}} />
+      <HeadScrim />
       <AbsoluteFill style={{transform: `scale(${interpolate(frame, [0, 390], [1, 1.03])})`, transformOrigin: '50% 60%'}}>
-        <Headline kicker="PAKAI APOTEK DIGITAL" kickerColor={C.BRAND_BLUE} lines={['BARANG MASUK', 'LANGSUNG', '_DICOCOKKAN_']} size={104} />
+        <Headline kicker={HEAD.s6.kicker} kickerColor={C.BRAND_BLUE} lines={HEAD.s6.lines} size={104} />
         <Screen />
 
         {/* chip temuan, menumpuk di bawah layar */}
-        <Chip text="🚫 tidak dipesan (di luar SP)" variant="white" x={430} y={1262} anchor="left" delay={118} size={32} />
-        <Chip text="📈 harga berubah tak wajar" variant="white" x={430} y={1352} anchor="left" delay={192} size={32} />
-        <Chip text="⏳ ED kurang dari setahun" variant="white" x={430} y={1442} anchor="left" delay={216} size={32} />
+        <Chip text={CHIPS.s6[0]} variant="white" x={430} y={1262} anchor="left" delay={118} size={32} />
+        <Chip text={CHIPS.s6[1]} variant="white" x={430} y={1352} anchor="left" delay={192} size={32} />
+        <Chip text={CHIPS.s6[2]} variant="white" x={430} y={1442} anchor="left" delay={216} size={32} />
         <Check x={392} y={1262} delay={284} />
         <Check x={392} y={1352} delay={290} />
         <Check x={392} y={1442} delay={296} />
-        <Chip text="⚡ cek cepat walau lagi ramai" variant="blue" x={430} y={1540} anchor="left" delay={300} size={34} />
+        <Chip text={CHIPS.s6[3]} variant="blue" x={430} y={1540} anchor="left" delay={300} size={34} />
 
         <Place x={frame < 270 ? 170 : interpolate(ownerIn, [0, 1], [170, 80])} scale={0.7}>
           <Karyawan fromPose="idle" pose="holdPaper" poseT={kPose} holding="clipboard" expression={frame > 120 ? 'smile' : 'neutral'} />
@@ -162,7 +166,7 @@ export const Scene6Solusi: React.FC = () => {
           </Place>
         )}
       </AbsoluteFill>
-      <Subtitle text={sub} />
-    </Background>
+      <Subs subs={SUBS.s6} />
+    </AbsoluteFill>
   );
 };

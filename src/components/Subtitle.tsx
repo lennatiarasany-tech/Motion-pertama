@@ -1,6 +1,16 @@
 import React from 'react';
 import {C, FONT, ZONE} from '../theme';
 
+import {useCurrentFrame} from 'remotion';
+import type {Sub} from '../script';
+
+/** Subtitle berdasarkan daftar potongan [from,to,teks] (frame lokal scene). */
+export const Subs: React.FC<{subs: Sub[]}> = ({subs}) => {
+  const frame = useCurrentFrame();
+  const cur = subs.find(([a, b]) => frame >= a && frame < b);
+  return cur ? <Subtitle text={cur[2]} /> : null;
+};
+
 /** Subtitle di safe bawah. Kata kunci ditulis dengan *kata* → kuning. */
 export const Subtitle: React.FC<{text: string}> = ({text}) => (
   <div
