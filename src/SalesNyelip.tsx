@@ -30,16 +30,16 @@ const SFX: [string, number, number][] = [
   ['sfx/whoosh.mp3', START.s1Hook + 14, 0.4],
   ['sfx/pop.mp3', START.s1Hook + IMPACT, 0.6],
   ['sfx/whoosh.mp3', START.s1Hook + 48, 0.35],
-  ['sfx/whoosh.mp3', START.s3BuruBuru + 50, 0.35],
-  ['sfx/whoosh.mp3', START.s3BuruBuru + 100, 0.45],
-  ['sfx/pop.mp3', START.s3BuruBuru + 166, 0.5],
+  ['sfx/whoosh.mp3', START.s3BuruBuru + 88, 0.35],
+  ['sfx/whoosh.mp3', START.s3BuruBuru + 136, 0.45],
+  ['sfx/pop.mp3', START.s3BuruBuru + 212, 0.5],
   ...X_AT.map((x): [string, number, number] => ['sfx/error.mp3', START.s4Terbongkar + x, 0.45]),
   ['sfx/error.mp3', START.s5Twist + STRIKE, 0.5],
   ['sfx/whoosh.mp3', START.s5Twist + IRIS, 0.4],
-  ['sfx/ding.mp3', START.s6Solusi + 118, 0.5],
-  ['sfx/ding.mp3', START.s6Solusi + 192, 0.5],
-  ['sfx/ding.mp3', START.s6Solusi + 216, 0.5],
-  ['sfx/pop.mp3', START.s7Cta + 112, 0.5],
+  ['sfx/ding.mp3', START.s6Solusi + 170, 0.5],
+  ['sfx/ding.mp3', START.s6Solusi + 218, 0.5],
+  ['sfx/ding.mp3', START.s6Solusi + 265, 0.5],
+  ['sfx/pop.mp3', START.s7Cta + 130, 0.5],
 ];
 
 const silenceFrom = START.s5Twist + SILENCE[0];

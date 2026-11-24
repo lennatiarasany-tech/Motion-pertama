@@ -11,7 +11,7 @@ import {SUBS} from '../script';
 import {C, FONT, ZONE} from '../theme';
 
 /**
- * SCENE 2 — SETUP (180 frame / 6 detik)
+ * SCENE 2 — SETUP (241 frame / 8 detik, mengikuti VO)
  * Kamera "slow-motion dolly": maju-mundur mengikuti karakter.
  *   0–40   dorong pelan ke kasir & ibu yang sedang bicara
  *   45–85  geser ke kanan mengikuti bapak & mas di antrean
@@ -25,10 +25,10 @@ const FLOOR = ZONE.floorY;
 
 type Key = {at: number; dur: number; fx: number; z: number};
 const CAM: Key[] = [
-  {at: 0, dur: 40, fx: 400, z: 1.42},
-  {at: 45, dur: 42, fx: 800, z: 1.42},
-  {at: 90, dur: 32, fx: 540, z: 1.0},
-  {at: 124, dur: 52, fx: 860, z: 1.28},
+  {at: 0, dur: 54, fx: 400, z: 1.42},
+  {at: 62, dur: 56, fx: 800, z: 1.42},
+  {at: 125, dur: 36, fx: 540, z: 1.0},
+  {at: 172, dur: 66, fx: 860, z: 1.28},
 ];
 const CAM_START = {fx: 540, z: 1.0};
 
@@ -94,15 +94,15 @@ export const Scene2Setup: React.FC = () => {
   const sp = (d: number) => spring({frame: frame - d, fps, config: {damping: 16, mass: 0.75}});
 
   // pintu & sales
-  const door = sp(104);
-  const walkIn = spring({frame: frame - 112, fps, durationInFrames: 50, config: {damping: 200}});
+  const door = sp(162);
+  const walkIn = spring({frame: frame - 170, fps, durationInFrames: 48, config: {damping: 200}});
   const salesX = interpolate(walkIn, [0, 1], [1260, 1040]);
-  const salesWalking = frame >= 112 && frame < 160;
+  const salesWalking = frame >= 170 && frame < 216;
   const salesPose: Pose = 'carry';
 
   // pose & ekspresi yang berganti
   const karyawanT = sp(18);
-  const bapakT = sp(52);
+  const bapakT = sp(70);
 
   return (
     <AbsoluteFill style={{background: C.BG_LIGHT}}>
@@ -120,7 +120,7 @@ export const Scene2Setup: React.FC = () => {
         <g transform={worldT(fx, z)}>
           {/* kasir di balik meja */}
           <At x={210} y={FLOOR - 60}>
-            <Kasir pose={frame < 30 ? 'point' : 'idle'} expression="smile" talking={frame < 28} />
+            <Kasir pose={frame < 40 ? 'point' : 'idle'} expression="smile" talking={frame < 38} />
           </At>
           <g transform={`translate(210 ${FLOOR}) scale(0.82)`}>
             <CashierDesk x={0} y={0} />
@@ -132,39 +132,39 @@ export const Scene2Setup: React.FC = () => {
               fromPose="idle"
               pose="holdPaper"
               poseT={karyawanT}
-              expression={frame > 130 ? 'shocked' : 'worried'}
+              expression={frame > 190 ? 'shocked' : 'worried'}
               holding={karyawanT > 0.5 ? 'clipboard' : null}
             />
           </At>
 
           {/* antrean pasien (karakter nyata) */}
           <At x={600}>
-            <PasienIbu pose="idle" expression={frame < 70 ? 'neutral' : 'smile'} talking={frame >= 26 && frame < 70} flip />
+            <PasienIbu pose="idle" expression={frame < 95 ? 'neutral' : 'smile'} talking={frame >= 35 && frame < 95} flip />
           </At>
           <At x={740}>
-            <PasienBapak fromPose="idle" pose="thinking" poseT={bapakT} expression="worried" talking={frame >= 58 && frame < 100} flip />
+            <PasienBapak fromPose="idle" pose="thinking" poseT={bapakT} expression="worried" talking={frame >= 78 && frame < 135} flip />
           </At>
           <At x={880}>
-            <PasienMas pose="phone" expression={frame < 70 ? 'neutral' : 'suspicious'} talking={frame >= 76 && frame < 124} rightProp={<PhoneIcon />} />
+            <PasienMas pose="phone" expression={frame < 95 ? 'neutral' : 'suspicious'} talking={frame >= 102 && frame < 165} rightProp={<PhoneIcon />} />
           </At>
 
           {/* sales masuk dari pintu */}
-          {frame >= 108 && (
+          {frame >= 166 && (
             <At x={salesX}>
-              <Sales pose={salesPose} walkPhase={salesWalking ? undefined : 0} expression="smile" flip talking={frame >= 150} holding="box" />
+              <Sales pose={salesPose} walkPhase={salesWalking ? undefined : 0} expression="smile" flip talking={frame >= 205} holding="box" />
             </At>
           )}
 
           {/* balon bicara */}
-          <Speech x={500} y={1200} text="Mbak, obat batuk ada?" from={26} to={72} tail={90} />
-          <Speech x={730} y={1160} text="Masih lama, Mbak?" from={58} to={104} tail={10} />
-          <Speech x={900} y={1240} text="Iya, masih antre…" from={78} to={126} tail={-20} />
-          <Speech x={900} y={1200} text="Permisi, antar barang!" from={150} to={200} tail={130} />
+          <Speech x={500} y={1200} text="Mbak, obat batuk ada?" from={35} to={97} tail={90} />
+          <Speech x={730} y={1160} text="Masih lama, Mbak?" from={78} to={140} tail={10} />
+          <Speech x={900} y={1240} text="Iya, masih antre…" from={104} to={168} tail={-20} />
+          <Speech x={900} y={1200} text="Permisi, antar barang!" from={205} to={260} tail={130} />
 
           {/* chip antrean menempel di dunia, di atas antrean */}
           <foreignObject x={560} y={1040} width={400} height={90}>
             <div style={{position: 'relative', width: 400, height: 90}}>
-              <Chip text="antre 8 pasien" variant="red" x={200} y={45} delay={92} />
+              <Chip text="antre 8 pasien" variant="red" x={200} y={45} delay={128} />
             </div>
           </foreignObject>
         </g>

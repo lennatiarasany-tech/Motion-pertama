@@ -24,7 +24,7 @@ export const Scene1Hook: React.FC = () => {
   const {fps} = useVideoConfig();
   const cam = useDolly({fx: 735, z: 2.3}, [
     {at: 48, dur: 20, fx: 560, z: 1.0},
-    {at: 74, dur: 46, fx: 470, z: 1.22},
+    {at: 74, dur: 68, fx: 470, z: 1.25},
   ]);
   const shake = useShake([IMPACT], 16, 14);
 

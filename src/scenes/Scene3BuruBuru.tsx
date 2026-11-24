@@ -27,49 +27,49 @@ export const Scene3BuruBuru: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const cam = useDolly({fx: 690, z: 1.32}, [
-    {at: 50, dur: 16, fx: 250, z: 1.42},
-    {at: 78, dur: 14, fx: 480, z: 1.85},
-    {at: 104, dur: 72, fx: 690, z: 1.5},
-    {at: 182, dur: 26, fx: 560, z: 1.0},
+    {at: 88, dur: 16, fx: 250, z: 1.42},
+    {at: 136, dur: 14, fx: 480, z: 1.85},
+    {at: 160, dur: 64, fx: 690, z: 1.5},
+    {at: 226, dur: 30, fx: 600, z: 1.2},
   ]);
 
   // slow-motion: saturasi turun 40% + vinyet
-  const slow = interpolate(frame, [98, 110, 176, 192], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const slow = interpolate(frame, [154, 164, 226, 236], [0, 1, 1, 0.6], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const sat = `saturate(${1 - 0.4 * slow})`;
 
   // dus selipan (gerak lambat)
-  const slip1 = spring({frame: frame - 114, fps, durationInFrames: 34, config: {damping: 200}});
-  const slip2 = spring({frame: frame - 132, fps, durationInFrames: 34, config: {damping: 200}});
-  const ring = interpolate(frame, [152, 165], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const slip1 = spring({frame: frame - 166, fps, durationInFrames: 30, config: {damping: 200}});
+  const slip2 = spring({frame: frame - 182, fps, durationInFrames: 30, config: {damping: 200}});
+  const ring = interpolate(frame, [200, 212], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const top0 = FLOOR - 3 * BOX_H;
 
-  const signing = frame >= 80 && frame < 104;
-  const kPose = frame < 80 ? 'holdPaper' : signing ? 'sign' : 'holdPaper';
+  const signing = frame >= 138;
+  const kPose = signing ? 'sign' : 'holdPaper';
 
   return (
     <AbsoluteFill>
       <Stage cam={cam} room={<PharmacyRoom frame={frame} />} worldFilter={sat} roomFilter={sat}>
         {/* kasir & antrean di kiri */}
         <At x={60} y={FLOOR - 60} s={0.68}>
-          <Kasir expression="neutral" talking={frame > 40 && frame < 70} />
+          <Kasir expression="neutral" talking={frame > 70 && frame < 110} />
         </At>
         <g transform={`translate(60 ${FLOOR}) scale(0.82)`}>
           <CashierDesk x={0} y={0} />
         </g>
         <At x={250} s={0.7}>
-          <PasienIbu expression="worried" flip talking={frame > 52 && frame < 80} />
+          <PasienIbu expression="worried" flip talking={frame > 90 && frame < 128} />
         </At>
         <At x={-120} s={0.7}>
           <PasienBapak pose="thinking" expression="worried" flip />
         </At>
-        <Speech x={170} y={1180} text="Mbak, cepetan ya…" from={54} to={84} tail={70} />
+        <Speech x={170} y={1180} text="Mbak, cepetan ya…" from={92} to={132} tail={70} />
 
         {/* tumpukan dus SP (3) + selipan (2) */}
         <Box x={STACK_X} y={FLOOR} w={150} h={BOX_H} />
         <Box x={STACK_X} y={FLOOR - BOX_H} w={150} h={BOX_H} />
         <Box x={STACK_X} y={FLOOR - 2 * BOX_H} w={150} h={BOX_H} />
-        {frame >= 112 && <Box x={interpolate(slip1, [0, 1], [880, STACK_X])} y={interpolate(slip1, [0, 1], [top0 - 30, top0])} w={150} h={BOX_H} rot={-3 + 3 * slip1} />}
-        {frame >= 130 && (
+        {frame >= 164 && <Box x={interpolate(slip1, [0, 1], [880, STACK_X])} y={interpolate(slip1, [0, 1], [top0 - 30, top0])} w={150} h={BOX_H} rot={-3 + 3 * slip1} />}
+        {frame >= 180 && (
           <Box x={interpolate(slip2, [0, 1], [880, STACK_X + 4])} y={interpolate(slip2, [0, 1], [top0 - BOX_H - 40, top0 - BOX_H])} w={150} h={BOX_H} rot={4 - 2 * slip2} />
         )}
         <CircleAnnotation cx={STACK_X} cy={top0 - BOX_H + 10} rx={130} ry={140} progress={ring} />
@@ -78,25 +78,25 @@ export const Scene3BuruBuru: React.FC = () => {
           <Karyawan
             pose={kPose}
             holding="clipboard"
-            expression={frame < 50 ? 'neutral' : frame < 104 ? 'worried' : 'neutral'}
+            expression={frame < 88 ? 'neutral' : frame < 160 ? 'worried' : 'neutral'}
           />
         </At>
         <At x={900} s={0.8}>
           <Sales
-            pose={frame < 100 ? 'point' : 'idle'}
+            pose={frame < 150 ? 'point' : 'idle'}
             flip
             expression="smile"
-            talking={frame > 6 && frame < 46}
-            rightProp={frame < 80 ? <PaperProp x={0} y={-10} rot={90} /> : undefined}
+            talking={frame > 6 && frame < 78}
+            rightProp={frame < 138 ? <PaperProp x={0} y={-10} rot={90} /> : undefined}
           />
         </At>
       </Stage>
       <Vignette z={cam.z} base={0.06 + 0.25 * slow} />
-      <Flash at={80} max={0.3} />
+      <Flash at={136} max={0.3} />
       <HeadScrim />
       <Headline lines={HEAD.s3.lines} size={100} />
-      <Chip text={CHIPS.s3a} variant="yellow" x={1000} y={720} anchor="right" delay={12} style={{opacity: frame > 50 ? 0 : 1}} />
-      <Chip text={CHIPS.s3b} variant="red" x={540} y={780} delay={166} />
+      <Chip text={CHIPS.s3a} variant="yellow" x={1000} y={720} anchor="right" delay={12} style={{opacity: frame > 86 ? 0 : 1}} />
+      <Chip text={CHIPS.s3b} variant="red" x={540} y={780} delay={212} />
       <Subs subs={SUBS.s3} />
     </AbsoluteFill>
   );
