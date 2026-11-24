@@ -61,7 +61,7 @@ Nada lega dan yakin.
 
 ---
 
-# VERSI CAPCUT (Text-to-Speech)
+# VERSI CAPCUT (Text-to-Speech) — naskah revisi user
 
 CapCut tidak membaca tag `[...]`, jadi versi ini teks polos. Jeda dibuat dengan koma dan titik-titik.
 Taruh tiap teks sebagai klip teks di detik yang tertulis, lalu pilih **Teks ke ucapan** dengan suara yang sama untuk semua klip.
@@ -69,11 +69,11 @@ Video sudah punya subtitle sendiri, jadi **jangan aktifkan teks otomatis CapCut*
 
 | # | Mulai | Teks |
 |---|---|---|
-| 1 | 0:00 | Stok E D numpuk di gudang... apotek ini rugi jutaan. |
-| 2 | 0:04 | Apotek ini selalu ramai, yang jaga cuma dua orang. Pas jam sibuk... sales datang antar pesanan. |
-| 3 | 0:10 | Sales minta faktur cepat ditandatangani. Antrean panjang, barang dicek seadanya... langsung tanda tangan. |
-| 4 | 0:17 | Beberapa bulan kemudian, baru ketahuan. Ada produk yang nggak ada di surat pesanan, E D nya tinggal hitungan bulan. Nggak laku, numpuk... rugi jutaan. |
-| 5a | 0:27 | Mau retur? Ditolak. Fakturnya sudah ditandatangani apotek. |
-| 5b | 0:31 | Sales nakal memang ada... tapi celahnya, ada di cara kita terima barang. |
-| 6 | 0:36 | Di Apotek Digital, setiap faktur masuk langsung dicocokkan dengan surat pesanan. Produk di luar S P, harga berubah nggak wajar, sampai E D kurang dari setahun... langsung ketahuan. Cek cepat, walau apotek lagi ramai. |
+| 1 | 0:00 | Stok E D numpuk di gudang... apotek ini sampe rugi jutaan! |
+| 2 | 0:04 | Jadi gini ceritanya. Apotek ini selalu rame, dan yang jaga cuma dua orang. Pas jam rame, ada barang datang. |
+| 3 | 0:10 | Sales minta faktur cepat ditandatangani. Karena antrian panjang, barang dicek seadanya... dan langsung ditandatangan. |
+| 4 | 0:17 | Beberapa bulan kemudian, baru ketahuan. Ternyata, ada produk yang nggak ada di surat pesanan, E D nya tinggal hitungan bulan! |
+| 5a | 0:27 | Mau retur? Ditolak. Karena fakturnya sudah ditandatangani apotek. Hmm... |
+| 5b | 0:31 | Sales nakal memang selalu ada... tapi celahnya, juga bisa ada di cara kita terima barang. |
+| 6 | 0:36 | Di Apotek Digital, setiap faktur masuk langsung dicocokkan dengan surat pesanan. Produk di luar S P, harga berubah nggak wajar, sampai E D kurang dari setahun... langsung ketahuan. Jadi, bisa cek cepat, walau apotek lagi ramai. |
 | 7 | 0:49 | Pernah kecolongan juga? Tulis di komentar. Coba gratis Apotek Digital. |
