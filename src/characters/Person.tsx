@@ -1,12 +1,13 @@
 import React from 'react';
 import {random, useCurrentFrame} from 'remotion';
-import {CHAR, C} from '../theme';
+import {C} from '../theme';
 
 /**
- * Basis karakter seri Apotek Digital.
- * Gaya: flat vector, kepala bulat, mata titik, pipi merona, tanpa outline,
- * bayangan lembut satu tingkat. Titik (0,0) = telapak kaki di lantai.
- * Tinggi badan ±650px pada scale 1.
+ * RIG KARAKTER SERI APOTEK DIGITAL
+ * Geometri diambil persis dari aset resmi `karakter-apotek-digital.zip`
+ * (viewBox 640×940, isi digeser translate(120,40)). Lengan memakai sendi bahu
+ * (138,285)/(262,285) + siku 125px, sama seperti file aslinya, sehingga pose
+ * bisa dianimasikan. Titik (0,0) komponen = telapak kaki di lantai.
  */
 
 export type Pose =
@@ -22,220 +23,256 @@ export type Pose =
   | 'carry';
 
 export type Expression = 'neutral' | 'smile' | 'worried' | 'shocked' | 'suspicious';
+export type Holding = 'clipboard' | 'paper' | 'box' | null;
 
-type P = [number, number];
-type ArmPose = {elbow: P; hand: P};
-type PoseDef = {L: ArmPose; R: ArmPose; legSwing?: number};
+type Arm = [number, number]; // [rotasi lengan atas, rotasi lengan bawah]
+type PoseDef = {L: Arm; R: Arm; legSwing?: number};
 
-// Titik siku & tangan relatif terhadap bahu (bahu kiri layar x=-64, kanan x=+64, y=-392)
+// Sudut diambil dari file SVG resmi (bu-owner_*, karyawan-faktur_*, kurir-pbf_*)
 export const POSES: Record<Pose, PoseDef> = {
-  idle: {L: {elbow: [-12, 86], hand: [-16, 168]}, R: {elbow: [12, 86], hand: [16, 168]}},
-  point: {L: {elbow: [-12, 86], hand: [-16, 168]}, R: {elbow: [72, -36], hand: [150, -92]}},
-  thinking: {L: {elbow: [-12, 86], hand: [-16, 168]}, R: {elbow: [48, -70], hand: [-6, -146]}},
-  shocked: {L: {elbow: [-70, -38], hand: [-82, -128]}, R: {elbow: [70, -38], hand: [82, -128]}},
-  thumbsUp: {L: {elbow: [-12, 86], hand: [-16, 168]}, R: {elbow: [44, 74], hand: [104, 16]}},
-  holdPaper: {L: {elbow: [-20, 78], hand: [36, 104]}, R: {elbow: [20, 78], hand: [-36, 104]}},
-  sign: {L: {elbow: [-20, 78], hand: [36, 104]}, R: {elbow: [34, 80], hand: [-20, 92]}},
-  walk: {L: {elbow: [-30, 80], hand: [-46, 160]}, R: {elbow: [30, 80], hand: [50, 158]}, legSwing: 1},
-  phone: {L: {elbow: [-12, 86], hand: [-16, 168]}, R: {elbow: [54, -4], hand: [14, -94]}},
-  carry: {L: {elbow: [-20, 78], hand: [36, 104]}, R: {elbow: [20, 78], hand: [-36, 104]}, legSwing: 1},
+  idle: {L: [10, -4], R: [-10, 4]},
+  shocked: {L: [32, 160], R: [-32, -160]}, // bu-owner_kaget
+  thinking: {L: [10, -4], R: [-141, -102]}, // bu-owner_bingung
+  thumbsUp: {L: [10, -4], R: [-28, -150]}, // *_senang-jempol
+  point: {L: [10, -4], R: [-112, 18]}, // bu-owner_menunjuk
+  holdPaper: {L: [12, -105], R: [-12, 105]}, // karyawan-faktur_netral
+  sign: {L: [12, -105], R: [-12, 105]},
+  carry: {L: [12, -100], R: [-12, 100], legSwing: 1}, // kurir-pbf_bawa-dus
+  walk: {L: [10, -4], R: [-10, 4], legSwing: 1},
+  phone: {L: [10, -4], R: [-117, -134]},
 };
 
+const INK = '#1B2B3B';
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const lerpP = (a: P, b: P, t: number): P => [lerp(a[0], b[0], t), lerp(a[1], b[1], t)];
-const mixPose = (a: PoseDef, b: PoseDef, t: number): PoseDef => ({
-  L: {elbow: lerpP(a.L.elbow, b.L.elbow, t), hand: lerpP(a.L.hand, b.L.hand, t)},
-  R: {elbow: lerpP(a.R.elbow, b.R.elbow, t), hand: lerpP(a.R.hand, b.R.hand, t)},
-  legSwing: lerp(a.legSwing ?? 0, b.legSwing ?? 0, t),
-});
+const mixArm = (a: Arm, b: Arm, t: number): Arm => [lerp(a[0], b[0], t), lerp(a[1], b[1], t)];
 
 export type Look = {
   skin: string;
   skinShade: string;
-  top: string; // baju/jas
-  topShade: string;
   sleeve: string;
+  sleeveStroke?: string;
   pants: string;
   shoe: string;
-  hairBack?: React.ReactNode; // di belakang kepala
-  hairFront?: React.ReactNode; // di depan kepala
-  torsoDetail?: React.ReactNode; // dasi, name tag, kerah
-  longCoat?: boolean;
-  headTilt?: number;
+  torso: React.ReactNode; // badan/baju (koordinat file)
+  hairBack?: React.ReactNode;
+  overHead?: React.ReactNode; // hijab: digambar di atas kepala, sebelum wajah
+  hairFront?: React.ReactNode;
+  hideEars?: boolean;
 };
 
 export type PersonProps = {
   pose?: Pose;
   fromPose?: Pose;
-  poseT?: number; // 0..1 transisi dari fromPose ke pose
+  poseT?: number;
   expression?: Expression;
   seed?: string;
   flip?: boolean;
-  /** Benda yang dipegang tangan kanan (koordinat lokal tangan) */
+  holding?: Holding;
+  /** benda di tangan kanan (koordinat lokal tangan) */
   rightProp?: React.ReactNode;
   leftProp?: React.ReactNode;
-  /** benda di depan dada (clipboard/faktur), digambar di atas badan, di bawah tangan */
+  /** benda tambahan di depan badan, koordinat file (badan x 120–280, y 262–610) */
   chestProp?: React.ReactNode;
   walkPhase?: number;
-  /** mulut bergerak seperti sedang bicara */
   talking?: boolean;
 };
 
-const HEAD_Y = -488;
-const HEAD_R = 80;
-const SHOULDER_Y = -392;
-const SHOULDER_X = 64;
+/** Skala internal: tinggi karakter ±640px pada scale 1. */
+const K = 0.82;
+const FEET_Y = 862;
 
-const Eyes: React.FC<{expression: Expression; blink: number}> = ({expression, blink}) => {
-  const ey = HEAD_Y + 4;
-  const ex = 28;
-  const big = expression === 'shocked';
-  const r = big ? 9.5 : 7.5;
-  const sy = Math.max(0.12, 1 - blink);
-  if (expression === 'suspicious') {
-    return (
-      <g>
-        {[-ex, ex].map((x) => (
-          <g key={x}>
-            <ellipse cx={x} cy={ey + 2} rx={8.5} ry={4.5 * sy} fill={CHAR.hair} />
-            <rect x={x - 12} y={ey - 6} width={24} height={5} rx={2.5} fill={CHAR.hair} opacity={0.85} />
-          </g>
-        ))}
-      </g>
-    );
+const Face: React.FC<{expression: Expression; blink: number; talk: number; skinShade: string}> = ({
+  expression,
+  blink,
+  talk,
+  skinShade,
+}) => {
+  const sy = Math.max(0.1, 1 - blink);
+  const eye = (cx: number) => (
+    <g transform={`translate(${cx} 174) scale(1 ${sy}) translate(${-cx} -174)`}>
+      <ellipse cx={cx} cy={174} rx={6.5} ry={8.5} fill={INK} />
+      <circle cx={cx + 2} cy={171} r={2.2} fill="#fff" />
+    </g>
+  );
+  const stroke = {stroke: INK, strokeWidth: 4, strokeLinecap: 'round' as const, fill: 'none'};
+  let eyes: React.ReactNode;
+  let brows: React.ReactNode;
+  let mouth: React.ReactNode;
+  let extra: React.ReactNode = null;
+  switch (expression) {
+    case 'smile':
+      eyes = (
+        <>
+          <path d="M170,176 Q178,166 187,176" {...stroke} />
+          <path d="M213,176 Q222,166 230,176" {...stroke} />
+        </>
+      );
+      brows = (
+        <>
+          <path d="M166,150 Q177,143 189,148" {...stroke} />
+          <path d="M211,148 Q223,143 234,150" {...stroke} />
+        </>
+      );
+      mouth = (
+        <>
+          <path d="M183,200 Q200,224 217,200 Z" fill="#7A2E3A" />
+          <path d="M186,201 L214,201 L212,206 L188,206 Z" fill="#fff" />
+        </>
+      );
+      break;
+    case 'shocked':
+      eyes = (
+        <g transform={`translate(0 172) scale(1 ${sy}) translate(0 -172)`}>
+          <ellipse cx={178} cy={172} rx={10} ry={12.5} fill="#fff" stroke={INK} strokeWidth={2.5} />
+          <circle cx={178} cy={173} r={5} fill={INK} />
+          <ellipse cx={222} cy={172} rx={10} ry={12.5} fill="#fff" stroke={INK} strokeWidth={2.5} />
+          <circle cx={222} cy={173} r={5} fill={INK} />
+        </g>
+      );
+      brows = (
+        <>
+          <path d="M164,146 Q177,134 190,142" {...stroke} />
+          <path d="M210,142 Q223,134 236,146" {...stroke} />
+        </>
+      );
+      mouth = <ellipse cx={200} cy={210} rx={9} ry={11} fill="#7A2E3A" />;
+      break;
+    case 'worried':
+      eyes = (
+        <>
+          {eye(178)}
+          {eye(222)}
+        </>
+      );
+      brows = (
+        <>
+          <path d="M166,152 L189,144" {...stroke} />
+          <path d="M211,144 L234,152" {...stroke} />
+        </>
+      );
+      mouth = <path d="M187,208 Q193,203 200,208 Q207,213 213,208" {...stroke} />;
+      extra = <path d="M248,128 Q256,142 248,148 Q240,142 248,128 Z" fill="#8EC5F5" />;
+      break;
+    case 'suspicious':
+      eyes = (
+        <g transform={`translate(0 176) scale(1 ${sy}) translate(0 -176)`}>
+          <ellipse cx={178} cy={176} rx={7.5} ry={4} fill={INK} />
+          <ellipse cx={222} cy={176} rx={7.5} ry={4} fill={INK} />
+        </g>
+      );
+      brows = (
+        <>
+          <path d="M166,156 L189,160" {...stroke} />
+          <path d="M211,150 Q223,142 234,148" {...stroke} />
+        </>
+      );
+      mouth = <path d="M189,208 L213,204" {...stroke} />;
+      break;
+    default:
+      eyes = (
+        <>
+          {eye(178)}
+          {eye(222)}
+        </>
+      );
+      brows = (
+        <>
+          <path d="M166,152 Q177,145 189,150" {...stroke} />
+          <path d="M211,150 Q223,145 234,152" {...stroke} />
+        </>
+      );
+      mouth = <path d="M186,204 Q200,215 214,204" {...stroke} />;
+  }
+  if (talk > 0.05) {
+    mouth = <ellipse cx={200} cy={207} rx={10} ry={3 + 10 * talk} fill="#7A2E3A" />;
   }
   return (
     <g>
-      {[-ex, ex].map((x) => (
-        <ellipse key={x} cx={x} cy={ey} rx={r} ry={r * sy} fill={CHAR.hair} />
-      ))}
+      {eyes}
+      {brows}
+      {mouth}
+      <path d="M200,182 Q195,192 202,194" stroke={skinShade} strokeWidth={3} strokeLinecap="round" fill="none" />
+      <circle cx={166} cy={196} r={9} fill="#F07A7A" opacity={0.3} />
+      <circle cx={234} cy={196} r={9} fill="#F07A7A" opacity={0.3} />
+      {extra}
     </g>
   );
 };
 
-const Brows: React.FC<{expression: Expression}> = ({expression}) => {
-  const y = HEAD_Y - 22;
-  const brow = (x: number, rot: number, dy = 0) => (
-    <rect
-      x={x - 13}
-      y={y + dy - 3}
-      width={26}
-      height={6}
-      rx={3}
-      fill={CHAR.hair}
-      opacity={0.9}
-      transform={`rotate(${rot} ${x} ${y + dy})`}
-    />
-  );
-  switch (expression) {
-    case 'worried':
-      return (
-        <g>
-          {brow(-28, -16, 2)}
-          {brow(28, 16, 2)}
-        </g>
-      );
-    case 'shocked':
-      return (
-        <g>
-          {brow(-29, -6, -10)}
-          {brow(29, 6, -10)}
-        </g>
-      );
-    case 'suspicious':
-      return (
-        <g>
-          {brow(-28, 14, 4)}
-          {brow(28, -6, -4)}
-        </g>
-      );
-    default:
-      return null;
-  }
-};
-
-const Mouth: React.FC<{expression: Expression; talk?: number}> = ({expression, talk = 0}) => {
-  const y = HEAD_Y + 38;
-  if (talk > 0.05) {
-    return <ellipse cx={0} cy={y + 4} rx={13} ry={3 + 12 * talk} fill="#7A2E2A" />;
-  }
-  switch (expression) {
-    case 'smile':
-      return (
-        <g>
-          <path d={`M -18 ${y - 4} Q 0 ${y + 22} 18 ${y - 4} Z`} fill="#7A2E2A" />
-          <path d={`M -10 ${y + 8} Q 0 ${y + 16} 10 ${y + 8} Q 0 ${y + 4} -10 ${y + 8} Z`} fill="#E9766D" />
-        </g>
-      );
-    case 'shocked':
-      return <ellipse cx={0} cy={y + 4} rx={12} ry={16} fill="#7A2E2A" />;
-    case 'worried':
-      return (
-        <path
-          d={`M -16 ${y + 6} Q -8 ${y - 2} 0 ${y + 4} Q 8 ${y + 10} 16 ${y + 2}`}
-          stroke="#7A2E2A"
-          strokeWidth={5}
-          fill="none"
-          strokeLinecap="round"
-        />
-      );
-    case 'suspicious':
-      return <rect x={-4} y={y} width={22} height={5} rx={2.5} fill="#7A2E2A" />;
-    default:
-      return (
-        <path
-          d={`M -12 ${y} Q 0 ${y + 9} 12 ${y}`}
-          stroke="#7A2E2A"
-          strokeWidth={5}
-          fill="none"
-          strokeLinecap="round"
-        />
-      );
-  }
-};
-
-const Arm: React.FC<{
-  side: -1 | 1;
-  def: ArmPose;
+const ArmG: React.FC<{
+  x: number;
+  a: Arm;
   look: Look;
   thumb?: boolean;
-  point?: boolean;
+  finger?: boolean;
   prop?: React.ReactNode;
-}> = ({side, def, look, thumb, point, prop}) => {
-  const sx = side * SHOULDER_X;
-  const sy = SHOULDER_Y + 8;
-  const e: P = [sx + def.elbow[0], sy + def.elbow[1]];
-  const h: P = [sx + def.hand[0], sy + def.hand[1]];
-  const angle = (Math.atan2(h[1] - e[1], h[0] - e[0]) * 180) / Math.PI;
+}> = ({x, a, look, thumb, finger, prop}) => {
+  const st = look.sleeveStroke ? {stroke: look.sleeveStroke, strokeWidth: 2} : {};
+  return (
+    <g transform={`translate(${x},285) rotate(${a[0]})`}>
+      <rect x={-17} y={-12} width={34} height={142} rx={17} fill={look.sleeve} {...st} />
+      <g transform={`translate(0,125) rotate(${a[1]})`}>
+        <rect x={-15} y={-14} width={30} height={122} rx={15} fill={look.sleeve} {...st} />
+        <rect x={-15} y={88} width={30} height={14} rx={5} fill="#000" opacity={0.08} />
+        {thumb && <rect x={4} y={112} width={13} height={40} rx={6.5} fill={look.skin} />}
+        {finger && <rect x={-6} y={115} width={12} height={46} rx={6} fill={look.skin} />}
+        <circle cx={0} cy={118} r={19} fill={look.skin} />
+        {prop && <g transform="translate(0,118)">{prop}</g>}
+      </g>
+    </g>
+  );
+};
+
+const HeldProp: React.FC<{holding: Holding; skin: string; pose: Pose; frame: number}> = ({holding, skin, pose, frame}) => {
+  if (!holding) return null;
+  if (holding === 'box') {
+    return (
+      <g>
+        <g transform="translate(122,330)">
+          <rect width={156} height={120} rx={6} fill="#C8935A" />
+          <rect width={156} height={26} rx={6} fill="#B07D48" />
+          <rect x={66} y={0} width={24} height={120} fill="#E8D3A8" />
+          <rect x={104} y={64} width={38} height={38} rx={4} fill="#fff" />
+          <path d="M115,83 L123,91 L134,74" stroke="#5BAC72" strokeWidth={4} fill="none" strokeLinecap="round" />
+        </g>
+        <circle cx={126} cy={392} r={19} fill={skin} />
+        <circle cx={274} cy={392} r={19} fill={skin} />
+      </g>
+    );
+  }
+  const paper = holding === 'paper';
+  // tangan kanan bergerak menulis saat pose sign
+  const writing = pose === 'sign';
+  const wx = writing ? 214 + Math.sin(frame / 2.2) * 14 : 240;
+  const wy = writing ? 396 + Math.cos(frame / 3.1) * 6 : 400;
   return (
     <g>
-      <path
-        d={`M ${sx} ${sy} L ${e[0]} ${e[1]}`}
-        stroke={look.sleeve}
-        strokeWidth={34}
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d={`M ${e[0]} ${e[1]} L ${lerp(e[0], h[0], 0.72)} ${lerp(e[1], h[1], 0.72)}`}
-        stroke={look.sleeve}
-        strokeWidth={31}
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d={`M ${lerp(e[0], h[0], 0.7)} ${lerp(e[1], h[1], 0.7)} L ${h[0]} ${h[1]}`}
-        stroke={look.skin}
-        strokeWidth={24}
-        strokeLinecap="round"
-        fill="none"
-      />
-      <g transform={`translate(${h[0]} ${h[1]}) rotate(${angle})`}>
-        <circle r={17} fill={look.skin} />
-        {point && <rect x={8} y={-6} width={30} height={12} rx={6} fill={look.skin} />}
-        {thumb && <rect x={-6} y={-36} width={13} height={28} rx={6.5} fill={look.skin} transform={`rotate(${-angle - 0})`} />}
-        {prop}
+      <g transform="translate(150,330)">
+        {paper ? (
+          <>
+            <rect width={100} height={130} rx={6} fill="#fff" stroke="#D5DDEA" strokeWidth={2} />
+            <rect width={100} height={24} rx={6} fill={C.BRAND_BLUE} />
+          </>
+        ) : (
+          <>
+            <rect width={100} height={130} rx={8} fill="#9B6B43" />
+            <rect x={8} y={12} width={84} height={110} rx={4} fill="#fff" />
+            <rect x={34} y={-6} width={32} height={16} rx={4} fill="#C7CED8" />
+          </>
+        )}
+        <rect x={18} y={paper ? 36 : 30} width={60} height={6} rx={3} fill={paper ? '#C7CED8' : '#3064D1'} />
+        <rect x={18} y={48} width={64} height={5} rx={2.5} fill="#C7CED8" />
+        <rect x={18} y={62} width={50} height={5} rx={2.5} fill="#C7CED8" />
+        <rect x={18} y={76} width={58} height={5} rx={2.5} fill="#C7CED8" />
+        {paper && <path d="M20,104 q10,-12 20,0 t20,0" stroke={C.BRAND_BLUE} strokeWidth={3} fill="none" />}
       </g>
+      <circle cx={160} cy={400} r={19} fill={skin} />
+      {writing && (
+        <g transform={`translate(${wx} ${wy - 4}) rotate(-40)`}>
+          <rect x={-4} y={-50} width={8} height={50} rx={3} fill={C.NAVY} />
+        </g>
+      )}
+      <circle cx={wx} cy={wy} r={19} fill={skin} />
     </g>
   );
 };
@@ -248,6 +285,7 @@ export const Person: React.FC<PersonProps & {look: Look}> = ({
   expression = 'neutral',
   seed = 'p',
   flip = false,
+  holding = null,
   rightProp,
   leftProp,
   chestProp,
@@ -255,97 +293,78 @@ export const Person: React.FC<PersonProps & {look: Look}> = ({
   talking = false,
 }) => {
   const frame = useCurrentFrame();
+  const breath = Math.sin((frame / 90) * Math.PI * 2) * 2.4; // 2px setelah skala
 
-  // Idle breathing: naik-turun 2px, siklus 3 detik (90 frame)
-  const breath = Math.sin((frame / 90) * Math.PI * 2) * 2;
-
-  // Kedip deterministik setiap 2–4 detik
+  // kedip deterministik setiap 2–4 detik
   let blink = 0;
   {
     let t = Math.floor(random(seed + 'b0') * 40);
     let i = 0;
-    while (t <= frame + 6 && i < 200) {
+    while (t <= frame + 6 && i < 300) {
       const d = frame - t;
       if (d >= 0 && d < 6) blink = d < 3 ? d / 2.5 : (6 - d) / 3;
       t += 60 + Math.floor(random(seed + 'b' + i) * 60);
       i++;
     }
   }
+  const talk = talking ? Math.abs(Math.sin(frame / 3.1 + random(seed + Math.floor(frame / 9)) * 2)) : 0;
 
-  const def0 = fromPose ? mixPose(POSES[fromPose], POSES[pose], poseT) : POSES[pose];
-  const def = def0;
-  const phase = walkPhase ?? frame / 7;
-  const swing = (def.legSwing ?? 0) * Math.sin(phase) * 16;
-  const bob = (def.legSwing ?? 0) * Math.abs(Math.cos(phase)) * -6;
-  const tilt = look.headTilt ?? 0;
-
-  const legs = (
-    <g>
-      {[-1, 1].map((s) => {
-        const off = s * swing;
-        return (
-          <g key={s}>
-            <path
-              d={`M ${s * 26} -230 L ${s * 26 + off} -18`}
-              stroke={look.pants}
-              strokeWidth={40}
-              strokeLinecap="round"
-            />
-            <ellipse cx={s * 30 + off + s * 6} cy={-10} rx={30} ry={14} fill={look.shoe} />
-          </g>
-        );
-      })}
-    </g>
-  );
-
-  const torsoBottom = look.longCoat ? -170 : -212;
+  const A = POSES[pose];
+  const B = fromPose ? POSES[fromPose] : A;
+  const t = fromPose ? poseT : 1;
+  let L = mixArm(B.L, A.L, t);
+  let R = mixArm(B.R, A.R, t);
+  const legSwing = lerp(B.legSwing ?? 0, A.legSwing ?? 0, t);
+  const phase = walkPhase ?? frame / 6;
+  const swing = legSwing * Math.sin(phase) * 14;
+  const bob = legSwing * Math.abs(Math.cos(phase)) * -8;
+  if (pose === 'walk') {
+    L = [L[0] - swing, L[1]];
+    R = [R[0] - swing, R[1]];
+  }
+  const holdingArms = holding !== null && (pose === 'holdPaper' || pose === 'sign' || pose === 'carry');
+  const done = t > 0.6;
 
   return (
     <g transform={flip ? 'scale(-1 1)' : undefined}>
-      {/* bayangan elips di lantai */}
-      <ellipse cx={0} cy={0} rx={104} ry={16} fill={C.NAVY} opacity={0.14} />
-      <g transform={`translate(0 ${bob})`}>
-        {legs}
-        <g transform={`translate(0 ${breath})`}>
-          {look.hairBack && <g transform={`rotate(${tilt} 0 ${HEAD_Y})`}>{look.hairBack}</g>}
-          {/* leher */}
-          <rect x={-15} y={-420} width={30} height={40} rx={10} fill={look.skinShade} />
-          {/* badan */}
-          <path
-            d={`M -64 -398 Q -76 -398 -78 -380 L -84 ${torsoBottom + 8} Q -84 ${torsoBottom} -74 ${torsoBottom}
-                L 74 ${torsoBottom} Q 84 ${torsoBottom} 84 ${torsoBottom + 8} L 78 -380 Q 76 -398 64 -398 Z`}
-            fill={look.top}
-          />
-          {/* bayangan lembut satu tingkat (sisi kanan) */}
-          <path
-            d={`M 30 -398 L 64 -398 Q 76 -398 78 -380 L 84 ${torsoBottom + 8} Q 84 ${torsoBottom} 74 ${torsoBottom} L 40 ${torsoBottom} Z`}
-            fill={look.topShade}
-          />
-          {look.torsoDetail}
-          {chestProp}
-          <Arm side={-1} def={def.L} look={look} prop={leftProp} />
-          <Arm
-            side={1}
-            def={def.R}
-            look={look}
-            thumb={pose === 'thumbsUp' && poseT > 0.6}
-            point={pose === 'point' && poseT > 0.6}
-            prop={rightProp}
-          />
-          {/* kepala */}
-          <g transform={`rotate(${tilt} 0 ${HEAD_Y + 60})`}>
-            <circle cx={-HEAD_R + 2} cy={HEAD_Y + 6} r={14} fill={look.skinShade} />
-            <circle cx={HEAD_R - 2} cy={HEAD_Y + 6} r={14} fill={look.skinShade} />
-            <circle cx={0} cy={HEAD_Y} r={HEAD_R} fill={look.skin} />
-            <ellipse cx={-46} cy={HEAD_Y + 26} rx={15} ry={9} fill={CHAR.blush} opacity={0.45} />
-            <ellipse cx={46} cy={HEAD_Y + 26} rx={15} ry={9} fill={CHAR.blush} opacity={0.45} />
-            <Eyes expression={expression} blink={blink} />
-            <Brows expression={expression} />
-            <Mouth expression={expression} talk={talking ? Math.abs(Math.sin(frame / 3.1 + random(seed + Math.floor(frame / 9)) * 2)) : 0} />
-            {expression === 'worried' && (
-              <path d={`M 82 ${HEAD_Y - 40} q 10 18 0 26 q -10 -8 0 -26 Z`} fill="#8EC5F5" />
+      <ellipse cx={0} cy={0} rx={96} ry={15} fill={C.NAVY} opacity={0.13} />
+      <g transform={`scale(${K}) translate(-200 ${-FEET_Y})`}>
+        <g transform={`translate(0 ${bob})`}>
+          {/* kaki */}
+          <g transform={`rotate(${swing} 168 525)`}>
+            <rect x={140} y={520} width={56} height={320} rx={14} fill={look.pants} />
+            <ellipse cx={164} cy={848} rx={36} ry={15} fill={look.shoe} />
+          </g>
+          <g transform={`rotate(${-swing} 232 525)`}>
+            <rect x={204} y={520} width={56} height={320} rx={14} fill={look.pants} />
+            <ellipse cx={236} cy={848} rx={36} ry={15} fill={look.shoe} />
+          </g>
+          <rect x={196} y={520} width={8} height={60} fill={look.pants} />
+          <g transform={`translate(0 ${breath})`}>
+            {look.hairBack}
+            {look.torso}
+            <rect x={183} y={222} width={34} height={48} rx={10} fill={look.skinShade} />
+            {!look.hideEars && (
+              <>
+                <circle cx={141} cy={178} r={13} fill={look.skinShade} />
+                <circle cx={259} cy={178} r={13} fill={look.skinShade} />
+              </>
             )}
+            <ellipse cx={200} cy={170} rx={60} ry={70} fill={look.skin} />
+            {look.overHead}
+            <Face expression={expression} blink={blink} talk={talk} skinShade={look.skinShade} />
             {look.hairFront}
+            {chestProp}
+            <ArmG x={138} a={L} look={look} prop={leftProp} />
+            <ArmG
+              x={262}
+              a={R}
+              look={look}
+              thumb={pose === 'thumbsUp' && done}
+              finger={pose === 'point' && done}
+              prop={rightProp}
+            />
+            {holdingArms && <HeldProp holding={holding} skin={look.skin} pose={pose} frame={frame} />}
           </g>
         </g>
       </g>
@@ -360,14 +379,10 @@ export const Place: React.FC<{x: number; y?: number; scale?: number; children: R
   scale = 1,
   children,
 }) => (
-  <svg
-    width={1080}
-    height={1920}
-    viewBox="0 0 1080 1920"
-    style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}
-  >
+  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
     <g transform={`translate(${x} ${y}) scale(${scale})`}>{children}</g>
   </svg>
 );
 
-export const HEAD = {y: HEAD_Y, r: HEAD_R};
+/** Posisi kepala dalam koordinat komponen (kaki = 0). Untuk avatar & balon. */
+export const HEAD = {y: (170 - FEET_Y) * K, r: 70 * K, top: (84 - FEET_Y) * K};

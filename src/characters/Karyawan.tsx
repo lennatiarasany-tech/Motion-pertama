@@ -1,38 +1,26 @@
 import React from 'react';
-import {CHAR} from '../theme';
-import {HEAD, Person, PersonProps} from './Person';
+import {Person, PersonProps} from './Person';
 
-const Y = HEAD.y;
-
-/** KARYAWAN ANDALAN — laki-laki, rambut pendek hitam, kulit lebih gelap, scrub hijau. */
+/** KARYAWAN (faktur) — dari aset resmi karyawan-faktur_*.svg */
 export const Karyawan: React.FC<PersonProps> = (p) => (
   <Person
     seed="karyawan"
     {...p}
     look={{
-      skin: CHAR.skinKaryawan,
-      skinShade: CHAR.skinKaryawanShade,
-      top: CHAR.scrub,
-      topShade: CHAR.scrubShade,
-      sleeve: CHAR.scrub,
-      pants: CHAR.scrubShade,
-      shoe: CHAR.shoe,
+      skin: '#B97A50',
+      skinShade: '#9C6340',
+      sleeve: '#5BAC72',
+      pants: '#2F3E52',
+      shoe: '#22262F',
       hairFront: (
-        <path
-          d={`M -82 ${Y - 4} Q -88 ${Y - 96} 0 ${Y - 96} Q 88 ${Y - 96} 82 ${Y - 4} Q 76 ${Y - 44} 50 ${Y - 52}
-              Q 10 ${Y - 40} -30 ${Y - 56} Q -70 ${Y - 50} -82 ${Y - 4} Z`}
-          fill={CHAR.hair}
-        />
+        <path d="M138,168 Q134,90 200,88 Q266,90 262,168 Q256,124 200,120 Q148,124 138,168 Z" fill="#1E2233" />
       ),
-      torsoDetail: (
+      torso: (
         <g>
-          {/* kerah V scrub */}
-          <path d="M -26 -398 L 26 -398 L 0 -352 Z" fill={CHAR.skinKaryawanShade} />
-          <path d="M -34 -398 L -26 -398 L 0 -352 L 0 -340 Z" fill={CHAR.scrubShade} />
-          <path d="M 34 -398 L 26 -398 L 0 -352 L 0 -340 Z" fill={CHAR.scrubShade} />
-          {/* saku dada */}
-          <rect x={-60} y={-330} width={40} height={36} rx={6} fill={CHAR.scrubShade} />
-          <rect x={-50} y={-342} width={5} height={22} rx={2.5} fill="#FFFFFF" />
+          <path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L280,545 L120,545 Z" fill="#5BAC72" />
+          <path d="M176,262 L224,262 L200,300 Z" fill="#FFFFFF" />
+          <line x1={200} y1={300} x2={200} y2={360} stroke="#4A9A60" strokeWidth={3} />
+          <rect x={214} y={300} width={36} height={8} rx={3} fill="#FFFFFF" opacity={0.8} />
         </g>
       ),
     }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Karyawan, Kasir, Owner, Place, Sales} from '../characters';
 import {Background} from '../components/Background';
 import {AppMockup} from '../components/AppMockup';
@@ -35,9 +35,9 @@ export const SFCast: React.FC = () => {
   ];
   const cast: {x: number; name: string; el: React.ReactNode}[] = [
     {x: 150, name: 'OWNER', el: <Owner pose="point" expression="smile" />},
-    {x: 405, name: 'KARYAWAN', el: <Karyawan pose="holdPaper" expression="smile" chestProp={<Clipboard x={0} y={-300} />} />},
-    {x: 670, name: 'SALES PBF', el: <Sales pose="holdPaper" expression="neutral" chestProp={<Box x={0} y={-230} w={150} h={110} />} />},
-    {x: 930, name: 'KASIR', el: <Kasir pose="idle" expression="smile" />},
+    {x: 405, name: 'KARYAWAN', el: <Karyawan pose="holdPaper" expression="smile" holding="clipboard" />},
+    {x: 670, name: 'SALES PBF', el: <Sales pose="carry" walkPhase={0} expression="neutral" holding="box" />},
+    {x: 930, name: 'KASIR', el: <Kasir pose="idle" expression="neutral" />},
   ];
   return (
     <Background clouds sun>
@@ -122,7 +122,7 @@ export const SFRush: React.FC = () => {
             <Box x={interpolate(slip, [0, 1], [700, 560])} y={1280} w={150} h={105} rot={3} />
           </svg>
           <Place x={250} scale={0.9}>
-            <Karyawan pose="sign" expression="worried" chestProp={<Clipboard x={0} y={-292} rot={-4} />} rightProp={<Pen />} />
+            <Karyawan pose="sign" expression="worried" holding="clipboard" />
           </Place>
           <Place x={850} scale={0.9}>
             <Sales pose="point" expression="smile" flip rightProp={<PaperProp x={10} y={0} rot={90} />} />
@@ -153,12 +153,12 @@ export const SFReveal: React.FC = () => (
       <Counter value={3750000} delay={20} x={420} y={1250} />
       <Chip text="rugi" variant="red" x={420} y={1360} delay={40} size={36} />
       <AvatarBubble x={880} y={1290} size={230} delay={30}>
-        <svg width="100%" height="100%" viewBox="-120 -620 240 240">
+        <svg width="100%" height="100%" viewBox="-95 -668 190 190">
           <Owner expression="shocked" />
         </svg>
       </AvatarBubble>
     </Camera>
-    <Subtitle text="Nggak laku, numpuk, *rugi jutaan*" />
+    <Subtitle text="Nggak laku, numpuk, *rugi* *jutaan*" />
   </Background>
 );
 
@@ -180,11 +180,11 @@ export const SFTwist: React.FC = () => (
         <ellipse cx={835} cy={1290} rx={56} ry={10} fill={C.HIGHLIGHT} />
       </svg>
       <Place x={430} scale={1}>
-        <Owner pose="holdPaper" expression="suspicious" chestProp={<PaperProp x={0} y={-292} w={110} h={140} rot={-3} />} />
+        <Owner pose="holdPaper" expression="suspicious" holding="paper" />
       </Place>
       <Chip text="faktur sudah ditandatangani" variant="white" x={540} y={760} size={34} />
     </Camera>
-    <Subtitle text="Celahnya ada di cara kita *terima barang*" />
+    <Subtitle text="Celahnya ada di cara kita *terima* *barang*" />
   </Background>
 );
 
@@ -242,7 +242,7 @@ export const SFSolution: React.FC = () => (
         ))}
       </svg>
     </Camera>
-    <Subtitle text="Barang masuk *langsung dicocokkan*" />
+    <Subtitle text="Barang masuk *langsung* *dicocokkan*" />
   </Background>
 );
 
@@ -268,11 +268,11 @@ export const SFCta: React.FC = () => {
             <path d="M -58 0 L -14 44 L 64 -44" stroke="#fff" strokeWidth={26} fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </g>
         </svg>
-        {/* placeholder logo */}
-        <div style={{position: 'absolute', top: 1080, left: 0, right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24, fontFamily: FONT, fontWeight: 800, fontSize: 44, color: C.NAVY}}>
-          <span style={{color: C.BRAND_BLUE}}>Apotek Digital</span>
-          <span style={{color: C.KICKER, fontWeight: 700}}>×</span>
-          <span>digikes</span>
+        {/* logo resmi */}
+        <div style={{position: 'absolute', top: 1066, left: 0, right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 34}}>
+          <Img src={staticFile('logo-apotek-digital.png')} style={{height: 92}} />
+          <span style={{fontFamily: FONT, fontWeight: 700, fontSize: 40, color: C.KICKER}}>×</span>
+          <Img src={staticFile('logo-digikes.png')} style={{height: 74}} />
         </div>
         <div
           style={{
@@ -297,7 +297,7 @@ export const SFCta: React.FC = () => {
           <Owner pose="point" expression="smile" />
         </Place>
         <Place x={890} scale={0.72}>
-          <Karyawan pose="thumbsUp" expression="smile" flip />
+          <Karyawan pose="thumbsUp" expression="smile" />
         </Place>
       </Camera>
       <Subtitle text="Coba *gratis* Apotek Digital" />
@@ -321,16 +321,16 @@ export const SFSetup: React.FC = () => (
         ))}
       </svg>
       <Place x={250} y={1640} scale={0.8}>
-        <Kasir pose="idle" expression="smile" />
+        <Kasir pose="idle" expression="neutral" />
       </Place>
       <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute'}}>
         <CashierDesk x={250} y={1700} />
       </svg>
       <Place x={520} scale={0.8}>
-        <Karyawan pose="holdPaper" expression="worried" chestProp={<Clipboard x={0} y={-300} />} />
+        <Karyawan pose="holdPaper" expression="worried" holding="clipboard" />
       </Place>
       <Chip text="antre 8 pasien" variant="red" x={880} y={1250} />
     </Camera>
-    <Subtitle text="Yang jaga cuma *dua orang*" />
+    <Subtitle text="Yang jaga cuma *dua* *orang*" />
   </Background>
 );

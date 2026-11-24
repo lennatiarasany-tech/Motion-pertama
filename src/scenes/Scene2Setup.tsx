@@ -96,7 +96,7 @@ export const Scene2Setup: React.FC = () => {
   const walkIn = spring({frame: frame - 112, fps, durationInFrames: 50, config: {damping: 200}});
   const salesX = interpolate(walkIn, [0, 1], [1260, 1040]);
   const salesWalking = frame >= 112 && frame < 160;
-  const salesPose: Pose = salesWalking ? 'carry' : 'holdPaper';
+  const salesPose: Pose = 'carry';
 
   // pose & ekspresi yang berganti
   const karyawanT = sp(18);
@@ -131,7 +131,7 @@ export const Scene2Setup: React.FC = () => {
               pose="holdPaper"
               poseT={karyawanT}
               expression={frame > 130 ? 'shocked' : 'worried'}
-              chestProp={karyawanT > 0.5 ? <Clipboard x={0} y={-300} /> : undefined}
+              holding={karyawanT > 0.5 ? 'clipboard' : null}
             />
           </At>
 
@@ -149,7 +149,7 @@ export const Scene2Setup: React.FC = () => {
           {/* sales masuk dari pintu */}
           {frame >= 108 && (
             <At x={salesX}>
-              <Sales pose={salesPose} expression="smile" flip talking={frame >= 150} chestProp={<Box x={0} y={-226} w={150} h={110} />} />
+              <Sales pose={salesPose} walkPhase={salesWalking ? undefined : 0} expression="smile" flip talking={frame >= 150} holding="box" />
             </At>
           )}
 
@@ -177,7 +177,7 @@ export const Scene2Setup: React.FC = () => {
 
       {/* LAYAR (tidak ikut kamera): headline selalu di zona teks */}
       <Headline kicker="SETIAP HARI" lines={['APOTEK RAMAI,', 'YANG JAGA', 'CUMA *2* *ORANG*']} size={100} />
-      <Subtitle text={frame < 90 ? 'Apotek ini selalu *ramai*' : 'Jam sibuk, *sales datang*'} />
+      <Subtitle text={frame < 90 ? 'Apotek ini selalu *ramai*' : 'Jam sibuk, *sales* *datang*'} />
     </AbsoluteFill>
   );
 };

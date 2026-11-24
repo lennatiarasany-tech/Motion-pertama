@@ -1,53 +1,35 @@
 import React from 'react';
-import {CHAR, C} from '../theme';
-import {HEAD, Person, PersonProps} from './Person';
+import {Person, PersonProps} from './Person';
 
-const Y = HEAD.y;
-
-/** OWNER / APOTEKER — rambut hitam panjang lurus belah tengah, jas lab putih, dasi biru, name tag. */
+/** BU OWNER / APOTEKER — dari aset resmi bu-owner_*.svg */
 export const Owner: React.FC<PersonProps> = (p) => (
   <Person
     seed="owner"
     {...p}
     look={{
-      skin: CHAR.skinOwner,
-      skinShade: CHAR.skinOwnerShade,
-      top: CHAR.coat,
-      topShade: CHAR.coatShade,
-      sleeve: CHAR.coat,
-      pants: CHAR.pants,
-      shoe: CHAR.shoe,
-      longCoat: true,
-      hairBack: (
-        <path
-          d={`M -90 ${Y} Q -96 ${Y - 92} 0 ${Y - 94} Q 96 ${Y - 92} 90 ${Y} L 96 ${Y + 150} Q 92 ${Y + 160} 80 ${Y + 160}
-              L -80 ${Y + 160} Q -92 ${Y + 160} -96 ${Y + 150} Z`}
-          fill={CHAR.hair}
-        />
-      ),
+      skin: '#E3A67E',
+      skinShade: '#C98863',
+      sleeve: '#FFFFFF',
+      sleeveStroke: '#C9D3E3',
+      pants: '#1B2B3B',
+      shoe: '#2B2F3A',
+      hairBack: <path d="M134,165 Q130,86 200,84 Q270,86 266,165 L284,340 Q200,358 116,340 Z" fill="#1E2233" />,
       hairFront: (
-        <g fill={CHAR.hair}>
-          {/* belah tengah: dua sisi poni */}
-          <path d={`M -2 ${Y - 80} Q -60 ${Y - 74} -78 ${Y - 10} L -84 ${Y + 52} Q -92 ${Y - 60} -40 ${Y - 82} Q -18 ${Y - 88} -2 ${Y - 80} Z`} />
-          <path d={`M 2 ${Y - 80} Q 60 ${Y - 74} 78 ${Y - 10} L 84 ${Y + 52} Q 92 ${Y - 60} 40 ${Y - 82} Q 18 ${Y - 88} 2 ${Y - 80} Z`} />
-          <path d={`M -4 ${Y - 82} Q -48 ${Y - 60} -70 ${Y - 30} Q -60 ${Y - 90} 0 ${Y - 82} Q 60 ${Y - 90} 70 ${Y - 30} Q 48 ${Y - 60} 4 ${Y - 82} Z`} />
-        </g>
+        <path d="M138,168 Q130,92 200,92 Q270,92 262,168 Q252,124 214,118 Q192,146 150,152 Q141,158 138,168 Z" fill="#1E2233" />
       ),
-      torsoDetail: (
+      torso: (
         <g>
-          {/* dalaman biru + dasi */}
-          <path d="M -30 -398 L 30 -398 L 0 -300 Z" fill={C.BRAND_BLUE} />
-          <path d="M -8 -380 L 8 -380 L 12 -318 L 0 -300 L -12 -318 Z" fill="#1F4FB0" />
-          {/* kerah jas */}
-          <path d="M -30 -398 L -6 -330 L -38 -360 Z" fill={CHAR.coatShade} />
-          <path d="M 30 -398 L 6 -330 L 38 -360 Z" fill={CHAR.coatShade} />
-          {/* garis kancing */}
-          <rect x={-2} y={-300} width={4} height={120} rx={2} fill={CHAR.coatShade} />
-          {/* name tag biru di dada kiri */}
-          <rect x={22} y={-346} width={40} height={18} rx={5} fill={C.BRAND_BLUE} />
-          <rect x={28} y={-340} width={22} height={5} rx={2.5} fill="#FFFFFF" opacity={0.85} />
-          {/* saku */}
-          <rect x={-66} y={-262} width={40} height={6} rx={3} fill={CHAR.coatShade} />
+          <path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L286,610 L114,610 Z" fill="#FFFFFF" stroke="#D5DDEA" strokeWidth={2} />
+          <path d="M172,262 L228,262 L214,420 L186,420 Z" fill="#3064D1" />
+          <path d="M172,262 L200,330 L186,420 L166,300 Z" fill="#EEF2F8" />
+          <path d="M228,262 L200,330 L214,420 L234,300 Z" fill="#EEF2F8" />
+          <line x1={200} y1={420} x2={200} y2={610} stroke="#D5DDEA" strokeWidth={3} />
+          <rect x={146} y={470} width={40} height={44} rx={6} fill="#EEF2F8" />
+          <rect x={214} y={470} width={40} height={44} rx={6} fill="#EEF2F8" />
+          <rect x={218} y={330} width={34} height={42} rx={5} fill="#fff" stroke="#2C59AE" strokeWidth={2} />
+          <rect x={218} y={330} width={34} height={11} rx={4} fill="#2C59AE" />
+          <rect x={225} y={350} width={20} height={4} rx={2} fill="#B8C4D6" />
+          <rect x={225} y={359} width={14} height={4} rx={2} fill="#B8C4D6" />
         </g>
       ),
     }}
