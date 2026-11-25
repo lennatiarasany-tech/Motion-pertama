@@ -1,0 +1,281 @@
+<!--@TITLE Data Apotek Bocor-->
+<!--@RASIO 9:16-->
+<!--@HEAD-->
+<script src="assets/lib/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Bangers';font-weight:400;src:url(assets/font/bangers.woff2) format('woff2')}
+@font-face{font-family:'Nunito';font-weight:900;src:url(assets/font/nunito-900.woff2) format('woff2')}
+</style>
+<style>
+#stage{background:#F7F3EA}
+#dunia{position:absolute;inset:0}
+.judul{position:absolute;left:0;width:100%;text-align:center;font:400 150px/0.95 'Bangers',cursive;color:#1E1E24;opacity:0;
+  letter-spacing:.02em;transform:rotate(-3deg);
+  text-shadow:6px 6px 0 #FFC531, 0 0 2px #F7F3EA}
+.judul em{font-style:normal;color:#E5484D}
+.judul small{display:block;font-size:.55em;color:#1E1E24}
+</style>
+<!--@BODY-->
+<div id="dunia"></div>
+<div class="judul" id="tHook"><small>Apotekku makin</small><em>SEPI…</em></div>
+<div class="judul" id="tBocor">Datanya <em>BOCOR?!</em></div>
+<!--@SCRIPT-->
+/* ================= STICKMAN CERITA — Adegan 1 (hook) ================= */
+const WAKTU = {
+  hookIn: .3, hookOut: 2.3,
+  whip: 2.55, whipEnd: 3.15,        // kamera melempar ke apotek baru
+  kaget: 3.5,                        // owner menoleh "!"
+  lebar: 5.2, lebarEnd: 6.0,         // kamera mundur: dua apotek terlihat
+  hp: 5.8,                           // owner angkat HP
+  bocor: 6.4,                        // kertas data terbang + judul
+  dur: 8.6
+};
+const TINTA = '#1E1E24', KERTAS = '#F7F3EA', HIJAU = '#2FA36B', MERAH = '#E5484D', KUNING = '#FFC531', BIRU = '#4DA3FF', ABU = '#8A8A94';
+const TANAH = 1350;
+
+const cv = kanvas(W, H, $('#dunia')), x = cv.getContext('2d');
+
+/* --- tekstur kertas (sekali) --- */
+const TEX = kanvas(W, H), tx = TEX.getContext('2d');
+(() => { const r = rng(3); tx.fillStyle = KERTAS; tx.fillRect(0, 0, W, H);
+  for (let i = 0; i < 14000; i++) { const a = r() * .05; tx.fillStyle = r() > .5 ? `rgba(120,100,70,${a})` : `rgba(255,255,255,${a * 1.5})`; tx.fillRect(r() * W, r() * H, 1 + r() * 2, 1 + r() * 2); }
+  for (let i = 0; i < 260; i++) { tx.strokeStyle = `rgba(140,120,90,${.03 + r() * .04})`; tx.lineWidth = 1; tx.beginPath(); const sx = r() * W, sy = r() * H; tx.moveTo(sx, sy); tx.lineTo(sx + (r() - .5) * 60, sy + (r() - .5) * 20); tx.stroke(); }
+  const v = tx.createRadialGradient(W / 2, H / 2, H * .3, W / 2, H / 2, H * .75); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(90,70,40,.16)'); tx.fillStyle = v; tx.fillRect(0, 0, W, H); })();
+
+/* --- line boil: getaran garis ala animasi tangan --- */
+let BOIL = 0;
+const jt = (id, amp = 1.6) => (hash(id * 17.3 + BOIL * 91.7) - .5) * 2 * amp;
+function garis(pts, lebar = 10, warna = TINTA, id = 0, tutup = false) {
+  x.strokeStyle = warna; x.lineWidth = lebar; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath();
+  pts.forEach((p, i) => { const X = p[0] + jt(id + i), Y = p[1] + jt(id + i + 50); i ? x.lineTo(X, Y) : x.moveTo(X, Y); });
+  if (tutup) x.closePath(); x.stroke();
+}
+function kotak(x0, y0, w, h, isi, lebar = 9, id = 0) {
+  if (isi) { x.fillStyle = isi; x.fillRect(x0, y0, w, h); }
+  garis([[x0, y0], [x0 + w, y0], [x0 + w, y0 + h], [x0, y0 + h]], lebar, TINTA, id, true);
+}
+function teks(s, X, Y, ukuran, warna = TINTA, font = 'Bangers', rot = 0, al = 'center') {
+  x.save(); x.translate(X, Y); x.rotate(rot); x.font = `${font === 'Bangers' ? 400 : 900} ${ukuran}px ${font === 'Bangers' ? "'Bangers'" : "'Nunito'"}`;
+  x.textAlign = al; x.textBaseline = 'middle'; x.fillStyle = warna; x.fillText(s, 0, 0); x.restore();
+}
+
+/* --- STICKMAN ---
+   o = {x, y(tanah), s, arah(1/-1), lk:[bahu,siku], ka:[..], kk:[pinggul,lutut], kn:[..], miring, wajah, kacamata, rompi, topi, angkat} */
+function orang(o) {
+  const s = o.s || 1, ar = o.arah || 1, id = (o.id || 1) * 100;
+  x.save(); x.translate(o.x, o.y + (o.angkat || 0)); x.scale(s * ar, s);
+  // bayangan
+  x.fillStyle = 'rgba(30,30,36,.12)'; x.beginPath(); x.ellipse(0, 4 - (o.angkat || 0) / s, 60, 10, 0, 0, 7); x.fill();
+  const P = 140, T = 150, Lg = 72, Ln = 66, rk = 44;
+  const mir = o.miring || 0;
+  const hip = [0, -P], leher = [Math.sin(mir) * T, -P - Math.cos(mir) * T];
+  const kaki = (a) => { const k1 = [hip[0] + Math.sin(a[0]) * Lg, hip[1] + Math.cos(a[0]) * Lg]; const k2 = [k1[0] + Math.sin(a[0] - a[1]) * Lg, k1[1] + Math.cos(a[0] - a[1]) * Lg]; return [hip, k1, k2]; };
+  const bahu = [leher[0] + Math.sin(mir) * -18, leher[1] + 18];
+  const tangan = (a) => { const t1 = [bahu[0] + Math.sin(a[0]) * Ln, bahu[1] + Math.cos(a[0]) * Ln]; const t2 = [t1[0] + Math.sin(a[0] + a[1]) * Ln, t1[1] + Math.cos(a[0] + a[1]) * Ln]; return [bahu, t1, t2]; };
+  const kb = kaki(o.kb || [-.18, 0]), kd = kaki(o.kd || [.18, 0]);
+  const tb = tangan(o.tb || [-.35, .2]), td = tangan(o.td || [.35, .2]);
+  const warnaBadan = o.warna || TINTA;
+  garis(kb, 11, warnaBadan, id + 1); garis(tb, 10, warnaBadan, id + 5);
+  garis([hip, leher], 11, warnaBadan, id + 9);
+  if (o.rompi) { x.fillStyle = o.rompi; x.beginPath(); x.moveTo(hip[0] - 22, hip[1] + 6); x.lineTo(leher[0] - 20, leher[1] + 20); x.lineTo(leher[0] + 20, leher[1] + 20); x.lineTo(hip[0] + 22, hip[1] + 6); x.closePath(); x.fill();
+    garis([[hip[0] - 22, hip[1] + 6], [leher[0] - 20, leher[1] + 20], [leher[0] + 20, leher[1] + 20], [hip[0] + 22, hip[1] + 6]], 6, TINTA, id + 30, true);
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(lerp(hip[0], leher[0], .62) + 8, lerp(hip[1], leher[1], .62), 7, 0, 7); x.fill(); }
+  garis(kd, 11, warnaBadan, id + 13); garis(td, 10, warnaBadan, id + 17);
+  if (o.pegang) { const p = td[2]; x.save(); x.translate(p[0], p[1]); o.pegang(); x.restore(); }
+  // kepala
+  const kp = [leher[0] + Math.sin(mir) * rk, leher[1] - rk - 4];
+  x.save(); x.translate(kp[0], kp[1]); x.rotate(mir * .5 + (o.tolehMiring || 0));
+  x.fillStyle = '#fff'; x.beginPath(); x.arc(jt(id + 40, 1), jt(id + 41, 1), rk, 0, 7); x.fill();
+  x.strokeStyle = warnaBadan; x.lineWidth = 9; x.stroke();
+  wajah(o.wajah || 'datar', rk, o.kacamata, id);
+  if (o.topi) { x.fillStyle = o.topi; x.beginPath(); x.arc(0, -8, rk + 3, Math.PI * 1.05, Math.PI * 1.95); x.fill(); x.fillRect(4, -18, rk + 26, 10); }
+  x.restore();
+  x.restore();
+  return { kepala: [o.x + kp[0] * s * ar, o.y + (o.angkat || 0) + kp[1] * s], tangan: [o.x + td[2][0] * s * ar, o.y + (o.angkat || 0) + td[2][1] * s] };
+}
+function wajah(w, r, kaca, id) {
+  const ex = 12, ey = -6; x.fillStyle = TINTA; x.strokeStyle = TINTA; x.lineCap = 'round';
+  if (w === 'kaget') {
+    [ex - 9, ex + 19].forEach(e => { x.lineWidth = 4; x.fillStyle = '#fff'; x.beginPath(); x.arc(e, ey - 2, 10, 0, 7); x.fill(); x.stroke(); x.fillStyle = TINTA; x.beginPath(); x.arc(e + 2, ey - 2, 4, 0, 7); x.fill(); });
+    x.beginPath(); x.ellipse(ex + 6, 20, 8, 11, 0, 0, 7); x.fill();
+  } else {
+    [ex - 8, ex + 16].forEach(e => { x.beginPath(); x.arc(e, ey, 5, 0, 7); x.fill(); });
+    x.lineWidth = 5; x.beginPath();
+    if (w === 'senyum') x.arc(ex + 4, 8, 14, .2, Math.PI - .2);
+    else if (w === 'sedih') { x.arc(ex + 4, 26, 12, Math.PI + .4, -.4); x.moveTo(ex - 16, ey - 16); x.lineTo(ex - 2, ey - 12); x.moveTo(ex + 22, ey - 12); x.lineTo(ex + 34, ey - 18); }
+    else if (w === 'mikir') { x.moveTo(ex - 4, 16); x.lineTo(ex + 14, 12); }
+    else if (w === 'curiga') { x.moveTo(ex - 4, 16); x.lineTo(ex + 16, 16); x.moveTo(ex - 16, ey - 10); x.lineTo(ex + 0, ey - 8); x.moveTo(ex + 8, ey - 8); x.lineTo(ex + 26, ey - 10); }
+    else { x.moveTo(ex - 2, 15); x.lineTo(ex + 12, 15); }
+    x.stroke();
+  }
+  if (kaca) { x.lineWidth = 4; x.strokeStyle = TINTA; x.beginPath(); x.arc(ex - 8, ey, 11, 0, 7); x.moveTo(ex + 27, ey); x.arc(ex + 16, ey, 11, 0, 7); x.moveTo(ex + 3, ey); x.lineTo(ex + 5, ey); x.moveTo(ex - 19, ey); x.lineTo(-r + 2, ey - 6); x.stroke(); }
+}
+/* pose jalan */
+const jalan = (ph, amp = .5) => ({ kb: [Math.sin(ph) * amp, Math.max(0, Math.sin(ph + 1.6)) * .7], kd: [-Math.sin(ph) * amp, Math.max(0, -Math.sin(ph + 1.6)) * .7],
+  tb: [-Math.sin(ph) * amp * .9, .3], td: [Math.sin(ph) * amp * .9, .3] });
+
+/* simbol pop di atas kepala */
+function pop(sym, X, Y, k, warna = MERAH, uk = 110) {
+  if (k <= 0) return; const sc = E.back(clamp(k)); x.save(); x.translate(X, Y - 30 * sc); x.scale(sc, sc); x.rotate(Math.sin(k * 9) * .08);
+  x.font = `400 ${uk}px 'Bangers'`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.lineWidth = 12; x.strokeStyle = TINTA; x.strokeText(sym, 0, 0); x.fillStyle = warna; x.fillText(sym, 0, 0); x.restore();
+}
+function keringat(X, Y, k) { if (k <= 0) return; const dy = (k * 60) % 60; x.save(); x.globalAlpha = clamp(1.5 - dy / 40); x.fillStyle = BIRU; x.strokeStyle = TINTA; x.lineWidth = 4;
+  x.beginPath(); x.moveTo(X, Y + dy - 22); x.quadraticCurveTo(X + 15, Y + dy, X, Y + dy + 10); x.quadraticCurveTo(X - 15, Y + dy, X, Y + dy - 22); x.fill(); x.stroke(); x.restore(); }
+function garisKejut(X, Y, k, r0 = 90, n = 12) { if (k <= 0 || k >= 1) return; x.save(); x.strokeStyle = TINTA; x.lineWidth = 7; x.lineCap = 'round';
+  for (let i = 0; i < n; i++) { const a = i / n * 6.283 + .2, r1 = r0 + 40 * E.out(k), r2 = r1 + 50 * (1 - k); x.beginPath(); x.moveTo(X + Math.cos(a) * r1, Y + Math.sin(a) * r1); x.lineTo(X + Math.cos(a) * r2, Y + Math.sin(a) * r2); x.stroke(); } x.restore(); }
+
+/* --- DUNIA --- */
+const R = rng(11);
+const AWAN = Array.from({ length: 6 }, (_, i) => ({ x: R() * 2200 - 200, y: 380 + R() * 380, s: .7 + R() * .6, v: 8 + R() * 14 }));
+const PELANGGAN = Array.from({ length: 9 }, (_, i) => ({ x: 940 + i * 82 + R() * 20, ph: R() * 6, s: .78 + R() * .14, tas: R() > .4 }));
+const KONFETI = Array.from({ length: 70 }, () => ({ x: 820 + R() * 900, y0: R() * 900, v: 120 + R() * 160, w: R() * 6, c: [MERAH, KUNING, HIJAU, BIRU][Math.floor(R() * 4)], r: R() * 6 }));
+
+function awan(a, t) { const ax = a.x + t * a.v; x.save(); x.translate(ax, a.y); x.scale(a.s, a.s); x.fillStyle = '#fff';
+  x.beginPath(); x.arc(0, 0, 50, 0, 7); x.arc(55, -20, 60, 0, 7); x.arc(115, 0, 48, 0, 7); x.fill();
+  garis([[-50, 5], [-40, -35], [0, -50], [30, -72], [90, -76], [130, -40], [162, 0], [120, 48], [0, 48], [-48, 20]], 6, TINTA, 700 + a.y | 0, true); x.restore(); }
+
+function apotekLama(t, ramai) {
+  const X = 90, Y = TANAH - 560, w = 480, h = 560;
+  kotak(X, Y, w, h, '#FFFFFF', 10, 300);
+  // atap/kanopi hijau bergaris
+  for (let i = 0; i < 6; i++) { x.fillStyle = i % 2 ? '#fff' : HIJAU; x.fillRect(X - 20 + i * (w + 40) / 6, Y + 120, (w + 40) / 6, 70); }
+  kotak(X - 20, Y + 120, w + 40, 70, null, 9, 310);
+  // papan nama
+  kotak(X + 40, Y + 22, w - 80, 86, HIJAU, 9, 320);
+  teks('APOTEK SEHATI', X + w / 2 + 22, Y + 68, 66, '#fff');
+  // salib hijau
+  x.save(); x.translate(X + 78, Y + 65); x.fillStyle = '#fff'; x.fillRect(-9, -26, 18, 52); x.fillRect(-26, -9, 52, 18); x.restore();
+  // pintu kaca + rak
+  kotak(X + 40, Y + 250, 180, 310, '#E8F4EE', 8, 330);
+  kotak(X + 260, Y + 250, 180, 190, '#E8F4EE', 8, 340);
+  for (let r = 0; r < 3; r++) { garis([[X + 270, Y + 300 + r * 50], [X + 430, Y + 300 + r * 50]], 5, TINTA, 350 + r);
+    for (let b = 0; b < 6; b++) { x.fillStyle = [HIJAU, KUNING, MERAH, BIRU][(b + r) % 4]; x.fillRect(X + 280 + b * 25, Y + 276 + r * 50, 16, 22); } }
+  teks(ramai ? 'BUKA' : 'BUKA', X + 130, Y + 300, 40, HIJAU);
+}
+
+function apotekBaru(t) {
+  const X = 820, Y = TANAH - 820, w = 820, h = 820;
+  kotak(X, Y, w, h, '#FFF4F2', 11, 400);
+  // pita lampu berkedip
+  for (let i = 0; i < 16; i++) { const on = (Math.floor(t * 6) + i) % 2; x.fillStyle = on ? KUNING : '#fff'; x.beginPath(); x.arc(X + 26 + i * 51, Y + 20, 11, 0, 7); x.fill(); x.lineWidth = 3; x.strokeStyle = TINTA; x.stroke(); }
+  kotak(X + 60, Y + 50, w - 120, 130, MERAH, 10, 410);
+  teks('APOTEK MEGA', X + w / 2, Y + 117, 104, '#fff');
+  // spanduk diskon bergoyang
+  const sw = Math.sin(t * 3) * .03; x.save(); x.translate(X + w / 2, Y + 300); x.rotate(sw - .03);
+  x.fillStyle = KUNING; x.fillRect(-340, -70, 680, 140); garis([[-340, -70], [340, -70], [340, 70], [-340, 70]], 9, TINTA, 420, true);
+  const p = 1 + .06 * Math.max(0, Math.sin(t * 7));
+  x.scale(p, p); teks('GRAND OPENING', 0, -28, 54, TINTA); teks('DISKON s/d 70%!', 0, 30, 76, MERAH); x.restore();
+  // pintu besar
+  kotak(X + 280, Y + 460, 260, 360, '#FFE1DC', 9, 430);
+  garis([[X + 410, Y + 460], [X + 410, Y + 820]], 6, TINTA, 440);
+  // balon
+  [[X - 10, Y + 420, MERAH], [X + w + 10, Y + 400, KUNING], [X + w + 40, Y + 470, HIJAU]].forEach((b, i) => { const by = b[1] + Math.sin(t * 2 + i) * 14;
+    garis([[b[0], by + 50], [b[0] + Math.sin(t + i) * 10, by + 180]], 3, TINTA, 450 + i); x.fillStyle = b[2]; x.beginPath(); x.ellipse(b[0], by, 38, 48, 0, 0, 7); x.fill(); x.lineWidth = 5; x.strokeStyle = TINTA; x.stroke(); });
+}
+
+function tumbleweed(t) { const k = seg(t, 0, 3.4); if (k <= 0 || k >= 1) return; const X = lerp(-120, 760, k), Y = TANAH - 40 - Math.abs(Math.sin(k * 12)) * 40;
+  x.save(); x.translate(X, Y); x.rotate(k * 14); x.strokeStyle = '#A0784A'; x.lineWidth = 4; for (let i = 0; i < 7; i++) { x.beginPath(); x.ellipse(0, 0, 38, 16 + i * 3, i * .9, 0, 7); x.stroke(); } x.restore(); }
+
+function kertasData(t, ax, ay) {
+  const k0 = WAKTU.bocor; if (t < k0) return;
+  for (let i = 0; i < 7; i++) {
+    const k = seg(t, k0 + i * .22, k0 + i * .22 + 1.3); if (k <= 0) continue;
+    const bx = 1230, by = TANAH - 300;
+    const X = lerp(ax, bx, k), Y = lerp(ay, by, k) - Math.sin(k * Math.PI) * (260 + i * 30);
+    x.save(); x.globalAlpha = 1 - seg(k, .85, 1); x.translate(X, Y); x.rotate(k * 6 + i);
+    x.fillStyle = '#fff'; x.fillRect(-34, -44, 68, 88); x.strokeStyle = TINTA; x.lineWidth = 5; x.strokeRect(-34, -44, 68, 88);
+    x.fillStyle = MERAH; x.fillRect(-24, -34, 48, 10); x.fillStyle = TINTA; for (let r = 0; r < 4; r++) x.fillRect(-24, -14 + r * 14, 48 - (r % 2) * 16, 5);
+    x.restore();
+  }
+  // jejak titik-titik merah
+  const kl = E.io(seg(t, k0, k0 + 1)); x.save(); x.setLineDash([4, 26]); x.lineDashOffset = -t * 120; x.strokeStyle = MERAH; x.lineWidth = 12; x.lineCap = 'round';
+  x.beginPath(); for (let j = 0; j <= 40 * kl; j++) { const k = j / 40; const X = lerp(ax, 1230, k), Y = lerp(ay, TANAH - 300, k) - Math.sin(k * Math.PI) * 300; j ? x.lineTo(X, Y) : x.moveTo(X, Y); } x.stroke(); x.restore();
+}
+
+function hp() { x.save(); x.rotate(-.25); x.fillStyle = TINTA; x.fillRect(-26, -78, 52, 92); x.fillStyle = '#9FE3C2'; x.fillRect(-19, -70, 38, 70);
+  x.fillStyle = MERAH; x.fillRect(-14, -62, 28, 8); x.fillStyle = TINTA; for (let r = 0; r < 4; r++) x.fillRect(-14, -46 + r * 12, 28 - (r % 2) * 10, 4); x.restore(); }
+
+/* --- kamera --- */
+function kamera(t) {
+  const A = { cx: 420, cy: 1060, z: 1.4 }, B = { cx: 1230, cy: 1020, z: 1.0 }, C = { cx: 920, cy: 990, z: .8 };
+  let k1 = E.io(seg(t, WAKTU.whip, WAKTU.whipEnd)), k2 = E.io(seg(t, WAKTU.lebar, WAKTU.lebarEnd));
+  let cx = lerp(lerp(A.cx, B.cx, k1), C.cx, k2), cy = lerp(lerp(A.cy, B.cy, k1), C.cy, k2), z = lerp(lerp(A.z, B.z, k1), C.z, k2);
+  z *= 1 + .035 * seg(t, 0, WAKTU.whip) + .04 * seg(t, WAKTU.whipEnd, WAKTU.lebar) + .05 * seg(t, WAKTU.lebarEnd, WAKTU.dur);
+  // hentak saat kaget & saat bocor
+  const h1 = seg(t, WAKTU.kaget, WAKTU.kaget + .5), h2 = seg(t, WAKTU.bocor + .1, WAKTU.bocor + .7);
+  z *= 1 + .07 * Math.sin(h1 * Math.PI) * (1 - h1) * 2 + .06 * Math.sin(h2 * Math.PI) * (1 - h2) * 2;
+  const g = 18 * ((h1 > 0 && h1 < 1 ? 1 - h1 : 0) + (h2 > 0 && h2 < 1 ? 1 - h2 : 0));
+  cx += nz(t * .6, 1) * 6 + Math.sin(t * 60) * g; cy += nz(t * .6, 2) * 5 + Math.cos(t * 53) * g;
+  return { cx, cy, z, blur: Math.sin(Math.PI * seg(t, WAKTU.whip, WAKTU.whipEnd)) };
+}
+
+function gambar(t) {
+  BOIL = Math.floor(t * 8);
+  x.setTransform(1, 0, 0, 1, 0, 0); x.drawImage(TEX, 0, 0);
+  const c = kamera(t);
+  x.setTransform(c.z, 0, 0, c.z, W / 2 - c.cx * c.z, H / 2 - c.cy * c.z);
+  AWAN.forEach(a => awan(a, t));
+  // matahari
+  x.fillStyle = KUNING; x.beginPath(); x.arc(1500, 420, 80, 0, 7); x.fill(); x.lineWidth = 7; x.strokeStyle = TINTA; x.stroke();
+  // tanah
+  x.fillStyle = '#EDE4D3'; x.fillRect(-1200, TANAH, 4000, 1400);
+  garis([[-1200, TANAH], [0, TANAH + 2], [900, TANAH - 2], [2800, TANAH]], 10, TINTA, 900);
+  for (let i = 0; i < 26; i++) garis([[-400 + i * 120, TANAH + 60 + (i % 3) * 30], [-360 + i * 120, TANAH + 60 + (i % 3) * 30]], 5, '#B8AB92', 910 + i);
+
+  apotekLama(t); apotekBaru(t);
+  // antrean pelanggan
+  PELANGGAN.forEach((p, i) => { const b = Math.abs(Math.sin(t * 5 + p.ph)) * 10;
+    orang({ x: p.x, y: TANAH + 30, s: p.s, arah: -1, id: 20 + i, warna: '#5A5A66', wajah: 'senyum', angkat: -b,
+      tb: [-.2 + Math.sin(t * 4 + p.ph) * .2, .4], td: [i % 3 ? .3 : 2.6, i % 3 ? .2 : .3],
+      pegang: p.tas ? () => { x.fillStyle = MERAH; x.fillRect(-18, 0, 36, 40); x.strokeStyle = TINTA; x.lineWidth = 4; x.strokeRect(-18, 0, 36, 40); } : null });
+    if (i % 3 === 0) pop('♥', p.x, TANAH - 330 * p.s, seg(t, 3.3 + i * .1, 3.8 + i * .1) * (1 - seg(t, 4.6, 4.9)), MERAH, 60);
+  });
+  // petugas topi merah dengan toa
+  orang({ x: 1560, y: TANAH + 30, s: .95, arah: -1, id: 40, topi: MERAH, wajah: 'senyum', tb: [-.4, .3], td: [1.9 + Math.sin(t * 8) * .15, -.4],
+    pegang: () => { x.fillStyle = KUNING; x.beginPath(); x.moveTo(0, -10); x.lineTo(46, -34); x.lineTo(46, 34); x.lineTo(0, 10); x.fill(); x.strokeStyle = TINTA; x.lineWidth = 5; x.stroke(); } });
+  if (t > 3.2) teks('PROMO!!', 1430 + Math.sin(t * 9) * 4, TANAH - 420, 70, MERAH, 'Bangers', -.15);
+  // konfeti
+  if (t > WAKTU.whip) KONFETI.forEach(k => { const Y = (k.y0 + (t - WAKTU.whip) * k.v) % 1000 + TANAH - 1100; x.save(); x.translate(k.x + Math.sin(t * 2 + k.r) * 20, Y); x.rotate(t * 4 + k.r); x.fillStyle = k.c; x.fillRect(-7, -4, 14, 8); x.restore(); });
+
+  tumbleweed(t);
+
+  // OWNER
+  const toleh = t > WAKTU.kaget - .15 ? 1 : -1;
+  const kH = seg(t, WAKTU.hp, WAKTU.hp + .4);
+  const kg = t >= WAKTU.kaget && t < WAKTU.lebar;
+  const ow = orang({ x: 640, y: TANAH + 30, s: 1.05, arah: toleh, id: 1, kacamata: true, rompi: HIJAU,
+    wajah: t < WAKTU.kaget ? 'sedih' : (t < WAKTU.bocor ? 'kaget' : 'kaget'),
+    miring: t < WAKTU.kaget ? .12 : -.08 * Math.sin(Math.PI * seg(t, WAKTU.kaget, WAKTU.kaget + .4)),
+    angkat: -30 * Math.sin(Math.PI * seg(t, WAKTU.kaget, WAKTU.kaget + .35)),
+    tb: kg ? [-2.4, -.3] : [-.25, .15], td: kH > 0 ? [lerp(.3, 2.2, E.back(kH)), lerp(.2, -.9, kH)] : (kg ? [2.4, .3] : [.25, .15]),
+    pegang: kH > 0 ? hp : null });
+  pop('!', ow.kepala[0] + 20, ow.kepala[1] - 110, seg(t, WAKTU.kaget, WAKTU.kaget + .3) * (1 - seg(t, WAKTU.lebar, WAKTU.lebar + .2)));
+  pop('?!', ow.kepala[0] + 20, ow.kepala[1] - 110, seg(t, WAKTU.bocor, WAKTU.bocor + .3));
+  if (t < WAKTU.kaget) keringat(ow.kepala[0] - 50, ow.kepala[1] - 10, seg(t, .6, 99) * 1.6);
+  else keringat(ow.kepala[0] + 60, ow.kepala[1] - 20, (t - WAKTU.kaget) * 1.8);
+  garisKejut(ow.kepala[0] + 10, ow.kepala[1], seg(t, WAKTU.kaget, WAKTU.kaget + .45));
+  garisKejut(ow.kepala[0] + 10, ow.kepala[1], seg(t, WAKTU.bocor, WAKTU.bocor + .45), 110);
+  kertasData(t, ow.tangan[0], ow.tangan[1] - 40);
+
+  // garis kecepatan saat whip pan
+  x.setTransform(1, 0, 0, 1, 0, 0);
+  if (c.blur > .02) { x.strokeStyle = `rgba(30,30,36,${.5 * c.blur})`; x.lineCap = 'round'; for (let i = 0; i < 26; i++) { const yy = hash(i) * H, l = 300 + hash(i + 9) * 500, xx = (hash(i + 3) * W * 1.5 - t * 4000) % (W + l); x.lineWidth = 4 + hash(i + 5) * 10; x.beginPath(); x.moveTo(xx + W, yy); x.lineTo(xx + W + l, yy); x.stroke(); } }
+}
+
+const HOOK = $('#tHook'), BOCOR = $('#tBocor');
+HOOK.style.top = (AMAN.atas + 90) + 'px'; BOCOR.style.top = (AMAN.atas + 120) + 'px';
+
+const SCENE = {
+  dur: WAKTU.dur,
+  muat: () => Promise.all([document.fonts.load("400 80px 'Bangers'"), document.fonts.load("900 64px 'Nunito'")]),
+  /* kata contoh — dihapus setelah VO ada (mf.py kata) */
+  kata: [{w:'Apotekku',t0:.4,t1:1.0},{w:'sepi.',t0:1.0,t1:1.6},{w:'Padahal',t0:1.9,t1:2.3},{w:'baru',t0:2.3,t1:2.5},{w:'buka',t0:2.5,t1:2.8},{w:'apotek',t0:2.8,t1:3.2},{w:'sebelah,',t0:3.2,t1:3.7},
+         {w:'diskonnya',t0:3.9,t1:4.5},{w:'gila-gilaan!',t0:4.5,t1:5.2},{w:'Tapi',t0:5.5,t1:5.8},{w:'ternyata…',t0:5.8,t1:6.4},{w:'dataku',t0:6.6,t1:7.1},{w:'yang',t0:7.1,t1:7.3},{w:'bocor!',t0:7.3,t1:7.9}],
+  sub: { gaya: 'polos', font: "900 64px 'Nunito'", aksen: KUNING, kunci: ['sepi', 'gila-gilaan', 'bocor'], y: .74 },
+  audio: { vo: [], sfx: [], music: null },
+  build(tl) {
+    wIn(tl, HOOK, WAKTU.hookIn, { st: .1 }); wOut(tl, HOOK, WAKTU.hookOut);
+    tl.fromTo(BOCOR, { scale: 2.4, opacity: 0 }, { scale: 1, opacity: 1, duration: .35, ease: 'back.out(2.5)' }, WAKTU.bocor + .05);
+  },
+  frame(t) { gambar(t); }
+};

@@ -1,0 +1,11 @@
+# Gaya: Stickman Cerita Android (racikan, dasar 2d)
+- Kamera: datar dari depan seperti panggung kartun; selalu bergerak (push-in pelan, whip-pan, zoom hentak saat kaget)
+- Cahaya: datar, tanpa bayangan dramatis — hanya bayangan elips tipis di kaki tokoh
+- Palet: tinta #1E1E24 (garis tokoh) · kertas #F7F3EA (latar) · hijau apotek #2FA36B (tokoh utama/apoteknya) · merah #E5484D (apotek baru/bahaya) · kuning #FFC531 (sorotan, efek) · biru keringat #4DA3FF
+- Bahan & tekstur: kertas krem berserat halus, garis tangan tebal 10 px ujung bulat, "line boil" (garis bergetar 8× per detik seperti animasi tangan)
+- Tokoh: stickman kepala bulat putih bergaris hitam, wajah titik + garis; owner = kacamata + rompi hijau; apotek baru = topi merah; pelanggan = abu-abu
+- Tipografi: Bangers (judul & efek bunyi "JENG JENG!", 120–160 px, miring sedikit) + Nunito 900 (subtitle 64 px)
+- Subtitle: per kata, polos dengan bayangan tebal, ±70% tinggi, kata kunci kuning/merah
+- Tanda tangan gerak: zoom hentak + guncang + garis kejut (speed lines) di setiap momen "kaget"; simbol pop (! ? 💧) memantul di atas kepala
+- Suara: VO pencerita santai-dramatis bahasa Indonesia, efek kartun (whoosh, boing, "jeng jeng jeng")
+- Beda dari video lain: latar kertas terang, tokoh garis polos, komedi-drama ala cerita TikTok
