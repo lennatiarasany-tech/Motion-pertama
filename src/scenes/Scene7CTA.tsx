@@ -1,12 +1,12 @@
 import React from 'react';
+import {at} from '../vo';
 import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Karyawan, Owner} from '../characters';
 import {At, Flash, HeadScrim, Stage, Vignette, useDolly} from '../components/Camera';
 import {Chip} from '../components/Chip';
 import {Headline} from '../components/Headline';
 import {PharmacyRoom} from '../components/PharmacyRoom';
-import {Subs} from '../components/Subtitle';
-import {CHIPS, HEAD, SUBS} from '../script';
+import {CHIPS, HEAD} from '../script';
 import {C, FONT} from '../theme';
 
 /**
@@ -17,29 +17,33 @@ import {C, FONT} from '../theme';
 export const Scene7CTA: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  /** B = mulai bagian 2 ("Coba gratis…"), T1 = owner berhenti berpikir */
+  const B = at('s7Cta', 'coba1', -4);
+  const T1 = at('s7Cta', 'juga2', 6);
   const cam = useDolly({fx: 300, z: 1.75}, [
     {at: 6, dur: 24, fx: 540, z: 1.0},
-    {at: 118, dur: 93, fx: 540, z: 1.1},
+    {at: B, dur: 90, fx: 540, z: 1.1},
   ]);
   const shieldIn = spring({frame: frame - 18, fps, config: {damping: 12, mass: 0.7}});
-  const toB = spring({frame: frame - 114, fps, config: {damping: 16, mass: 0.8}});
+  const toB = spring({frame: frame - B, fps, config: {damping: 16, mass: 0.8}});
   const shieldY = interpolate(toB, [0, 1], [880, 760]);
   const shieldS = shieldIn * interpolate(toB, [0, 1], [1, 0.62]);
-  const logos = spring({frame: frame - 122, fps, config: {damping: 15}});
-  const btn = spring({frame: frame - 130, fps, config: {damping: 12, mass: 0.6}});
-  const pulse = frame > 145 ? 1 + Math.sin((frame - 145) / 5) * 0.035 : 1;
-  const ownerPose = frame < 60 ? 'thinking' : frame < 116 ? 'idle' : 'point';
-  const ownerT = spring({frame: frame - (frame < 116 ? 60 : 116), fps, config: {damping: 16, mass: 0.75}});
+  const logos = spring({frame: frame - at('s7Cta', 'apotek6', -4), fps, config: {damping: 15}});
+  const btn = spring({frame: frame - at('s7Cta', 'gratis1'), fps, config: {damping: 12, mass: 0.6}});
+  const P = at('s7Cta', 'gratis1', 14);
+  const pulse = frame > P ? 1 + Math.sin((frame - P) / 5) * 0.035 : 1;
+  const ownerPose = frame < T1 ? 'thinking' : frame < B ? 'idle' : 'point';
+  const ownerT = spring({frame: frame - (frame < B ? T1 : B), fps, config: {damping: 16, mass: 0.75}});
 
   return (
     <AbsoluteFill>
       <Stage cam={cam} room={<PharmacyRoom frame={frame} />}>
         <At x={260} s={0.75}>
           <Owner
-            fromPose={frame < 60 ? undefined : frame < 116 ? 'thinking' : 'idle'}
+            fromPose={frame < T1 ? undefined : frame < B ? 'thinking' : 'idle'}
             pose={ownerPose}
             poseT={ownerT}
-            expression={frame < 60 ? 'worried' : 'smile'}
+            expression={frame < T1 ? 'worried' : 'smile'}
           />
         </At>
         <At x={860} s={0.75}>
@@ -61,9 +65,9 @@ export const Scene7CTA: React.FC = () => {
           <path d="M -58 0 L -14 44 L 64 -44" stroke="#fff" strokeWidth={26} fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </g>
       </svg>
-      <Headline lines={HEAD.s7a.lines} delay={14} out={106} />
-      {frame >= 112 && <Headline lines={HEAD.s7b.lines} size={116} delay={114} />}
-      {frame < 114 && <Chip text={CHIPS.s7} variant="yellow" x={540} y={1185} delay={72} />}
+      <Headline lines={HEAD.s7a.lines} times={['pernah1', 'kecolongan1', 'juga2'].map((w) => at('s7Cta', w))} out={B - 6} />
+      {frame >= B && <Headline lines={HEAD.s7b.lines} size={116} times={[B + 2, B + 8, at('s7Cta', 'gratis1'), at('s7Cta', 'gratis1', 6)]} />}
+      {frame < B && <Chip text={CHIPS.s7} variant="yellow" x={540} y={1185} delay={at('s7Cta', 'tulis1')} />}
       {/* logo resmi + tombol */}
       <div
         style={{
@@ -104,8 +108,7 @@ export const Scene7CTA: React.FC = () => {
       >
         Coba GRATIS
       </div>
-      <Flash at={114} max={0.25} />
-      <Subs subs={SUBS.s7} />
+      <Flash at={B} max={0.25} />
     </AbsoluteFill>
   );
 };

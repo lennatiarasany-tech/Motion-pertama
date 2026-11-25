@@ -1,13 +1,13 @@
 import React from 'react';
+import {at} from '../vo';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Owner} from '../characters';
 import {At, Flash, HeadScrim, Stage, Vignette, useDolly, useShake} from '../components/Camera';
 import {Chip} from '../components/Chip';
 import {Headline} from '../components/Headline';
 import {Box} from '../components/Props';
-import {Subs} from '../components/Subtitle';
 import {EdStack, Warehouse} from '../components/Warehouse';
-import {CHIPS, HEAD, SUBS} from '../script';
+import {CHIPS, HEAD} from '../script';
 import {ZONE} from '../theme';
 
 /**
@@ -52,12 +52,14 @@ export const Scene1Hook: React.FC = () => {
       </Stage>
       <Vignette z={cam.z} />
       <Flash at={IMPACT} max={0.35} />
-      <div style={{opacity: Math.min(1, Math.max(0, (frame - 44) / 10))}}>
-        <HeadScrim />
-      </div>
-      <Headline kicker={HEAD.s1.kicker} lines={HEAD.s1.lines} delay={50} />
-      <Chip text={CHIPS.s1} variant="yellow" x={700} y={760} delay={80} />
-      <Subs subs={SUBS.s1} />
+      <HeadScrim />
+      <Headline
+        kicker={HEAD.s1.kicker}
+        kickerAt={at('s1Hook', 'apotek1', -4)}
+        lines={HEAD.s1.lines}
+        times={['stok1', 'ed1', 'numpuk1', 'rugi1', 'jutaan1'].map((w) => at('s1Hook', w))}
+      />
+      <Chip text={CHIPS.s1} variant="yellow" x={700} y={760} delay={at('s1Hook', 'jutaan1', 18)} />
     </AbsoluteFill>
   );
 };

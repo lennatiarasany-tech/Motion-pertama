@@ -62,7 +62,7 @@ export const HEAD = {
   s4: {kicker: 'BEBERAPA BULAN KEMUDIAN…'},
   s5a: {lines: ['SALES *NAKAL*', 'MEMANG ADA…']},
   s5b: {lines: ['TAPI CELAHNYA', 'DI CARA KITA', '^TERIMA^ ^BARANG^']},
-  s6: {kicker: 'PAKAI APOTEK DIGITAL', lines: ['BARANG MASUK', 'LANGSUNG', '_DICOCOKKAN_']},
+  s6: {kicker: 'PAKAI APOTEK DIGITAL', lines: ['FAKTUR MASUK', 'LANGSUNG', '_DICOCOKKAN_']},
   s7a: {lines: ['PERNAH', '*KECOLONGAN*', 'JUGA?']},
   s7b: {lines: ['STOK ~AMAN.~', 'MODAL ~AMAN.~']},
 };

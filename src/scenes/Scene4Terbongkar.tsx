@@ -1,12 +1,12 @@
 import React from 'react';
+import {at} from '../vo';
 import {AbsoluteFill, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Owner} from '../characters';
 import {AvatarBubble, CompareCard, Counter, XList} from '../components/Cards';
 import {HeadScrim, Stage, Vignette, useDolly} from '../components/Camera';
 import {Chip} from '../components/Chip';
-import {Subs} from '../components/Subtitle';
 import {EdStack, Warehouse} from '../components/Warehouse';
-import {CHIPS, HEAD, SUBS} from '../script';
+import {CHIPS, HEAD} from '../script';
 import {C, FONT} from '../theme';
 
 /**
@@ -14,14 +14,16 @@ import {C, FONT} from '../theme';
  * Kamera latar bergerak pelan menyusuri tumpukan dus ED.
  * Setiap ❌ muncul, panggung "berdenyut" (punch kecil) + SFX error.
  */
-export const X_AT = [150, 205, 236];
+// ❌ muncul tepat saat VO mengucapkan masalahnya
+export const X_AT = [at('s4Terbongkar', 'nggak1'), at('s4Terbongkar', 'ednya1')];
+const RUGI_AT = at('s4Terbongkar', 'ketahuan1');
 
 export const Scene4Terbongkar: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const cam = useDolly({fx: 900, z: 1.45}, [{at: 0, dur: 262, fx: 600, z: 1.25}]);
   let punch = 0;
-  for (const t of [...X_AT, 224]) {
+  for (const t of [...X_AT, RUGI_AT]) {
     const d = frame - t;
     if (d >= 0 && d < 14) punch += Math.sin((d / 14) * Math.PI) * 0.025;
   }
@@ -39,21 +41,20 @@ export const Scene4Terbongkar: React.FC = () => {
         <div style={{position: 'absolute', top: 232, left: 0, right: 0, textAlign: 'center', fontFamily: FONT, fontWeight: 700, fontSize: 44, color: C.KICKER}}>
           {HEAD.s4.kicker}
         </div>
-        <XList top={310} items={CHIPS.s4x} delays={X_AT} />
+        <XList top={340} items={CHIPS.s4x.slice(0, 2)} delays={X_AT} />
         <CompareCard top={680} delay={8} />
-        <div style={{opacity: frame >= 224 ? 1 : 0}}>
-          <Counter value={3750000} delay={224} x={390} y={1250} />
+        <div style={{opacity: frame >= RUGI_AT ? 1 : 0}}>
+          <Counter value={3750000} delay={RUGI_AT} x={390} y={1250} />
         </div>
-        <Chip text="rugi" variant="red" x={390} y={1360} delay={244} size={36} />
+        <Chip text="rugi" variant="red" x={390} y={1360} delay={RUGI_AT + 22} size={36} />
         <div style={{opacity: avatar}}>
           <AvatarBubble x={900} y={1300} size={230} delay={24}>
             <svg width="100%" height="100%" viewBox="-95 -668 190 190">
-              <Owner expression={frame < 205 ? 'worried' : 'shocked'} />
+              <Owner expression={frame < RUGI_AT ? 'worried' : 'shocked'} />
             </svg>
           </AvatarBubble>
         </div>
       </AbsoluteFill>
-      <Subs subs={SUBS.s4} />
     </AbsoluteFill>
   );
 };

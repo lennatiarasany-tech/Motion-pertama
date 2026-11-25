@@ -2,8 +2,11 @@ import React from 'react';
 import {AbsoluteFill, Audio, Sequence, getStaticFiles, interpolate, staticFile} from 'remotion';
 import {TransitionSeries, linearTiming} from '@remotion/transitions';
 import {fade} from '@remotion/transitions/fade';
-import {SCENES, TRANSITION, seqDur} from './timing';
+import {ORDER, START, TRANSITION, seqDur} from './timing';
+import {AT} from './voTiming';
+import {VoSubtitle} from './components/VoSubtitle';
 import {Scene1Hook, IMPACT} from './scenes/Scene1Hook';
+export {START};
 import {Scene2Setup} from './scenes/Scene2Setup';
 import {Scene3BuruBuru} from './scenes/Scene3BuruBuru';
 import {Scene4Terbongkar, X_AT} from './scenes/Scene4Terbongkar';
@@ -11,35 +14,48 @@ import {Scene5Twist, SILENCE, STRIKE, IRIS} from './scenes/Scene5Twist';
 import {Scene6Solusi} from './scenes/Scene6Solusi';
 import {Scene7CTA} from './scenes/Scene7CTA';
 
-/** Awal tiap scene di timeline global (frame). */
-const ORDER = ['s1Hook', 's2Setup', 's3BuruBuru', 's4Terbongkar', 's5Twist', 's6Solusi', 's7Cta'] as const;
-export const START: Record<(typeof ORDER)[number], number> = (() => {
-  const o = {} as Record<(typeof ORDER)[number], number>;
-  let t = 0;
-  for (const k of ORDER) {
-    o[k] = t;
-    t += SCENES[k];
-  }
-  return o;
-})();
-
 const has = (name: string) => getStaticFiles().some((f) => f.name === name);
 
-/** SFX: [nama file, frame global, volume] */
+/** SFX (sintesis di public/sfx, buat ulang: python3 scripts/make_sfx.py): [file, frame global, volume] */
 const SFX: [string, number, number][] = [
-  ['sfx/whoosh.mp3', START.s1Hook + 14, 0.4],
-  ['sfx/pop.mp3', START.s1Hook + IMPACT, 0.6],
-  ['sfx/whoosh.mp3', START.s1Hook + 48, 0.35],
-  ['sfx/whoosh.mp3', START.s3BuruBuru + 88, 0.35],
-  ['sfx/whoosh.mp3', START.s3BuruBuru + 136, 0.45],
-  ['sfx/pop.mp3', START.s3BuruBuru + 212, 0.5],
-  ...X_AT.map((x): [string, number, number] => ['sfx/error.mp3', START.s4Terbongkar + x, 0.45]),
-  ['sfx/error.mp3', START.s5Twist + STRIKE, 0.5],
-  ['sfx/whoosh.mp3', START.s5Twist + IRIS, 0.4],
-  ['sfx/ding.mp3', START.s6Solusi + 170, 0.5],
-  ['sfx/ding.mp3', START.s6Solusi + 218, 0.5],
-  ['sfx/ding.mp3', START.s6Solusi + 265, 0.5],
-  ['sfx/pop.mp3', START.s7Cta + 130, 0.5],
+  // transisi antar-scene
+  ...ORDER.slice(1).map((k): [string, number, number] => ['sfx/whoosh.wav', START[k] - 6, 0.28]),
+  // S1 gudang: dus jatuh slow-mo + benturan
+  ['sfx/slowmo.wav', START.s1Hook + 12, 0.35],
+  ['sfx/thud.wav', START.s1Hook + IMPACT, 0.85],
+  ['sfx/whoosh.wav', START.s1Hook + IMPACT + 2, 0.3],
+  ['sfx/pop.wav', AT.rugi1 + 20, 0.4],
+  // S2 antrean
+  ['sfx/pop.wav', AT['21'], 0.4],
+  ['sfx/ding.wav', AT.ada1 - 10, 0.22],
+  // S3 buru-buru
+  ['sfx/pop.wav', AT.minta1, 0.35],
+  ['sfx/whoosh.wav', AT.antrian1 - 6, 0.35],
+  ['sfx/whoosh.wav', AT.dicek1 - 8, 0.4],
+  ['sfx/scribble.wav', AT.dicek1, 0.5],
+  ['sfx/slowmo.wav', AT.seadanya1 - 4, 0.45],
+  ['sfx/error.wav', AT.langsung1, 0.35],
+  // S4 terbongkar
+  ['sfx/pop.wav', AT.ketahuan1, 0.4],
+  ['sfx/error.wav', AT.nggak1, 0.45],
+  ['sfx/error.wav', AT.ednya1, 0.45],
+  // S5 twist
+  ['sfx/pop.wav', AT.retur1 - 3, 0.45],
+  ['sfx/error.wav', AT.ditolak1, 0.5],
+  ['sfx/pop.wav', AT.karena2, 0.3],
+  ['sfx/boom.wav', START.s5Twist + IRIS, 0.6],
+  // S6 solusi
+  ['sfx/whoosh.wav', AT.produk2 - 12, 0.3],
+  ['sfx/ding.wav', AT.luar1, 0.45],
+  ['sfx/ding.wav', AT.berubah1, 0.45],
+  ['sfx/ding.wav', AT.kurang1, 0.45],
+  ['sfx/pop.wav', AT.cek1, 0.35],
+  ['sfx/sparkle.wav', AT.cepat2, 0.4],
+  // S7 CTA
+  ['sfx/sparkle.wav', START.s7Cta + 18, 0.35],
+  ['sfx/pop.wav', AT.tulis1, 0.35],
+  ['sfx/whoosh.wav', AT.coba1 - 6, 0.3],
+  ['sfx/pop.wav', AT.gratis1, 0.5],
 ];
 
 const silenceFrom = START.s5Twist + SILENCE[0];
@@ -78,6 +94,7 @@ export const SalesNyelip: React.FC = () => {
           <Scene7CTA />
         </TransitionSeries.Sequence>
       </TransitionSeries>
+      <VoSubtitle />
 
       {/* Audio: hanya dipasang bila file ada di public/ */}
       {has('vo.mp3') && <Audio src={staticFile('vo.mp3')} />}

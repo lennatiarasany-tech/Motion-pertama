@@ -20,3 +20,16 @@ export const TOTAL = Object.values(SCENES).reduce((a, b) => a + b, 0); // 1920 =
  * Agar setiap scene tetap tampil penuh sesuai tabel, scene 1–6 ditambah TRANSITION frame.
  */
 export const seqDur = (key: keyof typeof SCENES) => SCENES[key] + (key === 's7Cta' ? 0 : TRANSITION);
+
+export const ORDER = ['s1Hook', 's2Setup', 's3BuruBuru', 's4Terbongkar', 's5Twist', 's6Solusi', 's7Cta'] as const;
+export type SceneKey = (typeof ORDER)[number];
+/** Awal tiap scene di timeline global (frame). */
+export const START: Record<SceneKey, number> = (() => {
+  const o = {} as Record<SceneKey, number>;
+  let t = 0;
+  for (const k of ORDER) {
+    o[k] = t;
+    t += SCENES[k];
+  }
+  return o;
+})();

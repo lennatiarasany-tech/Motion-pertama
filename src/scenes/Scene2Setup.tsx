@@ -1,4 +1,5 @@
 import React from 'react';
+import {at} from '../vo';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Karyawan, Kasir, PasienBapak, PasienIbu, PasienMas, Pose, Sales} from '../characters';
 import {Chip} from '../components/Chip';
@@ -6,8 +7,7 @@ import {HeadScrim} from '../components/Camera';
 import {Headline} from '../components/Headline';
 import {PharmacyRoom} from '../components/PharmacyRoom';
 import {Box, CashierDesk, Clipboard} from '../components/Props';
-import {Subs} from '../components/Subtitle';
-import {SUBS} from '../script';
+import {} from '../script';
 import {C, FONT, ZONE} from '../theme';
 
 /**
@@ -28,7 +28,7 @@ const CAM: Key[] = [
   {at: 0, dur: 54, fx: 400, z: 1.42},
   {at: 62, dur: 56, fx: 800, z: 1.42},
   {at: 125, dur: 36, fx: 540, z: 1.0},
-  {at: 172, dur: 66, fx: 860, z: 1.28},
+  {at: 196, dur: 50, fx: 860, z: 1.28},
 ];
 const CAM_START = {fx: 540, z: 1.0};
 
@@ -94,10 +94,10 @@ export const Scene2Setup: React.FC = () => {
   const sp = (d: number) => spring({frame: frame - d, fps, config: {damping: 16, mass: 0.75}});
 
   // pintu & sales
-  const door = sp(162);
-  const walkIn = spring({frame: frame - 170, fps, durationInFrames: 48, config: {damping: 200}});
+  const door = sp(at('s2Setup', 'ada1', -10));
+  const walkIn = spring({frame: frame - at('s2Setup', 'barang1', -8), fps, durationInFrames: 34, config: {damping: 200}});
   const salesX = interpolate(walkIn, [0, 1], [1260, 1040]);
-  const salesWalking = frame >= 170 && frame < 216;
+  const salesWalking = frame >= at('s2Setup', 'barang1', -8) && frame < at('s2Setup', 'barang1', 26);
   const salesPose: Pose = 'carry';
 
   // pose & ekspresi yang berganti
@@ -149,9 +149,9 @@ export const Scene2Setup: React.FC = () => {
           </At>
 
           {/* sales masuk dari pintu */}
-          {frame >= 166 && (
+          {frame >= at('s2Setup', 'barang1', -12) && (
             <At x={salesX}>
-              <Sales pose={salesPose} walkPhase={salesWalking ? undefined : 0} expression="smile" flip talking={frame >= 205} holding="box" />
+              <Sales pose={salesPose} walkPhase={salesWalking ? undefined : 0} expression="smile" flip talking={frame >= at('s2Setup', 'datang1', 10)} holding="box" />
             </At>
           )}
 
@@ -159,12 +159,12 @@ export const Scene2Setup: React.FC = () => {
           <Speech x={500} y={1200} text="Mbak, obat batuk ada?" from={35} to={97} tail={90} />
           <Speech x={730} y={1160} text="Masih lama, Mbak?" from={78} to={140} tail={10} />
           <Speech x={900} y={1240} text="Iya, masih antre…" from={104} to={168} tail={-20} />
-          <Speech x={900} y={1200} text="Permisi, antar barang!" from={205} to={260} tail={130} />
+          <Speech x={900} y={1200} text="Permisi, antar barang!" from={at('s2Setup', 'datang1', 10)} to={270} tail={130} />
 
           {/* chip antrean menempel di dunia, di atas antrean */}
           <foreignObject x={560} y={1040} width={400} height={90}>
             <div style={{position: 'relative', width: 400, height: 90}}>
-              <Chip text="antre 8 pasien" variant="red" x={200} y={45} delay={128} />
+              <Chip text="antre 8 pasien" variant="red" x={200} y={45} delay={at('s2Setup', '21')} />
             </div>
           </foreignObject>
         </g>
@@ -179,8 +179,13 @@ export const Scene2Setup: React.FC = () => {
 
       <HeadScrim />
       {/* LAYAR (tidak ikut kamera): headline selalu di zona teks */}
-      <Headline kicker="SETIAP HARI" lines={['APOTEK RAMAI,', 'YANG JAGA', 'CUMA *2* *ORANG*']} size={100} />
-      <Subs subs={SUBS.s2} />
+      <Headline
+        kicker="SETIAP HARI"
+        kickerAt={at('s2Setup', 'jadi1')}
+        lines={['APOTEK RAMAI,', 'YANG JAGA', 'CUMA *2* *ORANG*']}
+        size={100}
+        times={['apotek2', 'rame1', 'yang1', 'jaga1', 'cuma1', '21', 'orang1'].map((w) => at('s2Setup', w))}
+      />
     </AbsoluteFill>
   );
 };

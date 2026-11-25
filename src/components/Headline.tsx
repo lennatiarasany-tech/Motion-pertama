@@ -20,13 +20,17 @@ export const Headline: React.FC<{
   delay?: number;
   /** frame mulai keluar (8 frame) */
   out?: number;
-}> = ({kicker, kickerColor = C.KICKER, lines, size = 108, color = C.NAVY, delay = 0, out}) => {
+  /** frame muncul TIAP kata (urut kiri→kanan, atas→bawah), disinkronkan ke VO */
+  times?: number[];
+  kickerAt?: number;
+}> = ({kicker, kickerColor = C.KICKER, lines, size = 108, color = C.NAVY, delay = 0, out, times, kickerAt}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const words = lines.map((l) => l.split(' ').map((w) => colorOf(w, color)));
   const plainCount = words.flat().filter((w) => !w.key).length;
   let idx = 0;
   let keyIdx = 0;
+  let seq = 0;
   const ex = out === undefined ? 0 : Math.min(1, Math.max(0, (frame - out) / 8));
   if (out !== undefined && ex >= 1) return null;
   return (
@@ -55,7 +59,7 @@ export const Headline: React.FC<{
             color: kickerColor,
             letterSpacing: 1,
             marginBottom: 14,
-            opacity: spring({frame: frame - delay, fps, config: {damping: 16, mass: 0.7}}),
+            opacity: spring({frame: frame - (kickerAt ?? (times ? times[0] - 6 : delay)), fps, config: {damping: 16, mass: 0.7}}),
           }}
         >
           {kicker}
@@ -65,8 +69,9 @@ export const Headline: React.FC<{
         <div key={li} style={{display: 'flex', gap: size * 0.26, justifyContent: 'center', lineHeight: 1.02}}>
           {line.map((w, wi) => {
             const order = w.key ? plainCount + keyIdx++ : idx++;
-            const s = spring({frame: frame - delay - 6 - order * 4, fps, config: {damping: 15, mass: 0.7}});
-            const scale = w.key ? 1.15 - 0.15 * s + (1 - s) * 0 : 1;
+            const appear = times ? times[Math.min(seq++, times.length - 1)] - 2 : delay + 6 + order * 4;
+            const s = spring({frame: frame - appear, fps, config: {damping: w.key ? 11 : 15, mass: 0.7}});
+            const scale = w.key ? 1.15 - 0.15 * s : 1;
             return (
               <span
                 key={wi}

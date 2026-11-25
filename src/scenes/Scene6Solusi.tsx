@@ -1,12 +1,12 @@
 import React from 'react';
+import {at} from '../vo';
 import {AbsoluteFill, Freeze, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Karyawan, Owner, Place} from '../characters';
 import {HeadScrim, Stage, useDolly} from '../components/Camera';
 import {PharmacyRoom} from '../components/PharmacyRoom';
 import {Chip} from '../components/Chip';
 import {Headline} from '../components/Headline';
-import {Subs} from '../components/Subtitle';
-import {CHIPS, HEAD, SUBS} from '../script';
+import {CHIPS, HEAD} from '../script';
 import {C} from '../theme';
 
 /**
@@ -24,20 +24,23 @@ const BOX = {x: 70, y: 650, w: 940};
 const BOX_H = Math.round((BOX.w * (SRC.h - SRC.chrome)) / SRC.w); // 518
 const S0 = BOX.w / SRC.w;
 
+/** zoom pertama tepat sebelum VO "Produk di luar SP"; zoom out di "Jadi, bisa cek cepat" */
+const ZOOM1 = at('s6Solusi', 'produk2', -12);
+const OUT = at('s6Solusi', 'jadi2', -6);
 type Cam = {at: number; dur: number; fx: number; fy: number; z: number};
 const FULL = {fx: SRC.w / 2, fy: SRC.chrome + (SRC.h - SRC.chrome) / 2, z: 1};
 const CAMS: Cam[] = [
-  {at: 152, dur: 26, fx: 1400, fy: 660, z: 2.6}, // keterangan baris 1–3
-  {at: 205, dur: 26, fx: 460, fy: 392, z: 2.1}, // kartu harga & ED
-  {at: 330, dur: 30, ...FULL},
+  {at: ZOOM1, dur: 26, fx: 1400, fy: 660, z: 2.6}, // keterangan baris 1–3
+  {at: at('s6Solusi', 'harga1', -10), dur: 26, fx: 460, fy: 392, z: 2.1}, // kartu harga & ED
+  {at: OUT, dur: 30, ...FULL},
 ];
 
 // kotak sorot dalam koordinat rekaman asli
 const HL = [
-  {x: 1420, y: 566, w: 216, h: 50, at: 166}, // "Tidak Dipesan" baris 1
-  {x: 1420, y: 692, w: 216, h: 64, at: 180}, // baris 3
-  {x: 66, y: 305, w: 386, h: 165, at: 215}, // Perubahan Harga Tidak Wajar
-  {x: 470, y: 305, w: 386, h: 165, at: 262}, // ED < 12 Bulan
+  {x: 1420, y: 566, w: 216, h: 50, at: at('s6Solusi', 'luar1')}, // "Tidak Dipesan" baris 1
+  {x: 1420, y: 692, w: 216, h: 64, at: at('s6Solusi', 'sp1')}, // baris 3
+  {x: 66, y: 305, w: 386, h: 165, at: at('s6Solusi', 'harga1', 4)}, // Perubahan Harga Tidak Wajar
+  {x: 470, y: 305, w: 386, h: 165, at: at('s6Solusi', 'ed2')}, // ED < 12 Bulan
 ];
 
 const useCam = () => {
@@ -83,17 +86,17 @@ const Screen: React.FC = () => {
       }}
     >
       <div style={{position: 'absolute', left: 0, top: 0, width: SRC.w, height: SRC.h, transformOrigin: '0 0', transform: `translate(${tx}px, ${ty}px) scale(${s})`}}>
-        <Sequence durationInFrames={152} layout="none">
-          <OffthreadVideo src={video} playbackRate={1.25} muted style={{width: SRC.w, height: SRC.h}} />
+        <Sequence durationInFrames={ZOOM1} layout="none">
+          <OffthreadVideo src={video} playbackRate={(6.3 * 30) / ZOOM1} muted style={{width: SRC.w, height: SRC.h}} />
         </Sequence>
-        <Sequence from={152} layout="none">
+        <Sequence from={ZOOM1} layout="none">
           <Freeze frame={195}>
             <OffthreadVideo src={video} muted style={{width: SRC.w, height: SRC.h}} />
           </Freeze>
         </Sequence>
         {HL.map((h, i) => {
           const p = spring({frame: frame - h.at, fps, config: {damping: 14, mass: 0.6}});
-          const fade = interpolate(frame, [330, 348], [1, 0.0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+          const fade = interpolate(frame, [OUT, OUT + 18], [1, 0.0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
           if (p < 0.01) return null;
           return (
             <div
@@ -134,9 +137,9 @@ const Check: React.FC<{x: number; y: number; delay: number}> = ({x, y, delay}) =
 export const Scene6Solusi: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const ownerIn = spring({frame: frame - 372, fps, durationInFrames: 36, config: {damping: 200}});
+  const ownerIn = spring({frame: frame - at('s6Solusi', 'jadi2'), fps, durationInFrames: 36, config: {damping: 200}});
   const ownerX = interpolate(ownerIn, [0, 1], [-160, 250]);
-  const thumbs = spring({frame: frame - 408, fps, config: {damping: 16, mass: 0.75}});
+  const thumbs = spring({frame: frame - at('s6Solusi', 'cek1', 10), fps, config: {damping: 16, mass: 0.75}});
   const room = useDolly({fx: 300, z: 1.3}, [{at: 0, dur: 474, fx: 760, z: 1.22}]);
   const kPose = spring({frame: frame - 10, fps, config: {damping: 16, mass: 0.75}});
   return (
@@ -145,28 +148,34 @@ export const Scene6Solusi: React.FC = () => {
       <AbsoluteFill style={{background: 'rgba(230,238,250,0.35)'}} />
       <HeadScrim />
       <AbsoluteFill style={{transform: `scale(${interpolate(frame, [0, 390], [1, 1.03])})`, transformOrigin: '50% 60%'}}>
-        <Headline kicker={HEAD.s6.kicker} kickerColor={C.BRAND_BLUE} lines={HEAD.s6.lines} size={104} />
+        <Headline
+          kicker={HEAD.s6.kicker}
+          kickerColor={C.BRAND_BLUE}
+          kickerAt={at('s6Solusi', 'di4')}
+          lines={HEAD.s6.lines}
+          size={104}
+          times={['faktur2', 'masuk1', 'langsung2', 'dicocokkan1'].map((w) => at('s6Solusi', w))}
+        />
         <Screen />
 
         {/* chip temuan, menumpuk di bawah layar */}
-        <Chip text={CHIPS.s6[0]} variant="white" x={430} y={1262} anchor="left" delay={170} size={32} />
-        <Chip text={CHIPS.s6[1]} variant="white" x={430} y={1352} anchor="left" delay={218} size={32} />
-        <Chip text={CHIPS.s6[2]} variant="white" x={430} y={1442} anchor="left" delay={265} size={32} />
-        <Check x={392} y={1262} delay={380} />
-        <Check x={392} y={1352} delay={386} />
-        <Check x={392} y={1442} delay={392} />
-        <Chip text={CHIPS.s6[3]} variant="blue" x={430} y={1540} anchor="left" delay={386} size={34} />
+        <Chip text={CHIPS.s6[0]} variant="white" x={430} y={1262} anchor="left" delay={at('s6Solusi', 'luar1')} size={32} />
+        <Chip text={CHIPS.s6[1]} variant="white" x={430} y={1352} anchor="left" delay={at('s6Solusi', 'berubah1')} size={32} />
+        <Chip text={CHIPS.s6[2]} variant="white" x={430} y={1442} anchor="left" delay={at('s6Solusi', 'kurang1')} size={32} />
+        <Check x={392} y={1262} delay={at('s6Solusi', 'cek1')} />
+        <Check x={392} y={1352} delay={at('s6Solusi', 'cek1', 6)} />
+        <Check x={392} y={1442} delay={at('s6Solusi', 'cek1', 12)} />
+        <Chip text={CHIPS.s6[3]} variant="blue" x={430} y={1540} anchor="left" delay={at('s6Solusi', 'cepat2')} size={34} />
 
-        <Place x={frame < 372 ? 170 : interpolate(ownerIn, [0, 1], [170, 80])} scale={0.7}>
+        <Place x={frame < at('s6Solusi', 'jadi2') ? 170 : interpolate(ownerIn, [0, 1], [170, 80])} scale={0.7}>
           <Karyawan fromPose="idle" pose="holdPaper" poseT={kPose} holding="clipboard" expression={frame > 120 ? 'smile' : 'neutral'} />
         </Place>
-        {frame >= 372 && (
+        {frame >= at('s6Solusi', 'jadi2') && (
           <Place x={ownerX} scale={0.7}>
             <Owner pose={ownerIn < 0.98 ? 'walk' : 'thumbsUp'} fromPose={ownerIn < 0.98 ? undefined : 'idle'} poseT={thumbs} expression="smile" />
           </Place>
         )}
       </AbsoluteFill>
-      <Subs subs={SUBS.s6} />
     </AbsoluteFill>
   );
 };

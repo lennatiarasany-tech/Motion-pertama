@@ -1,4 +1,5 @@
 import React from 'react';
+import {at} from '../vo';
 import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Owner} from '../characters';
 import {At, HeadScrim, Stage, Vignette, useDolly, useShake} from '../components/Camera';
@@ -6,9 +7,8 @@ import {ChatBubble} from '../components/Cards';
 import {Headline} from '../components/Headline';
 import {PharmacyRoom} from '../components/PharmacyRoom';
 import {CashierDesk, Phone} from '../components/Props';
-import {Subs} from '../components/Subtitle';
 import {Warehouse} from '../components/Warehouse';
-import {CHIPS, HEAD, SUBS} from '../script';
+import {CHIPS, HEAD} from '../script';
 import {C, FONT, ZONE} from '../theme';
 
 /**
@@ -19,9 +19,11 @@ import {C, FONT, ZONE} from '../theme';
  * B (120–270) lampu meja kasir, owner memegang faktur. Kamera dorong pelan.
  *            Headline 1 → jeda hening 15f → ekspresi berubah → Headline 2.
  */
-export const STRIKE = 50;
-export const IRIS = 138;
-export const SILENCE = [236, 248] as const;
+export const STRIKE = at('s5Twist', 'ditolak1', 6);
+export const IRIS = at('s5Twist', 'hmm1', -12);
+export const SILENCE = [at('s5Twist', 'ada4', 13), at('s5Twist', 'tapi1')] as const;
+/** frame lokal PartB untuk kata VO */
+const b = (w: string, o = 0) => at('s5Twist', w, o) - IRIS;
 
 const PartA: React.FC = () => {
   const frame = useCurrentFrame();
@@ -29,7 +31,7 @@ const PartA: React.FC = () => {
   const shake = useShake([STRIKE], 10, 10);
   const strike = interpolate(frame, [STRIKE - 12, STRIKE], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const {fps} = useVideoConfig();
-  const retur = spring({frame: frame - 6, fps, config: {damping: 12, mass: 0.6}});
+  const retur = spring({frame: frame - at('s5Twist', 'retur1', -4), fps, config: {damping: 12, mass: 0.6}});
   return (
     <AbsoluteFill>
       <Stage cam={cam} room={<Warehouse frame={frame} />} shake={shake}>
@@ -47,7 +49,7 @@ const PartA: React.FC = () => {
           </svg>
         </div>
       </div>
-      <ChatBubble x={330} y={700} w={680} name="Sales PBF" text={CHIPS.s5chat} tail="left" delay={64} />
+      <ChatBubble x={330} y={700} w={680} name="Sales PBF" text={CHIPS.s5chat} tail="left" delay={at('s5Twist', 'karena2')} />
     </AbsoluteFill>
   );
 };
@@ -56,7 +58,7 @@ const PartB: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const cam = useDolly({fx: 600, z: 1.0}, [{at: 0, dur: 216, fx: 560, z: 1.34}]);
-  const realize = spring({frame: frame - (SILENCE[0] - IRIS + 4), fps, config: {damping: 16}});
+  const realize = spring({frame: frame - b('tapi1', -4), fps, config: {damping: 16}});
   const flick = 0.92 + Math.sin(frame / 3) * 0.02 + Math.sin(frame / 7.3) * 0.02;
   return (
     <AbsoluteFill style={{background: C.BG_DARK}}>
@@ -85,15 +87,22 @@ const PartB: React.FC = () => {
       </Stage>
       <Vignette z={cam.z} base={0.3} dark />
       <HeadScrim dark />
-      <Headline lines={HEAD.s5a.lines} color="#FFFFFF" size={108} delay={14} out={SILENCE[0] - IRIS - 8} />
-      {frame >= SILENCE[1] - IRIS && <HeadlineAt from={SILENCE[1] - IRIS} />}
+      <Headline lines={HEAD.s5a.lines} color="#FFFFFF" size={108} times={['sales2', 'nakal1', 'memang1', 'ada4'].map((w) => b(w))} out={b('tapi1', -10)} />
+      {frame >= b('tapi1', -4) && <HeadlineAt />}
     </AbsoluteFill>
   );
 };
 
-const HeadlineAt: React.FC<{from: number}> = ({from}) => {
+const HeadlineAt: React.FC = () => {
   // Headline kedua muncul setelah jeda hening
-  return <Headline lines={HEAD.s5b.lines} color="#FFFFFF" size={100} delay={from} />;
+  return (
+    <Headline
+      lines={HEAD.s5b.lines}
+      color="#FFFFFF"
+      size={100}
+      times={['tapi1', 'celahnya1', 'di3', 'cara1', 'kita1', 'terima1', 'barang3'].map((w) => b(w))}
+    />
+  );
 };
 
 export const Scene5Twist: React.FC = () => {
@@ -112,7 +121,6 @@ export const Scene5Twist: React.FC = () => {
           </SequenceFrom>
         </AbsoluteFill>
       )}
-      <Subs subs={SUBS.s5} />
     </AbsoluteFill>
   );
 };
