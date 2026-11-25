@@ -1,0 +1,11 @@
+# Lembar gaya · Apotek Digital (iklan 9:16)
+- Gaya: Promo Produk & Iklan · arah **bersih premium** (SaaS B2B), produk = HP berisi aplikasi
+- Brand: navy #1A4072 · biru #1263D9 · biru muda #3B86EA · hijau #34AC6C · mint #74DCA4 · putih #F5F8FB · merah masalah #E5484D
+- Font: Bricolage Grotesque 800 (judul) + Onest (kalimat, UI) · Caveat hanya untuk tulisan tangan di kertas · Lexend untuk teks logo
+- Dunia: meja konter apotek abu terang + rak obat kabur di belakang, kotak obat dengan stiker ED merah
+- Cahaya bercerita: masalah = redup kebiruan (multiply #2B4058) → solusi = lampu menyala, sinar menyapu, studio terang
+- Kamera: hook close-up ×1,85 di kartu stok → tarik mundur cepat + blur → merayap pelan; guncang kecil saat kata kunci/pil muncul
+- Teks: tanpa VO, tanpa subtitle; teks kinetik besar membawa pesan; kata masalah disorot blok merah, nama brand biru
+- Tanda tangan gerak: kertas & masalah **tersedot berputar** masuk ke layar HP (kekacauan → rapi)
+- Beda dari video lain: palet brand biru-hijau, kertas tulisan tangan sebagai "musuh", logo dibangun potong per potong
+- Fakta yang boleh tampil: 2000+ apotek pengguna · free trial 14 hari · konsultasi gratis · fitur dari booklet
