@@ -1,0 +1,149 @@
+<!--@TITLE Foto Profil Owner-->
+<!--@RASIO 1:1-->
+<!--@HEAD-->
+<script src="assets/lib/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Bangers';font-weight:400;src:url(assets/font/bangers.woff2) format('woff2')}
+@font-face{font-family:'Nunito';font-weight:900;src:url(assets/font/nunito-900.woff2) format('woff2')}
+#stage{background:#5EC4FF}
+#dunia{position:absolute;inset:0}
+</style>
+<!--@BODY-->
+<div id="dunia"></div>
+<!--@SCRIPT-->
+const WAKTU = { dur: 2 };
+const TINTA = '#1E1E24', KERTAS = '#F7F3EA', HIJAU = '#2FA36B', MERAH = '#E5484D', KUNING = '#FFC531', BIRU = '#4DA3FF', ABU = '#8A8A94';
+const TANAH = 1350;
+
+const cv = kanvas(W, H, $('#dunia')), x = cv.getContext('2d');
+
+/* --- tekstur kertas (sekali) --- */
+const TEX = kanvas(W, H), tx = TEX.getContext('2d');
+(() => { const r = rng(3); const lg = tx.createLinearGradient(0, 0, 0, H); lg.addColorStop(0, '#5EC4FF'); lg.addColorStop(.55, '#A9E4FF'); lg.addColorStop(1, '#E4F7FF'); tx.fillStyle = lg; tx.fillRect(0, 0, W, H);
+  for (let i = 0; i < 14000; i++) { const a = r() * .05; tx.fillStyle = r() > .5 ? `rgba(120,100,70,${a})` : `rgba(255,255,255,${a * 1.5})`; tx.fillRect(r() * W, r() * H, 1 + r() * 2, 1 + r() * 2); }
+  for (let i = 0; i < 260; i++) { tx.strokeStyle = `rgba(140,120,90,${.03 + r() * .04})`; tx.lineWidth = 1; tx.beginPath(); const sx = r() * W, sy = r() * H; tx.moveTo(sx, sy); tx.lineTo(sx + (r() - .5) * 60, sy + (r() - .5) * 20); tx.stroke(); }
+  const v = tx.createRadialGradient(W / 2, H / 2, H * .3, W / 2, H / 2, H * .75); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(20,60,120,.14)'); tx.fillStyle = v; tx.fillRect(0, 0, W, H); })();
+
+/* --- line boil: getaran garis ala animasi tangan --- */
+let BOIL = 0, TT = 0;
+const jt = (id, amp = 1.6) => (hash(id * 17.3 + BOIL * 91.7) - .5) * 2 * amp;
+function garis(pts, lebar = 10, warna = TINTA, id = 0, tutup = false) {
+  x.strokeStyle = warna; x.lineWidth = lebar; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath();
+  pts.forEach((p, i) => { const X = p[0] + jt(id + i), Y = p[1] + jt(id + i + 50); i ? x.lineTo(X, Y) : x.moveTo(X, Y); });
+  if (tutup) x.closePath(); x.stroke();
+}
+function kotak(x0, y0, w, h, isi, lebar = 9, id = 0) {
+  if (isi) { x.fillStyle = isi; x.fillRect(x0, y0, w, h); }
+  garis([[x0, y0], [x0 + w, y0], [x0 + w, y0 + h], [x0, y0 + h]], lebar, TINTA, id, true);
+}
+function teks(s, X, Y, ukuran, warna = TINTA, font = 'Bangers', rot = 0, al = 'center') {
+  x.save(); x.translate(X, Y); x.rotate(rot); x.font = `${font === 'Bangers' ? 400 : 900} ${ukuran}px ${font === 'Bangers' ? "'Bangers'" : "'Nunito'"}`;
+  x.textAlign = al; x.textBaseline = 'middle'; x.fillStyle = warna; x.fillText(s, 0, 0); x.restore();
+}
+
+/* --- STICKMAN ---
+   o = {x, y(tanah), s, arah(1/-1), lk:[bahu,siku], ka:[..], kk:[pinggul,lutut], kn:[..], miring, wajah, kacamata, rompi, topi, angkat} */
+function orang(o) {
+  const s = o.s || 1, ar = o.arah || 1, id = (o.id || 1) * 100;
+  x.save(); x.translate(o.x, o.y + (o.angkat || 0)); x.scale(s * ar, s);
+  // bayangan
+  x.fillStyle = 'rgba(30,30,36,.12)'; x.beginPath(); x.ellipse(0, 4 - (o.angkat || 0) / s, 60, 10, 0, 0, 7); x.fill();
+  const P = 140, T = 150, Lg = 72, Ln = 66, rk = 44;
+  const mir = o.miring || 0;
+  const hip = [0, -P], leher = [Math.sin(mir) * T, -P - Math.cos(mir) * T + Math.sin(TT * 3.2 + (o.id || 1)) * 4];
+  const kaki = (a) => { const k1 = [hip[0] + Math.sin(a[0]) * Lg, hip[1] + Math.cos(a[0]) * Lg]; const k2 = [k1[0] + Math.sin(a[0] - a[1]) * Lg, k1[1] + Math.cos(a[0] - a[1]) * Lg]; return [hip, k1, k2]; };
+  const bahu = [leher[0] + Math.sin(mir) * -18, leher[1] + 18];
+  const tangan = (a) => { const t1 = [bahu[0] + Math.sin(a[0]) * Ln, bahu[1] + Math.cos(a[0]) * Ln]; const t2 = [t1[0] + Math.sin(a[0] + a[1]) * Ln, t1[1] + Math.cos(a[0] + a[1]) * Ln]; return [bahu, t1, t2]; };
+  const kb = kaki(o.kb || [-.18, 0]), kd = kaki(o.kd || [.18, 0]);
+  const tb = tangan(o.tb || [-.35, .2]), td = tangan(o.td || [.35, .2]);
+  const warnaBadan = TINTA, baju = o.baju || o.warna || '#7C8CFF', celana = o.celana || '#3B4A6B';
+  const ang = (pts, w, c, i) => { garis(pts, w + 9, TINTA, i); garis(pts, w, c, i); };
+  /* napas & kedip */
+  ang(kb, 15, celana, id + 1); ang(tb, 12, baju, id + 5);
+  ang([[hip[0], hip[1] + 4], [lerp(hip[0], leher[0], .55), lerp(hip[1], leher[1], .55)], [leher[0], leher[1] + 10]], 44, baju, id + 9);
+  if (o.rompi) { x.fillStyle = o.rompi; x.beginPath(); x.moveTo(hip[0] - 30, hip[1] + 6); x.lineTo(leher[0] - 26, leher[1] + 22); x.lineTo(leher[0] + 26, leher[1] + 22); x.lineTo(hip[0] + 30, hip[1] + 6); x.closePath(); x.fill();
+    garis([[hip[0] - 30, hip[1] + 6], [leher[0] - 26, leher[1] + 22], [leher[0] + 26, leher[1] + 22], [hip[0] + 30, hip[1] + 6]], 6, TINTA, id + 30, true);
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(lerp(hip[0], leher[0], .62) + 8, lerp(hip[1], leher[1], .62), 7, 0, 7); x.fill(); }
+  ang(kd, 15, celana, id + 13); ang(td, 12, baju, id + 17);
+  [kb, kd].forEach(k => { x.fillStyle = TINTA; x.beginPath(); x.ellipse(k[2][0] + 10, k[2][1] - 2, 18, 9, 0, 0, 7); x.fill(); });
+  [tb, td].forEach(k => { x.fillStyle = o.kulit || '#FFD3A8'; x.beginPath(); x.arc(k[2][0], k[2][1], 10, 0, 7); x.fill(); x.lineWidth = 4; x.strokeStyle = TINTA; x.stroke(); });
+  if (o.pegang) { const p = td[2]; x.save(); x.translate(p[0], p[1]); o.pegang(); x.restore(); }
+  if (o.pegangB) { const p = tb[2]; x.save(); x.translate(p[0], p[1]); o.pegangB(); x.restore(); }
+  // kepala
+  const kp = [leher[0] + Math.sin(mir) * rk, leher[1] - rk - 4];
+  x.save(); x.translate(kp[0], kp[1]); x.rotate(mir * .5 + (o.tolehMiring || 0));
+  x.fillStyle = o.kulit || '#FFD3A8'; x.beginPath(); x.arc(jt(id + 40, 1), jt(id + 41, 1), rk, 0, 7); x.fill();
+  x.strokeStyle = warnaBadan; x.lineWidth = 8; x.stroke();
+  if (o.rambut) { x.fillStyle = o.rambut; x.beginPath(); x.arc(0, 0, rk + 4, Math.PI * .95, Math.PI * 2.02); x.quadraticCurveTo(10, -rk * .35, -rk * .7, -rk * .1); x.closePath(); x.fill(); x.lineWidth = 5; x.stroke(); }
+  x.fillStyle = 'rgba(255,120,120,.45)'; x.beginPath(); x.ellipse(26, 12, 9, 6, 0, 0, 7); x.fill();
+  const kedip = ((TT * .55 + id * .137) % 1) < .045 && o.wajah !== 'kaget';
+  wajah(kedip ? 'kedip_' + (o.wajah || 'datar') : (o.wajah || 'datar'), rk, o.kacamata, id);
+  if (o.kepalaExtra) o.kepalaExtra(rk);
+  if (o.topi) { x.fillStyle = o.topi; x.beginPath(); x.arc(0, -8, rk + 3, Math.PI * 1.05, Math.PI * 1.95); x.fill(); x.fillRect(4, -18, rk + 26, 10); }
+  x.restore();
+  x.restore();
+  return { kepala: [o.x + kp[0] * s * ar, o.y + (o.angkat || 0) + kp[1] * s], tangan: [o.x + td[2][0] * s * ar, o.y + (o.angkat || 0) + td[2][1] * s] };
+}
+function wajah(w, r, kaca, id) {
+  const ex = 12, ey = -6; x.fillStyle = TINTA; x.strokeStyle = TINTA; x.lineCap = 'round';
+  if (w === 'kaget') {
+    [ex - 9, ex + 19].forEach(e => { x.lineWidth = 4; x.fillStyle = '#fff'; x.beginPath(); x.arc(e, ey - 2, 10, 0, 7); x.fill(); x.stroke(); x.fillStyle = TINTA; x.beginPath(); x.arc(e + 2, ey - 2, 4, 0, 7); x.fill(); });
+    x.beginPath(); x.ellipse(ex + 6, 20, 8, 11, 0, 0, 7); x.fill();
+  } else {
+    const kd = w.startsWith('kedip_'); if (kd) w = w.slice(6);
+    const busur = w === 'girang' || w === 'santai';
+    x.lineWidth = 4; [ex - 8, ex + 16].forEach(e => { x.beginPath(); if (busur) { x.lineWidth = 5; x.arc(e, ey + 3, 7, Math.PI * 1.1, Math.PI * 1.9); x.stroke(); x.lineWidth = 4; } else if (kd) { x.moveTo(e - 6, ey); x.lineTo(e + 6, ey); x.stroke(); } else { x.arc(e, ey, 6, 0, 7); x.fill(); x.fillStyle = '#fff'; x.beginPath(); x.arc(e + 2, ey - 2, 2, 0, 7); x.fill(); x.fillStyle = TINTA; } });
+    x.lineWidth = 5; x.beginPath();
+    if (w === 'senyum' || w === 'santai') x.arc(ex + 4, 8, 14, .2, Math.PI - .2);
+    else if (w === 'sedih') { x.arc(ex + 4, 26, 12, Math.PI + .4, -.4); x.moveTo(ex - 16, ey - 16); x.lineTo(ex - 2, ey - 12); x.moveTo(ex + 22, ey - 12); x.lineTo(ex + 34, ey - 18); }
+    else if (w === 'girang') { x.fillStyle = '#7A1F2B'; x.beginPath(); x.arc(ex + 4, 8, 17, 0, Math.PI); x.closePath(); x.fill(); x.stroke(); x.beginPath(); }
+    else if (w === 'serius') { x.moveTo(ex - 2, 16); x.lineTo(ex + 14, 16); x.moveTo(ex - 18, ey - 16); x.lineTo(ex - 2, ey - 10); x.moveTo(ex + 10, ey - 10); x.lineTo(ex + 28, ey - 16); }
+    else if (w === 'panik') { x.moveTo(ex - 8, 18); for (let i = 1; i <= 6; i++) x.lineTo(ex - 8 + i * 4, 18 + (i % 2 ? -5 : 5)); }
+    else if (w === 'mikir') { x.moveTo(ex - 4, 16); x.lineTo(ex + 14, 12); }
+    else if (w === 'curiga') { x.moveTo(ex - 4, 16); x.lineTo(ex + 16, 16); x.moveTo(ex - 16, ey - 10); x.lineTo(ex + 0, ey - 8); x.moveTo(ex + 8, ey - 8); x.lineTo(ex + 26, ey - 10); }
+    else { x.moveTo(ex - 2, 15); x.lineTo(ex + 12, 15); }
+    x.stroke();
+  }
+  if (kaca) { x.lineWidth = 4; x.strokeStyle = TINTA; x.beginPath(); x.arc(ex - 8, ey, 11, 0, 7); x.moveTo(ex + 27, ey); x.arc(ex + 16, ey, 11, 0, 7); x.moveTo(ex + 3, ey); x.lineTo(ex + 5, ey); x.moveTo(ex - 19, ey); x.lineTo(-r + 2, ey - 6); x.stroke(); }
+}
+/* pose jalan */
+const jalan = (ph, amp = .5) => ({ kb: [Math.sin(ph) * amp, Math.max(0, Math.sin(ph + 1.6)) * .7], kd: [-Math.sin(ph) * amp, Math.max(0, -Math.sin(ph + 1.6)) * .7],
+  tb: [-Math.sin(ph) * amp * .9, .3], td: [Math.sin(ph) * amp * .9, .3] });
+
+/* simbol pop di atas kepala */
+function pop(sym, X, Y, k, warna = MERAH, uk = 110) {
+  if (k <= 0) return; const sc = E.back(clamp(k)); x.save(); x.translate(X, Y - 30 * sc); x.scale(sc, sc); x.rotate(Math.sin(k * 9) * .08);
+  x.font = `400 ${uk}px 'Bangers'`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.lineWidth = 12; x.strokeStyle = TINTA; x.strokeText(sym, 0, 0); x.fillStyle = warna; x.fillText(sym, 0, 0); x.restore();
+}
+function keringat(X, Y, k) { if (k <= 0) return; const dy = (k * 60) % 60; x.save(); x.globalAlpha = clamp(1.5 - dy / 40); x.fillStyle = BIRU; x.strokeStyle = TINTA; x.lineWidth = 4;
+  x.beginPath(); x.moveTo(X, Y + dy - 22); x.quadraticCurveTo(X + 15, Y + dy, X, Y + dy + 10); x.quadraticCurveTo(X - 15, Y + dy, X, Y + dy - 22); x.fill(); x.stroke(); x.restore(); }
+function garisKejut(X, Y, k, r0 = 90, n = 12) { if (k <= 0 || k >= 1) return; x.save(); x.strokeStyle = TINTA; x.lineWidth = 7; x.lineCap = 'round';
+  for (let i = 0; i < n; i++) { const a = i / n * 6.283 + .2, r1 = r0 + 40 * E.out(k), r2 = r1 + 50 * (1 - k); x.beginPath(); x.moveTo(X + Math.cos(a) * r1, Y + Math.sin(a) * r1); x.lineTo(X + Math.cos(a) * r2, Y + Math.sin(a) * r2); x.stroke(); } x.restore(); }
+
+/* ===== FOTO PROFIL: owner tersenyum, close-up dada ke atas ===== */
+function foto(t) {
+  BOIL = 0; TT = 1.3;
+  x.setTransform(1, 0, 0, 1, 0, 0);
+  /* latar: gradasi langit + sinar matahari + lingkaran hijau apotek */
+  const g = x.createRadialGradient(W / 2, H * .42, 40, W / 2, H * .5, W * .75); g.addColorStop(0, '#FFF1B8'); g.addColorStop(.45, '#8FDCFF'); g.addColorStop(1, '#4DB3F0'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.save(); x.translate(W / 2, H * .42); x.fillStyle = 'rgba(255,255,255,.22)'; for (let i = 0; i < 18; i++) { x.rotate(Math.PI / 9); x.beginPath(); x.moveTo(0, 0); x.lineTo(-70, 900); x.lineTo(70, 900); x.fill(); } x.restore();
+  /* kota pastel kecil di bawah */
+  const C = ['#B9A6F0', '#FFB3C7', '#9FE0C9', '#FFD58A', '#9CC8FF', '#FFC0A0']; const r = rng(4);
+  for (let X = -40; X < W; ) { const w = 110 + r() * 90, h = 140 + r() * 220; x.fillStyle = C[Math.floor(r() * 6)]; x.fillRect(X, H - h, w, h); x.lineWidth = 5; x.strokeStyle = 'rgba(30,30,36,.5)'; x.strokeRect(X, H - h, w, h);
+    x.fillStyle = 'rgba(255,255,255,.7)'; for (let yy = H - h + 26; yy < H - 20; yy += 54) for (let xx = X + 18; xx < X + w - 30; xx += 40) x.fillRect(xx, yy, 20, 28); X += w + 8; }
+  /* salib apotek di belakang kepala */
+  x.save(); x.translate(W * .2, H * .22); x.rotate(-.12); x.fillStyle = HIJAU; x.strokeStyle = TINTA; x.lineWidth = 9; x.beginPath(); x.roundRect(-34, -100, 68, 200, 12); x.roundRect(-100, -34, 200, 68, 12); x.fill(); x.stroke();
+  x.fillStyle = HIJAU; x.fillRect(-30, -30, 60, 60); x.restore();
+  /* owner: diperbesar, dada ke atas */
+  x.save(); x.translate(W / 2 + 10, H + 560); x.scale(3.4, 3.4);
+  orang({ x: 0, y: 0, s: 1, arah: 1, id: 1, kacamata: true, rompi: HIJAU, baju: '#FFFFFF', celana: '#34416A', rambut: '#2B2118', wajah: 'senyum', miring: -.03,
+    tb: [-.3, .2], td: [1.95, 1.05],
+    pegang: () => { x.save(); x.rotate(-.3); x.strokeStyle = TINTA; x.lineWidth = 5; x.lineCap = 'round'; [-1, 0, 1].forEach(k => { x.beginPath(); x.moveTo(k * 18, -26); x.lineTo(k * 26, -44); x.stroke(); }); x.restore(); } });
+  x.restore();
+  /* sparkle */
+  [[W * .86, H * .16, 1], [W * .87, H * .5, .7], [W * .13, H * .55, .6]].forEach(([sx, sy, k]) => { x.save(); x.translate(sx, sy); x.scale(k, k); x.fillStyle = '#fff'; x.strokeStyle = TINTA; x.lineWidth = 5;
+    x.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr = i % 2 ? 14 : 44; x.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } x.closePath(); x.fill(); x.stroke(); x.restore(); });
+  x.drawImage(VIN2, 0, 0);
+}
+const VIN2 = kanvas(W, H); (() => { const v = VIN2.getContext('2d'), g = v.createRadialGradient(W / 2, H / 2, W * .35, W / 2, H / 2, W * .75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(20,30,80,.25)'); v.fillStyle = g; v.fillRect(0, 0, W, H); })();
+const SCENE = { dur: 2, muat: () => Promise.all([document.fonts.load("400 80px 'Bangers'")]), sub: { gaya: 'mati' }, frame(t) { foto(t); } };
