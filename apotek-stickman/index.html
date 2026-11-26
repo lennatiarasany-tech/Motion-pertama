@@ -543,9 +543,9 @@ function rumah(X, i) { const [d, a] = RUMAH[i % 4]; kotak(X, TANAH - 380, 420, 3
   for (let p = 0; p < 6; p++) garis([[X - 30 + p * 80, TANAH], [X - 30 + p * 80, TANAH - 90]], 7, TINTA, 1708 + p + i * 10); garis([[X - 40, TANAH - 60], [X + 450, TANAH - 60]], 7, TINTA, 1720 + i * 10); }
 function a3(u, d) {
   jalananSiang(u, 0);
-  const stop = [[0, 2.6, 330], [2.6, 5.2, 1230], [5.2, d, 2130]];
+  const stop = [[0, 3.4, 330], [3.4, 6.2, 1230], [6.2, d, 2130]];
   let tx = 330; stop.forEach(([a, b, X], i) => { if (u >= a) tx = i === 0 ? X : lerp(stop[i - 1][2], X, E.io(seg(u, a, a + 1.1))); });
-  const zk = 6.0, zm = E.io(seg(u, zk, zk + .6));
+  const zk = 8.2, zm = E.io(seg(u, zk, zk + .6));
   pasang(tx + 120, 1040 - 80 * zm, lerp(1.15, 1.9, zm) * hentak(u, .3, .05), 0);
   dekorJalan(u + 40, tx * .6, 380);
   [0, 900, 1800, 2700].forEach((X, i) => rumah(X - 40, i));
@@ -615,7 +615,7 @@ function kasir() {
 }
 function a5(u, d) {
   langit('#DFF6EA', '#DFF6EA');
-  const kp = 1.7, k = E.io(seg(u, kp - .2, kp + .4));
+  const kp = 2.5, k = E.io(seg(u, kp - .2, kp + .4));
   pasang(lerp(670, 640, k), lerp(760, 900, k), lerp(1.35, 1.12, k) * hentak(u, kp + .4, .1), guncang(u, kp + .4, 14));
   interiorSehati(u);
   /* pelanggan antre */
@@ -644,16 +644,16 @@ function a5(u, d) {
 
 /* ================= ADEGAN 6 — apotek baru dibangun ================= */
 function a6(u, d) {
-  const siklus = seg(u, 0, 3.4), malam = Math.sin(siklus * Math.PI * 2 - Math.PI / 2) * .5 + .5;
-  const langA = u < 3.4 ? `hsl(${205 - 150 * malam * 0},${60}%,${62 - 45 * malam}%)` : '#5EC4FF';
-  langit(langA, u < 3.4 ? `hsl(200,70%,${85 - 55 * malam}%)` : '#A9E4FF', '#E4F7FF');
-  const buka = 3.6, kz = E.io(seg(u, buka + .1, buka + .9)), kb = E.io(seg(u, buka + 2.4, buka + 3.2));
+  const siklus = seg(u, 0, 5.2), malam = Math.sin(siklus * Math.PI * 2 - Math.PI / 2) * .5 + .5;
+  const langA = u < 5.2 ? `hsl(${205 - 150 * malam * 0},${60}%,${62 - 45 * malam}%)` : '#5EC4FF';
+  langit(langA, u < 5.2 ? `hsl(200,70%,${85 - 55 * malam}%)` : '#A9E4FF', '#E4F7FF');
+  const buka = 5.4, kz = E.io(seg(u, buka + .1, buka + .9)), kb = E.io(seg(u, buka + 2.4, buka + 3.2));
   pasang(lerp(lerp(860, 1230, kz), 900, kb), lerp(lerp(1000, 820, kz), 990, kb), lerp(lerp(.8, 1.15, kz), .82, kb) * hentak(u, buka, .1), guncang(u, buka, 14));
   dekorJalan(u, 0);
   pohon(-120, u, 1.1, 1); pohon(1760, u, 1.15, 3);
   apotekLama(u);
   /* konstruksi: gedung tumbuh dari bawah */
-  const tumbuh = E.io(seg(u, .2, 3.3));
+  const tumbuh = E.io(seg(u, .2, 5.1));
   if (u < buka) {
     x.save(); x.beginPath(); x.rect(800, TANAH - 820 * tumbuh, 900, 820 * tumbuh); x.clip();
     kotak(820, TANAH - 820, 820, 820, '#D9D2C5', 10, 2200);
@@ -672,10 +672,10 @@ function a6(u, d) {
       ...(jl ? jalan(u * 14 + i, .7) : {}), angkat: jl ? -Math.abs(Math.sin(u * 14 + i)) * 16 : -Math.abs(Math.sin(u * 5 + p.ph)) * 8 }); });
   if (u > buka) KONFETI.forEach(k => { const Y = (k.y0 + (u - buka) * k.v) % 1000 + TANAH - 1100; x.save(); x.translate(k.x + Math.sin(u * 2 + k.r) * 20, Y); x.rotate(u * 4 + k.r); x.fillStyle = k.c; x.fillRect(-7, -4, 14, 8); x.restore(); });
   const o = ow({ x: 640, y: TANAH + 30, s: 1.05, arah: 1, wajah: u < buka ? 'mikir' : (u < buka + 1.5 ? 'kaget' : 'datar'), angkat: -20 * Math.sin(Math.PI * seg(u, buka, buka + .3)), tb: [-.3, .2], td: u < buka ? [2.6, 1.9] : [.3, .2] });
-  pop('?', o.kepala[0] + 20, o.kepala[1] - 100, seg(u, 1, 1.3) * (1 - seg(u, buka - .2, buka)), BIRU, 90);
+  pop('?', o.kepala[0] + 20, o.kepala[1] - 100, seg(u, 2.2, 2.5) * (1 - seg(u, buka - .2, buka)), BIRU, 90);
   pop('!!', o.kepala[0] + 20, o.kepala[1] - 100, seg(u, buka, buka + .3) * (1 - seg(u, buka + 1.8, buka + 2)));
   layar();
-  if (u < 3.4) { x.fillStyle = `rgba(10,20,60,${.35 * malam})`; x.fillRect(0, 0, W, H); judulKanvas('BEBERAPA TAHUN KEMUDIAN', W / 2, AMAN.atas + 140, 92, seg(u, .1, .5) * (1 - seg(u, 2.8, 3.1)), '#fff', -.04); }
+  if (u < 5.2) { x.fillStyle = `rgba(10,20,60,${.35 * malam})`; x.fillRect(0, 0, W, H); judulKanvas('BEBERAPA TAHUN KEMUDIAN', W / 2, AMAN.atas + 140, 92, seg(u, .1, .5) * (1 - seg(u, 2.6, 2.9)), '#fff', -.04); }
   judulKanvas('GRAND OPENING!', W / 2, AMAN.atas + 140, 130, seg(u, buka + .1, buka + .4) * (1 - seg(u, buka + 2.4, buka + 2.7)), MERAH, -.06);
 }
 
@@ -726,8 +726,8 @@ function interiorMega() { ruang('#FFE8E4', '#F3D9D2'); kotak(160, 120, 1000, 130
   rak(-500, 380, 600, 970, 4, true); rak(260, 380, 600, 970, 5, true); rak(1020, 380, 600, 970, 6, true); }
 function a9(u, d) {
   langit('#FFE8E4', '#FFE8E4');
-  const zt = 2.4, kt = E.io(seg(u, zt - .3, zt + .3)), kg = E.io(seg(u, 4.4, 4.9));
-  UROT += -.05 * (1 - kt) + .03; pasang(lerp(lerp(200, 640, seg(u, 0, zt)), 330, kt), lerp(1000, 880, kt), lerp(1.05, 1.6, kt) * hentak(u, zt + .3, .08) * hentak(u, 5.0, .06), guncang(u, 5.0, 12));
+  const zt = 3.6, kt = E.io(seg(u, zt - .3, zt + .3)), kg = E.io(seg(u, 5.5, 6.0));
+  UROT += -.05 * (1 - kt) + .03; pasang(lerp(lerp(200, 640, seg(u, 0, zt)), 330, kt), lerp(1000, 880, kt), lerp(1.05, 1.6, kt) * hentak(u, zt + .3, .08) * hentak(u, 6.1, .06), guncang(u, 6.1, 12));
   interiorMega();
   const X = lerp(-60, 520, E.io(seg(u, 0, zt - .2))), jl = u < zt - .2;
   const o = ow({ x: X, y: TANAH + 30, s: 1.05, arah: 1, rompi: null, baju: '#8B6B4A', wajah: u < zt + .3 ? 'curiga' : 'kaget', ...(jl ? jalan(u * 7, .35) : {}),
@@ -750,7 +750,7 @@ function a9(u, d) {
     teks(it[0], -400, -26, 44, TINTA, 'Nunito', 0, 'left'); teks('Apotekku Rp' + it[1], -400, 30, 38, '#555', 'Nunito', 0, 'left');
     teks('Rp' + it[2], 290, 0, 76, MERAH, 'Bangers', -.05); garis([[60, 30], [200, 30]], 6, TINTA, 2500 + i); x.restore(); });
   /* meter 90% */
-  if (kg > 0) { const p = E.out(seg(u, 4.6, 5.6)) * .9; x.save(); x.globalAlpha = kg; x.translate(W / 2, H * .36);
+  if (kg > 0) { const p = E.out(seg(u, 5.7, 6.7)) * .9; x.save(); x.globalAlpha = kg; x.translate(W / 2, H * .36);
     x.lineWidth = 60; x.strokeStyle = '#fff'; x.beginPath(); x.arc(0, 0, 300, Math.PI, 0); x.stroke(); x.lineWidth = 46; x.strokeStyle = MERAH; x.beginPath(); x.arc(0, 0, 300, Math.PI, Math.PI + Math.PI * p); x.stroke();
     x.lineWidth = 8; x.strokeStyle = TINTA; x.beginPath(); x.arc(0, 0, 330, Math.PI, 0); x.arc(0, 0, 270, 0, Math.PI, true); x.closePath(); x.stroke();
     judulKanvas(Math.round(p * 100) + '%', 0, -80, 190, 1, KUNING, 0); teks('PRODUK UNGGULANKU', 0, 60, 58, '#fff'); teks('LEBIH MURAH DI SINI!', 0, 120, 58, KUNING); x.restore(); }
@@ -759,16 +759,16 @@ function a9(u, d) {
 /* ================= ADEGAN 10 — bingung, janggal ================= */
 function a10(u, d) {
   langit('#2A2350', '#2A2350');
-  const kz = E.io(seg(u, 3.6, 4.4));
-  pasang(lerp(560, 690, kz), lerp(860, 760, kz), lerp(1.25, 2.2, kz) * hentak(u, 4.4, .06));
+  const kz = E.io(seg(u, 5.0, 5.8));
+  pasang(lerp(560, 690, kz), lerp(860, 760, kz), lerp(1.25, 2.2, kz) * hentak(u, 5.8, .06));
   ruang('#5B4F8A', '#3B3260', 'rgba(255,255,255,.08)');
   jendelaMalam(860, 330, 420, 420, u);
   /* lampu meja + cahaya */
   const lg = x.createRadialGradient(420, TANAH - 260, 10, 420, TANAH - 260, 700); lg.addColorStop(0, 'rgba(255,220,130,.55)'); lg.addColorStop(1, 'rgba(255,220,130,0)'); x.fillStyle = lg; x.fillRect(-300, TANAH - 960, 1400, 1300);
   garis([[230, TANAH - 205], [230, TANAH - 420], [290, TANAH - 470]], 9, TINTA, 2600); x.fillStyle = KUNING; x.beginPath(); x.moveTo(250, TANAH - 500); x.lineTo(350, TANAH - 440); x.lineTo(300, TANAH - 400); x.closePath(); x.fill(); x.lineWidth = 6; x.strokeStyle = TINTA; x.stroke();
-  const garuk = u < 3.4;
+  const garuk = u < 2.6 || u > 4.8;
   const yk = dudukKursi(700, 1.1, -1, '#8B6B4A');
-  const o = ow({ x: 700, y: yk, s: 1.1, arah: -1, ...DUDUK, wajah: u < 1.8 ? 'mikir' : 'curiga', miring: .08,
+  const o = ow({ x: 700, y: yk, s: 1.1, arah: -1, ...DUDUK, wajah: u < 2.8 ? 'mikir' : 'curiga', miring: .08,
     td: garuk ? [3.0 + Math.sin(u * 16) * .2, .9] : [1.2, .5], tb: [1.15, .5] });
   meja(430, TANAH - 210, 420);
   /* kalkulator & struk di atas meja */
@@ -777,18 +777,18 @@ function a10(u, d) {
   /* tanda tanya mengorbit */
   for (let i = 0; i < 3; i++) { const a = u * 2 + i * 2.1; pop('?', o.kepala[0] + Math.cos(a) * 130, o.kepala[1] - 40 + Math.sin(a) * 50, seg(u, .2 + i * .2, .5 + i * .2) * (1 - kz), [KUNING, BIRU, '#FF7AA8'][i], 80); }
   /* gelembung pikiran: apotek sedekah */
-  const kb = seg(u, 1.6, 2.0) * (1 - seg(u, 3.4, 3.6));
+  const kb = seg(u, 2.7, 3.1) * (1 - seg(u, 4.8, 5.0));
   if (kb > 0) { x.save(); x.translate(o.kepala[0] - 80, o.kepala[1] - 420); x.scale(E.back(kb), E.back(kb)); gelembung(0, 0, 520, 340, 60, 330, '#fff', true);
     kotak(-150, -120, 300, 200, '#FFF4F2', 7, 2620); x.fillStyle = MERAH; x.fillRect(-140, -110, 280, 50); teks('MEGA', 0, -84, 44, '#fff');
     x.strokeStyle = KUNING; x.lineWidth = 10; x.beginPath(); x.ellipse(0, -150, 110, 22, 0, 0, 7); x.stroke();
     teks('SEDEKAH??', 0, 120, 70, HIJAU); x.restore(); }
   layar();
-  judulKanvas('KOK JANGGAL...', W / 2, AMAN.atas + 160, 120, seg(u, 4.2, 4.6), '#FF7AA8', -.05);
+  judulKanvas('KOK JANGGAL...', W / 2, AMAN.atas + 160, 120, seg(u, 5.6, 6.0), '#FF7AA8', -.05);
 }
 
 /* ================= ADEGAN 11 — jeng jeng jeng + viral ================= */
 function a11(u, d) {
-  const j = [.15, .75, 1.35], fase2 = 2.2;
+  const j = [.65, 1.3, 1.85], fase2 = 2.5;
   if (u < fase2) {
     langit('#0E0E16', '#0E0E16');
     const n = j.filter(a => u >= a).length, kk = n ? seg(u, j[n - 1], j[n - 1] + .25) : 0;
@@ -924,7 +924,7 @@ function a13(u, d) {
 /* ================= ADEGAN 14 — pelajaran ================= */
 function a14(u, d) {
   langit('#FFF4DD', '#FFF4DD');
-  const i1 = 1.3, i2 = 4.0, f = E.io(seg(u, i2 - .3, i2 + .3));
+  const i1 = 1.6, i2 = 4.9, f = E.io(seg(u, i2 - .3, i2 + .3));
   pasang(lerp(560, 600, f), lerp(780, 900, f), lerp(1.0, 1.05, f) * hentak(u, i1 + .9, .07) * hentak(u, i2 + .9, .07), guncang(u, i1 + .9, 10) + guncang(u, i2 + .9, 10));
   ruang('#FFE7C2', '#D9B88F');
   kotak(80, 200, 1000, 900, '#2E5E4E', 12, 2800); x.fillStyle = '#9B6A43'; x.fillRect(70, 1100, 1020, 26);
@@ -987,7 +987,7 @@ function layarChat(v) {
 }
 function a15(u, d) {
   langit('#DFF6EA', '#DFF6EA');
-  const t1 = 1.2, t2 = 3.9, t3 = 9.0;
+  const t1 = 1.0, t2 = 4.9, t3 = 9.0;
   const zm = E.io(seg(u, t1 - .4, t1 + .2)) * (1 - E.io(seg(u, t3, t3 + .5)));
   pasang(lerp(lerp(620, 560, seg(u, 0, t1)), 600, zm), lerp(900, 760, zm), lerp(1.15, 2.2, zm) * hentak(u, t3 + .6, .08));
   interiorSehati(u);
@@ -1022,23 +1022,24 @@ function ikonKomen(X, Y, s = 1) { x.save(); x.translate(X, Y); x.scale(s, s); x.
 function a16(u, d) {
   layar(); const g = x.createRadialGradient(W / 2, H * .45, 50, W / 2, H * .45, H * .8); g.addColorStop(0, '#FFE36B'); g.addColorStop(1, '#FF7AA8'); x.fillStyle = g; x.fillRect(0, 0, W, H);
   x.save(); x.translate(W / 2, H * .45); x.rotate(u * .25); x.fillStyle = 'rgba(255,255,255,.25)'; for (let i = 0; i < 16; i++) { x.rotate(Math.PI / 8); x.beginPath(); x.moveTo(0, 0); x.lineTo(-80, 1500); x.lineTo(80, 1500); x.fill(); } x.restore();
-  pasang(540, 960, lerp(1.08, 1, E.out(seg(u, 0, 1))) * hentak(u, 1.2, .05) * hentak(u, 4.2, .06), guncang(u, 4.2, 8));
+  pasang(540, 960, lerp(1.08, 1, E.out(seg(u, 0, 1))) * hentak(u, 1.0, .05) * hentak(u, 2.7, .06), guncang(u, 2.7, 8));
   /* owner menunjuk ke tombol komentar */
-  const o = ow({ x: 330, y: 1560, s: 1.3, arah: 1, wajah: u < 4 ? 'senyum' : 'girang', td: u < 3.9 ? [2.2, .2 + Math.sin(u * 4) * .1] : [2.4, -.6 + Math.sin(u * 6) * .15], tb: u < 3.9 ? [-1.4, -1.2] : [-.4, .3], angkat: -Math.abs(Math.sin(u * 3)) * 8 });
+  const o = ow({ x: 330, y: 1560, s: 1.3, arah: 1, wajah: u < 2.6 ? 'mikir' : 'girang', td: u < 2.6 ? [2.2, .2 + Math.sin(u * 4) * .1] : [2.4, -.6 + Math.sin(u * 6) * .15], tb: u < 2.6 ? [3.0, .9] : [-.4, .3], angkat: -Math.abs(Math.sin(u * 3)) * 8 });
   layar();
-  judulKanvas('KAMU TIM MANA?', W / 2, AMAN.atas + 120, 130, seg(u, .2, .55), '#fff', -.05);
+  judulKanvas('KAMU UDAH CEK?', W / 2, AMAN.atas + 120, 130, seg(u, .1, .45), '#fff', -.05);
+  teks('sistem yang kamu pakai sekarang', W / 2, AMAN.atas + 240, 52, TINTA, 'Nunito');
   /* dua pilihan */
-  const kA = seg(u, .9, 1.25), kB = seg(u, 1.4, 1.75), go = Math.sin(u * 3) * .03;
-  [[kA, W * .28, 'HARGA MURAH', KUNING, () => { koin(0, -40, 46, u * 3); koin(-40, -10, 40, u * 3 + 1); }], [kB, W * .7, 'DATA AMAN', BIRU, () => ikonGembok(0, -20, 1)]].forEach(([k, X, s2, c, ik], i) => { if (k <= 0) return;
+  const kA = seg(u, .7, 1.05), kB = seg(u, 1.0, 1.35), go = Math.sin(u * 3) * .03;
+  [[kA, W * .28, 'SUDAH', HIJAU, () => { x.fillStyle = HIJAU; x.strokeStyle = TINTA; x.lineWidth = 7; x.beginPath(); x.roundRect(-60, -90, 120, 120, 24); x.fill(); x.stroke(); x.strokeStyle = '#fff'; x.lineWidth = 18; x.lineCap = 'round'; x.beginPath(); x.moveTo(-30, -30); x.lineTo(-6, -6); x.lineTo(34, -56); x.stroke(); }], [kB, W * .7, 'BELUM', MERAH, () => { x.fillStyle = MERAH; x.strokeStyle = TINTA; x.lineWidth = 7; x.beginPath(); x.roundRect(-60, -90, 120, 120, 24); x.fill(); x.stroke(); x.strokeStyle = '#fff'; x.lineWidth = 18; x.lineCap = 'round'; x.beginPath(); x.moveTo(-28, -58); x.lineTo(28, -2); x.moveTo(28, -58); x.lineTo(-28, -2); x.stroke(); }]].forEach(([k, X, s2, c, ik], i) => { if (k <= 0) return;
     x.save(); x.translate(X, 600); x.rotate(i ? go : -go); x.scale(E.back(k), E.back(k)); x.fillStyle = '#fff'; x.strokeStyle = TINTA; x.lineWidth = 9; x.beginPath(); x.roundRect(-190, -150, 380, 300, 34); x.fill(); x.stroke();
-    ik(); teks(s2, 0, 100, 58, i ? BIRU : '#E09A00'); x.restore(); });
-  judulKanvas('VS', W * .49, 600, 110, seg(u, 1.6, 1.9), MERAH, 0);
+    ik(); teks(s2, 0, 100, 70, i ? MERAH : HIJAU); x.restore(); });
+  judulKanvas('ATAU', W * .49, 600, 80, seg(u, 1.2, 1.5), KUNING, 0);
   /* ikon komentar memantul + panah */
-  const kc = seg(u, 3.6, 4.0); if (kc > 0) { const bb = Math.abs(Math.sin(u * 5)) * 18; ikonKomen(W - 170, 1060 - bb, E.back(kc) * 1.1);
+  const kc = seg(u, 2.6, 3.0); if (kc > 0) { const bb = Math.abs(Math.sin(u * 5)) * 18; ikonKomen(W - 170, 1060 - bb, E.back(kc) * 1.1);
     judulKanvas('KOMEN', W - 170, 1210, 80, kc, KUNING, -.05);
     x.save(); x.strokeStyle = TINTA; x.lineWidth = 14; x.lineCap = 'round'; x.setLineDash([4, 26]); x.lineDashOffset = -u * 80; x.beginPath(); x.moveTo(560, 1000); x.quadraticCurveTo(720, 900, W - 260, 1040); x.stroke(); x.restore(); }
   /* kotak komentar dengan ketikan */
-  const kk = seg(u, 4.3, 4.6); if (kk > 0) { const ketik = 'Aku pilih... '; const n = Math.floor(seg(u, 4.6, 6.0) * ketik.length);
+  const kk = seg(u, 3.0, 3.3); if (kk > 0) { const ketik = 'Aku udah cek... '; const n = Math.floor(seg(u, 3.4, 5.0) * ketik.length);
     x.save(); x.translate(W / 2 + 40, 1330); x.scale(E.back(kk), E.back(kk)); x.fillStyle = '#fff'; x.strokeStyle = TINTA; x.lineWidth = 7; x.beginPath(); x.roundRect(-330, -60, 660, 120, 60); x.fill(); x.stroke();
     x.font = "900 44px 'Nunito'"; x.textAlign = 'left'; x.textBaseline = 'middle'; x.fillStyle = n ? TINTA : '#999'; x.fillText(n ? ketik.slice(0, n) + (Math.floor(u * 3) % 2 ? '|' : '') : 'Tulis pendapatmu...', -290, 2);
     x.fillStyle = MERAH; x.beginPath(); x.arc(270, 0, 40, 0, 7); x.fill(); x.fillStyle = '#fff'; x.beginPath(); x.moveTo(256, -18); x.lineTo(290, 0); x.lineTo(256, 18); x.fill(); x.restore(); }
@@ -1046,25 +1047,27 @@ function a16(u, d) {
 
 /* ================= DAFTAR ADEGAN & NASKAH (perkiraan waktu, nanti mengikuti VO) ================= */
 const ADEGAN = [
-  { f: (u) => a1(u), d: WAKTU.dur, teks: 'Apotekku makin sepi. Gara-gara apotek baru di sebelah yang diskonnya gila-gilaan. Tapi ternyata… dataku sendiri yang bocor!' },
-  { f: a2, d: 5.8, teks: 'Mundur beberapa tahun lalu. Ini aku, owner apotek baru yang semangatnya lagi full.' },
-  { f: a3, d: 8.2, teks: 'Tiap hari aku riset. Obat apa yang paling dicari warga sekitar, jam berapa mereka belanja, sampai pola belanjanya tiap bulan.' },
-  { f: a4, d: 3.8, teks: 'Ikut pelatihan sana-sini, semua strategi kucatat.' },
-  { f: a5, d: 3.8, teks: 'Hasilnya? Setahun kemudian, apotekku profit!' },
-  { f: a6, d: 7.4, teks: 'Beberapa tahun kemudian, tiba-tiba ada apotek baru dibangun persis di sebelah. Opening-nya langsung rame, diskon gede-gedean!' },
-  { f: a7, d: 3.8, teks: 'Aku sih santai. Wajar lah, namanya juga promosi.' },
-  { f: a8, d: 3.4, teks: 'Tapi makin hari, pelangganku makin berkurang.' },
-  { f: a9, d: 7.2, teks: 'Penasaran, aku survei ke sana. Dan ternyata… sembilan puluh persen produk unggulanku dijual lebih murah di sana!' },
-  { f: a10, d: 6.2, teks: 'Padahal hargaku sudah termasuk murah. Apa apotek sebelah ini lagi sedekah? Kok janggal ya…' },
-  { f: a11, d: 7.8, teks: 'Jeng jeng jeng! Fakta mulai terbuka. Media sosial ramai: apotek itu ternyata jaringan dari penyedia sistem distribusi!', suby: .86 },
-  { f: a12, d: 7.0, teks: 'Iya, penyedia aplikasi tempat aku belanja selama ini, karena harganya lebih murah dan promonya menggiurkan.', suby: .8 },
-  { f: a13, d: 7.2, teks: 'Selama ini data apotekku bocor. Rekap produk yang sering kupesan, lengkap dengan kebutuhan bulanannya, semua ketahuan!' },
-  { f: a14, d: 7.2, teks: 'Kesalahanku dua. Satu, nggak cek model bisnis penyedianya dulu. Dua, nggak baca kebijakan privasinya dengan teliti.', suby: .8 },
-  { f: a15, d: 11.0, teks: 'Sekarang, sebelum pilih aplikasi apotek, aku cek dulu model bisnisnya, dan tanya langsung ke CS soal kebijakan privasinya. Karena data apotek lebih berharga dari sekadar diskon.', suby: .9 },
-  { f: a16, d: 7.6, teks: 'Kalau kamu, pilih aplikasi apotek karena harganya murah, atau karena datanya aman? Tulis di kolom komentar, yuk kita diskusi!', suby: .86 }
+  { f: (u) => a1(u), d: WAKTU.dur, teks: "Apotekku makin sepi. Gara-gara apotek baru di sebelah yang diskonnya gila-gilaan. dan ternyata ini penyebabnya…" },
+  { f: a2, d: 5.8, teks: "Mundur beberapa tahun lalu. Ini aku, owner apotek baru yang semangatnya lagi full." },
+  { f: a3, d: 8.2, teks: "Tiap hari aku riset. Obat apa yang paling dicari warga sekitar, jam berapa mereka belanja, sampai pola belanjanya setiap bulan." },
+  { f: a4, d: 3.8, teks: "Aku juga ikut pelatihan sana-sini, semua strategi kucatat." },
+  { f: a5, d: 3.8, teks: "Hasilnya? Setahun kemudian, apotekku profit!" },
+  { f: a6, d: 7.4, teks: "Beberapa tahun kemudian, tiba-tiba ada apotek baru dibangun persis di sebelah. Opening-nya langsung rame, diskon gede-gedean!" },
+  { f: a7, d: 3.8, teks: "Aku sih santai. Wajar lah, namanya juga promosi." },
+  { f: a8, d: 3.4, teks: "Tapi makin hari, pelangganku makin berkurang." },
+  { f: a9, d: 7.2, teks: "Aku penasaran, aku survei ke sana. Dan ternyata… sembilan puluh persen produk unggulanku dijual lebih murah di sana!" },
+  { f: a10, d: 6.2, teks: "Padahal hargaku sudah termasuk murah. Apa apotek sebelah ini lagi sedekah? Kok janggal ya…" },
+  { f: a11, d: 7.8, teks: "Dan jeng jeng jeng! Fakta mulai terbuka. Media sosial ramai: apotek itu ternyata jaringan dari penyedia sistem distribusi!", suby: .86 },
+  { f: a12, d: 7.0, teks: "Iya, penyedia aplikasi tempat aku belanja selama ini, karena harganya lebih murah dan promonya menggiurkan.", suby: .8 },
+  { f: a13, d: 7.2, teks: "Ternyata, selama ini data apotekku bocor. Rekap produk yang sering kupesan, lengkap dengan kebutuhan bulanannya, semua ketahuan!" },
+  { f: a14, d: 7.2, teks: "Kesalahanku dua. Satu, nggak cek model bisnis penyedianya dulu. Dua, nggak baca kebijakan privasinya dengan teliti.", suby: .8 },
+  { f: a15, d: 11.0, teks: "Sekarang, sebelum pilih aplikasi apotek, aku cek dulu model bisnisnya, dan tanya langsung ke CS soal kebijakan privasinya. Karena data apotek lebih berharga dari sekadar diskon.", suby: .9 },
+  { f: a16, d: 7.6, teks: "Nah kalo kamu, udah cek sistem yang kamu pake sekarang belum?", suby: .86 }
 ];
-let _acc = 0; ADEGAN.forEach(a => { a.a = _acc; _acc += a.d; });
-const TOTAL = _acc + .6;
+/* mulai tiap adegan mengikuti VO (at klip - 0,12 dtk) */
+const MULAI = [0, 8.33, 14.3, 24.19, 28.62, 32.15, 40.81, 45.28, 49.0, 58.75, 65.9, 75.55, 82.91, 92.95, 101.95, 114.47], AKHIR = 121.47;
+ADEGAN.forEach((a, i) => { a.a = MULAI[i]; a.d = (i < ADEGAN.length - 1 ? MULAI[i + 1] : AKHIR) - MULAI[i]; });
+const TOTAL = AKHIR;
 const adeganDi = t => { let i = 0; while (i < ADEGAN.length - 1 && t >= ADEGAN[i + 1].a) i++; return i; };
 function kiraKata() { const out = []; ADEGAN.forEach(a => { const ws = a.teks.split(/\s+/); const a0 = a.a + .35, a1 = a.a + a.d - .45; const tot = ws.reduce((s, w) => s + w.length + 3, 0); let tt = a0;
   ws.forEach(w => { const dd = (a1 - a0) * (w.length + 3) / tot; out.push({ w, t0: tt, t1: tt + dd * .92 }); tt += dd; }); }); return out; }
@@ -1097,7 +1100,10 @@ const SCENE = {
   sub: { gaya: 'polos', font: "900 64px 'Nunito'", aksen: KUNING, maks: 4,
     kunci: ['sepi', 'gila-gilaan', 'bocor', 'riset', 'profit', 'diskon', 'santai', 'berkurang', 'murah', 'sedekah', 'janggal', 'distribusi', 'menggiurkan', 'ketahuan', 'privasinya', 'pasti', 'transparan', 'data', 'pelatihan', 'promosi', 'komentar', 'aman', 'diskusi', 'CS'],
     y: (t) => ({ x: W / 2, y: H * (ADEGAN[adeganDi(t)].suby || .74) }) },
-  audio: { vo: [], sfx: [], music: null },
+  audio: {
+    vo: [{"src": "assets/audio/vo-01.wav", "at": 0.2, "teks": "Apotekku makin sepi. Gara-gara apotek baru di sebelah yang diskonnya gila-gilaan. dan ternyata ini penyebabnya…"}, {"src": "assets/audio/vo-02.wav", "at": 8.45, "teks": "Mundur beberapa tahun lalu. Ini aku, owner apotek baru yang semangatnya lagi full."}, {"src": "assets/audio/vo-03.wav", "at": 14.42, "teks": "Tiap hari aku riset. Obat apa yang paling dicari warga sekitar, jam berapa mereka belanja, sampai pola belanjanya setiap bulan."}, {"src": "assets/audio/vo-04.wav", "at": 24.31, "teks": "Aku juga ikut pelatihan sana-sini, semua strategi kucatat."}, {"src": "assets/audio/vo-05.wav", "at": 28.74, "teks": "Hasilnya? Setahun kemudian, apotekku profit!"}, {"src": "assets/audio/vo-06.wav", "at": 32.27, "teks": "Beberapa tahun kemudian, tiba-tiba ada apotek baru dibangun persis di sebelah. Opening-nya langsung rame, diskon gede-gedean!"}, {"src": "assets/audio/vo-07.wav", "at": 40.93, "teks": "Aku sih santai. Wajar lah, namanya juga promosi."}, {"src": "assets/audio/vo-08.wav", "at": 45.4, "teks": "Tapi makin hari, pelangganku makin berkurang."}, {"src": "assets/audio/vo-09.wav", "at": 49.12, "teks": "Aku penasaran, aku survei ke sana. Dan ternyata… sembilan puluh persen produk unggulanku dijual lebih murah di sana!"}, {"src": "assets/audio/vo-10.wav", "at": 58.87, "teks": "Padahal hargaku sudah termasuk murah. Apa apotek sebelah ini lagi sedekah? Kok janggal ya…"}, {"src": "assets/audio/vo-11.wav", "at": 66.02, "teks": "Dan jeng jeng jeng! Fakta mulai terbuka. Media sosial ramai: apotek itu ternyata jaringan dari penyedia sistem distribusi!"}, {"src": "assets/audio/vo-12.wav", "at": 75.67, "teks": "Iya, penyedia aplikasi tempat aku belanja selama ini, karena harganya lebih murah dan promonya menggiurkan."}, {"src": "assets/audio/vo-13.wav", "at": 83.03, "teks": "Ternyata, selama ini data apotekku bocor. Rekap produk yang sering kupesan, lengkap dengan kebutuhan bulanannya, semua ketahuan!"}, {"src": "assets/audio/vo-14.wav", "at": 93.07, "teks": "Kesalahanku dua. Satu, nggak cek model bisnis penyedianya dulu. Dua, nggak baca kebijakan privasinya dengan teliti."}, {"src": "assets/audio/vo-15.wav", "at": 102.07, "teks": "Sekarang, sebelum pilih aplikasi apotek, aku cek dulu model bisnisnya, dan tanya langsung ke CS soal kebijakan privasinya. Karena data apotek lebih berharga dari sekadar diskon."}, {"src": "assets/audio/vo-16.wav", "at": 114.59, "teks": "Nah kalo kamu, udah cek sistem yang kamu pake sekarang belum?"}],
+    sfx: [{"src": "assets/audio/sfx-whoosh.wav", "at": 8.08, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 14.05, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 23.94, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 28.37, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 31.9, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 40.56, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 45.03, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 48.75, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 58.5, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 65.65, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 75.3, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 82.66, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 92.7, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 101.7, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 114.22, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 2.5, "vol": 0.4}, {"src": "assets/audio/sfx-pop.wav", "at": 3.5, "vol": 0.4}, {"src": "assets/audio/sfx-boom.wav", "at": 6.4, "vol": 0.5}, {"src": "assets/audio/sfx-rewind.wav", "at": 8.38, "vol": 0.45}, {"src": "assets/audio/sfx-gunting.wav", "at": 11.63, "vol": 0.5}, {"src": "assets/audio/sfx-tepuk.wav", "at": 11.73, "vol": 0.35}, {"src": "assets/audio/sfx-tada.wav", "at": 11.83, "vol": 0.3}, {"src": "assets/audio/sfx-pop.wav", "at": 14.6, "vol": 0.35}, {"src": "assets/audio/sfx-pop.wav", "at": 18.8, "vol": 0.35}, {"src": "assets/audio/sfx-pop.wav", "at": 21.6, "vol": 0.35}, {"src": "assets/audio/sfx-whoosh.wav", "at": 22.5, "vol": 0.3}, {"src": "assets/audio/sfx-ketik.wav", "at": 24.49, "vol": 0.25}, {"src": "assets/audio/sfx-pop.wav", "at": 25.79, "vol": 0.35}, {"src": "assets/audio/sfx-koin.wav", "at": 31.52, "vol": 0.45}, {"src": "assets/audio/sfx-boom.wav", "at": 31.52, "vol": 0.35}, {"src": "assets/audio/sfx-konstruksi.wav", "at": 32.55, "vol": 0.3}, {"src": "assets/audio/sfx-boom.wav", "at": 37.55, "vol": 0.45}, {"src": "assets/audio/sfx-tada.wav", "at": 37.65, "vol": 0.35}, {"src": "assets/audio/sfx-tepuk.wav", "at": 37.85, "vol": 0.3}, {"src": "assets/audio/sfx-klik.wav", "at": 41.71, "vol": 0.5}, {"src": "assets/audio/sfx-sruput.wav", "at": 42.51, "vol": 0.35}, {"src": "assets/audio/sfx-lalat.wav", "at": 45.48, "vol": 0.18}, {"src": "assets/audio/sfx-deng.wav", "at": 49.1, "vol": 0.35}, {"src": "assets/audio/sfx-pop.wav", "at": 52.9, "vol": 0.3}, {"src": "assets/audio/sfx-pop.wav", "at": 53.35, "vol": 0.3}, {"src": "assets/audio/sfx-pop.wav", "at": 53.8, "vol": 0.3}, {"src": "assets/audio/sfx-deng.wav", "at": 55.1, "vol": 0.5}, {"src": "assets/audio/sfx-pop.wav", "at": 59.05, "vol": 0.3}, {"src": "assets/audio/sfx-ting.wav", "at": 61.55, "vol": 0.3}, {"src": "assets/audio/sfx-deng.wav", "at": 64.55, "vol": 0.35}, {"src": "assets/audio/sfx-jeng.wav", "at": 66.55, "vol": 0.5}, {"src": "assets/audio/sfx-jeng.wav", "at": 67.2, "vol": 0.5}, {"src": "assets/audio/sfx-jeng.wav", "at": 67.75, "vol": 0.5}, {"src": "assets/audio/sfx-notif.wav", "at": 68.9, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 69.25, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 69.6, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 69.95, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 70.3, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 70.65, "vol": 0.3}, {"src": "assets/audio/sfx-tap.wav", "at": 77.45, "vol": 0.4}, {"src": "assets/audio/sfx-tap.wav", "at": 77.9, "vol": 0.4}, {"src": "assets/audio/sfx-tap.wav", "at": 78.35, "vol": 0.4}, {"src": "assets/audio/sfx-tap.wav", "at": 79.1, "vol": 0.45}, {"src": "assets/audio/sfx-ting.wav", "at": 79.45, "vol": 0.4}, {"src": "assets/audio/sfx-boom.wav", "at": 80.95, "vol": 0.5}, {"src": "assets/audio/sfx-alarm.wav", "at": 83.41, "vol": 0.22}, {"src": "assets/audio/sfx-whoosh.wav", "at": 83.91, "vol": 0.25}, {"src": "assets/audio/sfx-buzz.wav", "at": 95.4, "vol": 0.35}, {"src": "assets/audio/sfx-buzz.wav", "at": 98.7, "vol": 0.35}, {"src": "assets/audio/sfx-tap.wav", "at": 104.85, "vol": 0.4}, {"src": "assets/audio/sfx-notif.wav", "at": 107.15, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 107.95, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 108.85, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 109.65, "vol": 0.3}, {"src": "assets/audio/sfx-notif.wav", "at": 110.65, "vol": 0.3}, {"src": "assets/audio/sfx-ting.wav", "at": 111.35, "vol": 0.4}, {"src": "assets/audio/sfx-ting.wav", "at": 111.75, "vol": 0.35}, {"src": "assets/audio/sfx-pop.wav", "at": 115.17, "vol": 0.35}, {"src": "assets/audio/sfx-pop.wav", "at": 115.47, "vol": 0.35}, {"src": "assets/audio/sfx-boom.wav", "at": 115.67, "vol": 0.3}, {"src": "assets/audio/sfx-pop.wav", "at": 117.07, "vol": 0.4}, {"src": "assets/audio/sfx-ketik.wav", "at": 117.87, "vol": 0.3}],
+    music: null },
   build(tl) {
     wIn(tl, HOOK, WAKTU.hookIn, { st: .1 }); wOut(tl, HOOK, WAKTU.hookOut);
     tl.fromTo(BOCOR, { scale: 2.4, opacity: 0 }, { scale: 1, opacity: 1, duration: .35, ease: 'back.out(2.5)' }, WAKTU.bocor + .05);
