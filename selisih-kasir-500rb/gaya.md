@@ -1,6 +1,6 @@
 # Lembar gaya — Selisih Kasir Rp500 Ribu (Apotek Digital)
 
-> v2: disamakan dengan video seri sebelumnya (latar terang, judul KAPITAL, pil caption navy). Versi gelap lama ada di `.riwayat` & `referensi/gaya-lama/`.
+> v2: disamakan dengan video seri sebelumnya (latar terang, judul huruf biasa (sentence case), pil caption navy; CTA memakai gaya versi 1: navy + glow, logo, HP laporan shift). Versi gelap lama ada di `.riwayat` & `referensi/gaya-lama/`.
 
 - **Gaya:** ilustrasi 2D flat vektor (SVG), karakter dari paket "karakter-apotek-digital" tanpa diubah + set ekspresi baru (alis/mata/mulut, transisi 5 frame, kedip acak, napas, angguk).
 - **Latar:** terang `#F1F5FB` + kabut putih atas/bawah, etalase (papan APOTEK, ANTREAN 08, jam, BUKA, meja teal +), rak warna-warni buram. Adegan malam = versi gelap navy + lampu.

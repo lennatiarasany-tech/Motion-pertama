@@ -28,8 +28,8 @@
 .btn{position:absolute;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
 .ph{position:absolute;left:0;width:100%;text-align:center;color:#8A97A6;font-weight:600;font-size:40px}
 #haze{position:absolute;inset:0;z-index:15;pointer-events:none}
-.kk{font-weight:700;font-size:40px;letter-spacing:.08em;color:#7D8DA6;margin-bottom:12px}
-.hd{font-weight:800;line-height:1.02;color:#1B2B3B;text-transform:uppercase;letter-spacing:-.005em}
+.kk{font-weight:700;font-size:40px;letter-spacing:.01em;color:#7D8DA6;margin-bottom:12px}
+.hd{font-weight:800;line-height:1.06;color:#1B2B3B;letter-spacing:-.015em}
 .pill{position:absolute;left:0;top:0;display:flex;align-items:center;gap:18px;background:#fff;border-radius:999px;padding:12px 32px 12px 12px;box-shadow:0 10px 28px rgba(27,43,59,.14);font-weight:600;font-size:32px;color:#1B2B3B;white-space:nowrap}
 .pill .ic{width:58px;height:58px;font-size:30px}
 .bubble{position:absolute;background:#fff;border-radius:22px;padding:14px 26px;box-shadow:0 10px 28px rgba(27,43,59,.16);font-weight:700;font-size:38px;color:#1B2B3B;white-space:nowrap;transform-origin:20% 100%}
@@ -454,9 +454,9 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 
 /* ---- 1 · HOOK (0–4) ---- */
 {
-  const lab = teks(`<div class="kk">SELISIH DI KASIR?</div>`, `top:250px`);
+  const lab = teks(`<div class="kk">Selisih di kasir?</div>`, `top:250px`);
   const num = teks(glitch('−Rp500.000', 132, P.merah), `top:300px`);
-  const hl = judul(460, '', `${KW('SIAPA YANG')}<br>${KW('GANTI', P.merah)}<span class="w qq" style="color:${P.merah};display:inline-block;margin-left:0;transform-origin:50% 60%">?</span>`);
+  const hl = judul(460, '', `${KW('Siapa yang')}<br>${KW('ganti', P.merah)}<span class="w qq" style="color:${P.merah};display:inline-block;margin-left:0;transform-origin:50% 60%">?</span>`);
   const qm = hl.querySelector('.qq');
   ADEGAN.push({a: 0, b: WAKTU.s2, el: [lab, num, hl], gambar(t) {
     const po = E.io(seg(t, 1.0, 1.7));
@@ -481,7 +481,7 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 2 · KASIR BERSAMA (4–9) ---- */
 {
   const a = WAKTU.s2;
-  const j = judul(250, 'APOTEK A', `${KW('1 KASIR.')} ${KW('1 AKUN.')}<br><span class="w">${sorot(`<span style="color:#fff">DIPAKAI SEMUA.</span>`, P.merah)}</span>`, {u: 104});
+  const j = judul(250, 'Apotek A', `${KW('1 kasir.')} ${KW('1 akun.')}<br><span class="w">${sorot(`<span style="color:#fff">Dipakai semua.</span>`, P.merah)}</span>`, {u: 104});
   const cb = balon(`<span style="color:#7D8DA6;font-size:22px;display:block">Akun aktif</span>Login: <b>kasir</b> 🔓`, 150, 900);
   ADEGAN.push({a, b: WAKTU.s3, el: [j, cb], gambar(t) {
     animJudul(j, t, a + .2, 1e9, .22); aturSorot(j, t, a + 2.3, .4);
@@ -505,14 +505,14 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 3 · SELISIH MUNCUL (9–15) ---- */
 {
   const a = WAKTU.s3, tP = 12.3, tS = 13.75;
-  const j = judul(250, 'HARI ITU RAMAI...', `<span class="tw" style="white-space:pre-line"></span>`, {u: 100});
+  const j = judul(250, 'Hari itu ramai...', `<span class="tw" style="white-space:pre-line"></span>`, {u: 100});
   const kartu = mk('div', 'uicard', TX, `<div class="uh"><span></span><span>UANG FISIK</span><span>SISTEM</span></div>
 <div class="ur"><span class="ul">Total</span><span class="xb n1">Rp0</span><span class="xb n2">Rp0</span></div>
 <div class="ur"><span class="ul">Selisih</span><span></span><span class="xb n3" style="color:${P.merah}"></span></div>`);
   kartu.style.cssText += 'left:110px;top:560px;width:820px;opacity:0';
   const sl = teks(glitch('−Rp500.000!', 128, P.merah), `top:300px`);
   ADEGAN.push({a, b: WAKTU.s4, el: [j, kartu, sl], gambar(t) {
-    animJudul(j, t, a + .1, tP - .2); ketik(j.querySelector('.tw'), t, a + .4, 1.4, 'TUTUP SHIFT\nTERAKHIR...'); j.querySelector('.hd').style.opacity = t < tP ? 1 : 0;
+    animJudul(j, t, a + .1, tP - .2); ketik(j.querySelector('.tw'), t, a + .4, 1.4, 'Tutup shift\nterakhir...'); j.querySelector('.hd').style.opacity = t < tP ? 1 : 0;
     const sp = E.back(seg(t, tP, tP + .35)); kartu.style.opacity = clamp(seg(t, tP, tP + .1)); kartu.style.transform = `scale(${.6 + .4 * sp})`;
     kartu.querySelector('.n1').textContent = rp(Math.floor(4250000 * E.out(seg(t, tP + .3, tP + 1.3)) / 1000) * 1000);
     kartu.querySelector('.n2').textContent = rp(Math.floor(4750000 * E.out(seg(t, tP + .3, tP + 1.3)) / 1000) * 1000);
@@ -541,7 +541,7 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 4 · MENCARI PENYEBAB (15–21) ---- */
 {
   const a = WAKTU.s4, tg = [a + .5, a + 2.4, a + 4.3];
-  const j = judul(250, 'CARI PENYEBAB', `${KW('DICEK')} ${KW('SEMUA...', P.merah)}`, {u: 100});
+  const j = judul(250, 'Cari penyebab', `${KW('Dicek')} ${KW('semua...', P.merah)}`, {u: 100});
   const ps = [['uang', 'Hitung ulang'], ['struk', 'Cek semua transaksi'], ['hp', 'Cek mutasi rekening']].map(([ik, s]) => pil(s, IKON[ik], '#8A97A6'));
   ADEGAN.push({a, b: WAKTU.s5, el: [j, ...ps], gambar(t) {
     animJudul(j, t, a, 1e9, .12);
@@ -576,7 +576,7 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
   const j = judul(250, '', `<span class="tw" style="color:#fff"></span>`, {u: 100});
   const st = teks(`<div class="xb" style="display:inline-block;font-size:200px;color:${P.merah};border:16px solid ${P.merah};border-radius:30px;padding:6px 46px 20px;letter-spacing:.04em;background:rgba(27,43,59,.35)">NIHIL.</div>`, `top:560px`);
   ADEGAN.push({a, b: WAKTU.s6, el: [j, st], gambar(t) {
-    j.style.opacity = 1; j.querySelector('.hd').style.opacity = 1; ketik(j.querySelector('.tw'), t, a + .15, 1.2, '2 JAM KEMUDIAN...');
+    j.style.opacity = 1; j.querySelector('.hd').style.opacity = 1; ketik(j.querySelector('.tw'), t, a + .15, 1.2, '2 jam kemudian...');
     j.querySelector('.tw').style.color = '#F2C94C';
     const sk = seg(t, tS, tS + .14), sh = (1 - seg(t, tS + .14, tS + .6)) * (t > tS + .1 ? 1 : 0);
     st.style.opacity = clamp(seg(t, tS, tS + .04)); st.style.transform = `translate(${nz(t * 45, 1) * 14 * sh}px,${nz(t * 41, 2) * 10 * sh}px) rotate(-8deg) scale(${lerp(2.3, 1, E.in(sk))})`;
@@ -598,8 +598,8 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 6 · DAMPAK (25–29) · gudang ---- */
 {
   const a = WAKTU.s6, tZ = a + 1.7, tC = a + 2.0;
-  const j1 = judul(250, 'AKHIRNYA...', `${KW('PATUNGAN')} ${KW('GANTI.', '#7D8DA6')}`, {u: 92});
-  const t2 = teks(`<div class="hd" style="font-size:112px"><span class="w sL">SALING</span> <span class="w sR" style="color:${P.merah}">CURIGA.</span></div>`, `top:470px`);
+  const j1 = judul(250, 'Akhirnya...', `${KW('Patungan')} ${KW('ganti.', '#7D8DA6')}`, {u: 92});
+  const t2 = teks(`<div class="hd" style="font-size:112px"><span class="w sL">Saling</span> <span class="w sR" style="color:${P.merah}">curiga.</span></div>`, `top:470px`);
   const bl = balon(`<span style="color:#7D8DA6;font-size:22px;display:block">dalam hati</span>Jangan-jangan... 🤔`, 260, 880);
   ADEGAN.push({a, b: WAKTU.s7, el: [j1, t2, bl], gambar(t) {
     animJudul(j1, t, a + .15, 1e9, .14);
@@ -628,7 +628,7 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 7 · TITIK BALIK (29–32): whip-pan A → B ---- */
 {
   const a = WAKTU.s7, tW = a + .25;
-  const j = judul(250, 'SEMENTARA ITU...', `${KW('BEDA CERITA DI')}<br><span class="w">${sorot(`<span style="color:#fff">APOTEK SEBELAH.</span>`, P.biru)}</span>`, {u: 96, kc: P.biru});
+  const j = judul(250, 'Sementara itu...', `${KW('Beda cerita di')}<br><span class="w">${sorot(`<span style="color:#fff">apotek sebelah.</span>`, P.biru)}</span>`, {u: 96, kc: P.biru});
   const panah = teks(`<svg width="80" height="100" viewBox="0 0 90 110"><path d="M45,6 L45,86 M14,58 L45,92 L76,58" stroke="${P.biru}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`, `top:600px;left:-280px`);
   ADEGAN.push({a, b: WAKTU.s8, el: [j, panah], gambar(t) {
     animJudul(j, t, a + .5, 1e9, .1); aturSorot(j, t, a + 1.0, .4);
@@ -648,7 +648,7 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 8 · FITUR (32–42) ---- */
 {
   const tg = [WAKTU.c1, WAKTU.c2, WAKTU.c3, WAKTU.c4];
-  const j = judul(250, 'PAKAI APOTEK DIGITAL', `${KW('SEMUA')} ${KW('TERCATAT.', P.biru)}`, {u: 96, kc: P.biru});
+  const j = judul(250, 'Pakai Apotek Digital', `${KW('Semua')} ${KW('tercatat.', P.biru)}`, {u: 96, kc: P.biru});
   const ps = [['Akun', ' per kasir'], ['Cash', ' dicatat saat serah terima'], ['Pengeluaran', ' langsung diinput'], ['Transaksi batal', ' tetap terekam']]
     .map(([k, r]) => pil(`<b style="color:${P.biru};font-weight:800">${k}</b>${r}`, '✓', P.hijau));
   ADEGAN.push({a: WAKTU.s8, b: WAKTU.s9, el: [j, ...ps], gambar(t) {
@@ -675,8 +675,8 @@ const sel = (c, i) => c === 'A' ? 'saturate(.62) brightness(.99)' : 'none';
 /* ---- 9 · LAPORAN SHIFT (42–49) ---- */
 {
   const a = WAKTU.s9, tP = a + 1.0, tH = a + 2.4, tL = [Tk('shift', 44) - .1, Tk('berapa', 44) - .1, Tk('siapa', 44) - .1], tK = a + 5.8;
-  const qs = [['SHIFT MANA?', P.navy], ['BERAPA?', P.navy], ['SIAPA?', P.biru]].map(([s, c], i) => teks(`<div class="hd" style="font-size:86px;color:${c}">${s}</div>`, `top:${250 + i * 88}px`));
-  const lk = judul(250, 'PAKAI APOTEK DIGITAL', `${KW('LANGSUNG')}<br>${KW('KETAHUAN.', P.biru)}`, {u: 100, kc: P.biru});
+  const qs = [['Shift mana?', P.navy], ['Berapa?', P.navy], ['Siapa?', P.biru]].map(([s, c], i) => teks(`<div class="hd" style="font-size:86px;color:${c}">${s}</div>`, `top:${250 + i * 88}px`));
+  const lk = judul(250, 'Pakai Apotek Digital', `${KW('Langsung')}<br>${KW('ketahuan.', P.biru)}`, {u: 100, kc: P.biru});
   const chip = [['Shift', 'Siang'], ['Nominal selisih', '−Rp500.000'], ['Petugas', 'Dodi']].map(([l, v], i) =>
     pil(`<span style="color:#7D8DA6">${l}:</span> <b style="color:${i === 1 ? P.merah : P.navy};font-weight:800">${v}</b>`, ['🕑', 'Rp', '👤'][i], [P.biru, P.merah, P.teal][i]));
   ADEGAN.push({a, b: WAKTU.s10, el: [...qs, lk, ...chip], gambar(t) {
@@ -708,7 +708,7 @@ ${txt(36, 136, 'SHIFT', 22, '#7D8DA6', 800)}${txt(330, 136, 'PETUGAS', 22, '#7D8
 {
   const a = WAKTU.s10;
   const tm = teks(`<div style="display:inline-flex;align-items:center;gap:16px;background:${P.hijau};border-radius:999px;padding:10px 32px 10px 12px"><div class="ic" style="background:#fff;color:${P.hijau};width:64px;height:64px;font-size:40px">✓</div><span class="xb tm" style="font-size:54px;color:#fff;font-variant-numeric:tabular-nums">00:00</span></div>`, `top:240px`);
-  const j = judul(350, '', `${KW('<')} ${KW('10 MENIT.', P.hijau)}<br><span style="font-size:76px">${KW('BERES &')} ${KW('TRANSPARAN.', P.hijau)}</span>`, {u: 120});
+  const j = judul(350, '', `${KW('<')} ${KW('10 menit.', P.hijau)}<br><span style="font-size:76px">${KW('Beres &')} ${KW('transparan.', P.hijau)}</span>`, {u: 120});
   ADEGAN.push({a, b: WAKTU.s11, el: [tm, j], gambar(t) {
     const sec = 527 * E.out(seg(t, a, a + .9)); tm.querySelector('.tm').textContent = `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
     tm.style.opacity = 1; const ck = E.back(seg(t, a + .9, a + 1.2)); tm.querySelector('.ic').style.transform = `scale(${.4 + .6 * ck}) rotate(${(1 - ck) * -90}deg)`;
@@ -730,33 +730,57 @@ ${txt(36, 136, 'SHIFT', 22, '#7D8DA6', 800)}${txt(330, 136, 'PETUGAS', 22, '#7D8
   }});
 }
 
-/* ---- 11 · CTA (52–59) ---- */
+/* ---- 11 · CTA (52–59) · gaya versi pertama: navy + glow, logo, HP laporan shift ---- */
+const W_ = s => s.split(' ').map(w => `<span class="w">${w}</span>`).join(' ');
 {
-  const a = WAKTU.s11;
-  const j = judul(250, '', `${KW('CEGAH')} ${KW('KEBOCORAN', P.biru)}<br>${KW('DI APOTEKMU.')}`, {u: 96});
-  const logo = mk('div', 'card', TX, `<img src="assets/gambar/logo-apotek-digital-x-digikes.png" style="position:absolute;left:50%;top:50%;width:640px;transform:translate(-50%,-50%)">`);
-  logo.style.cssText += `left:150px;top:520px;width:780px;height:200px;background:#fff;box-shadow:0 18px 50px rgba(48,100,209,.22);opacity:0`;
-  const btn = mk('div', 'btn', TX, 'Coba Free Trial'); btn.style.cssText += `left:230px;top:770px;width:620px;height:124px;font-size:56px;background:${P.biru};box-shadow:0 14px 36px rgba(48,100,209,.4);opacity:0`;
-  const ring = mk('div', 'btn', TX, ''); ring.style.cssText += `left:230px;top:770px;width:620px;height:124px;border:6px solid ${P.biru};opacity:0`;
+  const logo = mk('div', 'card', TX, `<img src="assets/gambar/logo-apotek-digital.png" style="position:absolute;left:50%;top:50%;width:560px;transform:translate(-50%,-50%)">`);
+  logo.style.cssText += `left:190px;top:330px;width:700px;height:270px;background:#fff;opacity:0`;
+  const tag = teks(`<div class="sb" style="font-size:60px;line-height:1.2">${W_('Cegah')} <span class="w" style="color:${P.teal};font-weight:800">kebocoran</span><br>${W_('di apotekmu')}</div>`, `top:650px`);
+  const btn = mk('div', 'btn', TX, 'Coba Free Trial'); btn.style.cssText += `left:190px;top:1366px;width:700px;height:124px;font-size:56px;background:${P.biru};opacity:0`;
+  const ring = mk('div', 'btn', TX, ''); ring.style.cssText += `left:190px;top:1366px;width:700px;height:124px;border:6px solid ${P.teal};opacity:0`;
   const kursor = mk('div', '', TX, `<svg width="70" height="86" viewBox="0 0 70 86"><path d="M8,4 L8,64 L24,50 L36,78 L48,72 L36,46 L58,46 Z" fill="#fff" stroke="${P.navy}" stroke-width="5" stroke-linejoin="round"/></svg>`);
   kursor.style.cssText = 'position:absolute;left:0;top:0;opacity:0';
-  ADEGAN.push({a, b: WAKTU.akhir + 1, el: [j, logo, btn, ring, kursor], gambar(t) {
-    animJudul(j, t, a + .15, 1e9, .1);
-    const lk = E.back(seg(t, a + .8, a + 1.25)); logo.style.opacity = clamp(seg(t, a + .8, a + .95)); logo.style.transform = `scale(${.6 + .4 * lk})`;
-    const bk = E.back(seg(t, a + 1.6, a + 2.0)), klik = seg(t, a + 3.4, a + 3.55) * (1 - seg(t, a + 3.55, a + 3.8));
+  ADEGAN.push({a: WAKTU.s11, b: WAKTU.akhir + 1, el: [logo, tag, btn, ring, kursor], gambar(t) {
+    const a = WAKTU.s11, lk = E.back(seg(t, a + .2, a + .75));
+    logo.style.opacity = clamp(seg(t, a + .2, a + .35));
+    logo.style.transform = `scale(${.6 + .4 * lk})`;
+    logo.style.boxShadow = `0 0 ${60 + 30 * Math.sin(t * 2.4)}px ${10 + 6 * Math.sin(t * 2.4)}px rgba(48,100,209,.75)`;
+    stagger(tag.firstChild, t, a + .9, .1); tag.style.opacity = 1;
+    const bk = E.back(seg(t, a + 1.8, a + 2.2)), klik = seg(t, a + 3.4, a + 3.55) * (1 - seg(t, a + 3.55, a + 3.8));
     const pulse = 1 + .04 * Math.max(0, Math.sin((t - a) * 5.2)) * seg(t, a + 2.2, a + 2.5);
-    btn.style.opacity = clamp(seg(t, a + 1.6, a + 1.75)); btn.style.transform = `scale(${bk * pulse * (1 - .06 * klik)})`;
-    const rp_ = ((t - a) * 5.2 / (2 * Math.PI)) % 1; ring.style.opacity = (1 - rp_) * .7 * seg(t, a + 2.3, a + 2.5); ring.style.transform = `scale(${1 + rp_ * .12},${1 + rp_ * .4})`;
+    btn.style.opacity = clamp(seg(t, a + 1.8, a + 1.95)); btn.style.transform = `scale(${bk * pulse * (1 - .06 * klik)})`;
+    const rp_ = ((t - a) * 5.2 / (2 * Math.PI)) % 1; ring.style.opacity = (1 - rp_) * .8 * seg(t, a + 2.3, a + 2.5); ring.style.transform = `scale(${1 + rp_ * .14},${1 + rp_ * .5})`;
     const kk = E.io(seg(t, a + 2.6, a + 3.4)); kursor.style.opacity = clamp(seg(t, a + 2.6, a + 2.8));
-    kursor.style.transform = `translate(${lerp(960, 640, kk)}px,${lerp(1100, 850, kk)}px) scale(${1 - .12 * klik})`;
-    const cam = {z: 1 + .06 * E.io(seg(t, a, WAKTU.akhir)), fx: 540, fy: 960};
-    const back = `<g filter="url(#dof)">${toko('B', t, {polos: true})}</g><rect x="-300" y="-300" width="1680" height="2520" fill="#F6F9FE" opacity=".35"/>` +
-      `<circle cx="540" cy="650" r="${430 + 15 * Math.sin(t * 1.5)}" fill="url(#glowB)" opacity=".35"/>`;
-    const front = tokoh('owner', {x: 210, y: FL, s: SK, t, seed: 5, e: kunciEx(t, [[0, 'senyum'], [a + 2, 'senang']]), pose: kunciPose(t, [[0, 'diri'], [a + 1.6, POSE.tunjukKanan]]), tR: 'tunjuk', tilt: 3}) +
-      tokoh('faktur', {x: 860, y: FL, s: SK, t, seed: 3, arah: -1, e: kunciEx(t, [[0, 'senyum'], [a + 2.2, 'senang']]), pose: kunciPose(t, [[0, 'diri'], [a + 2, 'jempol']]), tR: 'jempol'});
-    return {back, mid: '', front, cam, filter: 'none', haze: 'B'};
+    kursor.style.transform = `translate(${lerp(980, 700, kk)}px,${lerp(1660, 1430, kk)}px) scale(${1 - .12 * klik})`;
+    FX.style.background = 'transparent';
+    /* dunia: latar navy + pola siluet rak + glow + HP + karakter jempol */
+    const cam = {z: 1 + .07 * E.io(seg(t, a, WAKTU.akhir)), fx: 540, fy: 820};
+    let back = `<rect x="-300" y="-300" width="1680" height="2520" fill="${P.navy}"/>`;
+    for (let r = 0; r < 7; r++) for (let c = 0; c < 4; c++) {
+      const x = -80 + c * 320 + (r % 2) * 40, y = 120 + r * 300;
+      back += `<g opacity=".16" stroke="${P.biruTua}" stroke-width="5" fill="none"><rect x="${x}" y="${y}" width="280" height="260" rx="10"/><line x1="${x}" y1="${y + 130}" x2="${x + 280}" y2="${y + 130}"/>` +
+        `<rect x="${x + 20}" y="${y + 60}" width="44" height="66"/><rect x="${x + 76}" y="${y + 40}" width="56" height="86"/><rect x="${x + 150}" y="${y + 70}" width="40" height="56"/><rect x="${x + 30}" y="${y + 190}" width="70" height="66"/><rect x="${x + 120}" y="${y + 170}" width="50" height="86"/></g>`;
+    }
+    back += `<circle cx="540" cy="470" r="${520 + 20 * Math.sin(t * 1.5)}" fill="url(#glowB)"/>`;
+    /* HP: laporan shift mini */
+    const hp = E.back(seg(t, a + 1.2, a + 1.7)), fl = Math.sin(t * 1.6) * 8;
+    let mid = `<g transform="translate(330 ${990 + fl + (1 - hp) * 300}) rotate(-7) scale(${hp * .82})">
+<rect x="-150" y="-250" width="300" height="520" rx="40" fill="#0F1A26"/><rect x="-136" y="-236" width="272" height="492" rx="30" fill="#F5F8FD"/>
+<rect x="-136" y="-236" width="272" height="70" rx="30" fill="${P.biru}"/><rect x="-136" y="-190" width="272" height="24" fill="${P.biru}"/>
+${txt(-112, -192, 'Laporan Shift', 22, '#fff', 800)}`;
+    [['Pagi', 'Rina', 0, 0], ['Siang', 'Dodi', -500000, 1], ['Malam', 'Sari', 0, 0]].forEach(([s, n, v, h], i) => {
+      const y = -140 + i * 120;
+      mid += `<rect x="-118" y="${y}" width="236" height="100" rx="14" fill="${h ? '#E3F4F1' : '#fff'}" stroke="${h ? P.teal : '#D5DDEA'}" stroke-width="${h ? 4 : 2}"/>` +
+        txt(-100, y + 36, 'Shift ' + s, 19, P.navy, 800) + txt(-100, y + 70, n, 17, '#5C6773', 600) +
+        txt(100, y + 70, v ? '−' + rp(-v) : 'Rp0', 19, v ? P.merah : P.hijau, 800, 'end');
+    });
+    mid += `</g>`;
+    const front = tokoh('owner', {x: 790, y: 1335, s: .55, t, seed: 5, e: kunciEx(t, [[0, 'senyum'], [a + 2, 'senang']]),
+      pose: kunciPose(t, [[0, 'diri'], [a + 1.6, 'jempol']]), tR: 'jempol', tilt: 3});
+    return {back, mid, front, cam, filter: 'none', haze: 'none'};
   }});
 }
+
 
 /* == 8. SCENE == */
 const Lb = $('#Lback'), Lm = $('#Lmid'), Lf = $('#Lfront'), Lo = $('#Lover'), WORLD = $('#world'), LUI = $('#Lui');
