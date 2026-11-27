@@ -1,0 +1,11 @@
+# Gaya: Stick Figure Flat "Cerita Nakes" (racikan dari contoh user)
+- Kamera: datar dari depan seperti panggung; selalu bergerak (dorong pelan, zoom kejut ke wajah, whip pan, goyang saat panik)
+- Cahaya: flat tanpa gradasi rumit; siang = terang pastel, malam = biru gelap + cahaya bulan, gelembung pikiran putih "menyala"
+- Palet: hijau apron #2E9E68 (utama, dari karakter) · biru langit #8FD3F4 / mint dinding #DFF5EC (latar siang) · biru malam #262C55 (latar malam) · kuning sorot #FFD43B (aksen) · tinta #1F1B24
+- Bahan: bidang warna polos, garis tinta tebal 8–10 px membulat, tanpa tekstur
+- Tokoh: apoteker kepala bulat besar, rambut coklat poni miring, kacamata bulat, pipi merona, kemeja putih + apron hijau, lengan tabung putih bergaris, kaki stick hitam
+- Tipografi: Baloo 2 800 (semua teks) + Noto Color Emoji
+- Subtitle: per kata di bawah (±y 1540), putih bergaris tinta; kata kunci di pil kuning (seperti contoh "Sarapan dulu!")
+- Teks layar: stiker jam (chip hijau miring) + kotak putih bergaris di atas
+- Tanda tangan gerak: "pop" membal (scale back-ease) untuk tiap notifikasi & gelembung pikiran, ditutup semua meletus bersamaan
+- Beda dari video lain: cerita POV nakes, siang→malam dalam satu video
