@@ -563,7 +563,7 @@ const KATA_VO = buatKata(VO);
 const Tk = (w, setelah = 0) => (KATA_VO.find(k => k.t0 >= setelah && k.w.toLowerCase().replace(/[^a-z0-9]/g, '').startsWith(w)) || {t0: setelah}).t0;
 WAKTU.c1 = Tk('tiap', 32) - .1; WAKTU.c2 = Tk('uang', 32) - .1; WAKTU.c3 = Tk('pengeluaran', 32) - .1; WAKTU.c4 = Tk('transaksi', 32) - .1;
 /* caption pil di bawah hanya PRATINJAU gaya (caption asli dibuat di CapCut) */
-const CAPTION = !q.has('nocap');
+const CAPTION = q.has('cap');   /* default: tanpa caption (caption dibuat di CapCut). Pratinjau caption: index.html?cap */
 
 /* == 7. ADEGAN == */
 const ADEGAN = [];
@@ -899,6 +899,25 @@ ${txt(-112, -192, 'Laporan Shift', 22, '#fff', 800)}`;
 }
 
 
+/* == TRANSISI (tanpa fade): whip-pan, mask wipe, zoom tembus == */
+const TRANS = [[WAKTU.s2, 'whip'], [WAKTU.s3, 'wipe', P.teal], [WAKTU.s4, 'zoom'], [WAKTU.s5, 'wipe', P.navy], [WAKTU.s6, 'wipe', P.biruTua],
+  [WAKTU.s8, 'zoom'], [WAKTU.s9, 'wipe', P.biru], [WAKTU.s10, 'whip'], [WAKTU.s11, 'wipe', P.navy]];
+const WIPE = mk('div', '', $('#stage')); WIPE.style.cssText = 'position:absolute;top:-200px;height:2320px;width:2300px;z-index:40;transform-origin:0 0;transform:skewX(-12deg);opacity:0';
+const WIPE2 = mk('div', '', $('#stage')); WIPE2.style.cssText = 'position:absolute;top:-200px;height:2320px;width:70px;z-index:41;transform-origin:0 0;transform:skewX(-12deg);opacity:0;background:#FFFFFF';
+function transisi(t, g) {
+  let txX = 0; WIPE.style.opacity = 0; WIPE2.style.opacity = 0;
+  for (const [T, jenis, warna] of TRANS) { const d = t - T; if (Math.abs(d) > .3) continue;
+    if (jenis === 'whip' && Math.abs(d) < .2) { const k = d < 0 ? E.in((d + .2) / .2) : 1 - E.out(d / .2), arah = d < 0 ? -1 : 1;
+      g.cam.sx = (g.cam.sx || 0) + arah * k * 1100; g.blur = (g.blur || 0) + 18 * k; txX = arah * k * 1100; }
+    if (jenis === 'zoom' && Math.abs(d) < .22) { const k = d < 0 ? E.in((d + .22) / .22) : 1 - E.out(d / .22);
+      g.cam.z *= 1 + .6 * k; g.blur = (g.blur || 0) + 14 * k; FX.style.background = `rgba(255,255,255,${.55 * k})`; }
+    if (jenis === 'wipe' && Math.abs(d) < .28) { const k = E.io((d + .28) / .56), x = lerp(1250, -2550, k);
+      WIPE.style.opacity = 1; WIPE.style.background = warna; WIPE.style.left = x + 'px';
+      WIPE2.style.opacity = 1; WIPE2.style.left = (x - 90) + 'px'; }
+  }
+  return txX;
+}
+
 /* == 8. SCENE == */
 const Lb = $('#Lback'), Lm = $('#Lmid'), Lf = $('#Lfront'), Lo = $('#Lover'), WORLD = $('#world'), LUI = $('#Lui');
 Lb.after(Lf); Lf.after(Lm);
@@ -914,6 +933,7 @@ const SCENE = {
     ADEGAN.forEach(d => { if (d !== ad) d.el.forEach(e => e.style.opacity = 0); });
     FX.style.background = 'transparent';
     const g = ad.gambar(t), cam = g.cam;
+    const txX = transisi(t, g);
     Lb.setAttribute('transform', kamera(cam, .45)); Lb.innerHTML = g.back;
     const kTokoh = kamera(cam, 1), kMeja = kamera(cam, 1.04);
     Lf.setAttribute('transform', kTokoh); Lf.innerHTML = g.front; Lm.setAttribute('transform', kMeja); Lm.innerHTML = g.mid;
@@ -922,7 +942,7 @@ const SCENE = {
     const dz = (zPrev == null || Math.abs(t - tPrev) > .05) ? 0 : Math.abs(cam.z - zPrev); zPrev = cam.z; tPrev = t;
     const bl = Math.min(6, dz * 60) + (g.blur || 0);
     WORLD.style.filter = [g.filter !== 'none' ? g.filter : '', bl > .05 ? `blur(${bl.toFixed(2)}px)` : ''].join(' ').trim() || 'none';
-    TX.style.transform = `translate(${-(cam.sx || 0) * .3}px,0) scale(${1 + (cam.z - 1) * .04})`;
+    TX.style.transform = `translate(${-(cam.sx || 0) * .3 + txX * 1.3}px,0) scale(${1 + (cam.z - 1) * .04})`;
   }
 };
 </script>
