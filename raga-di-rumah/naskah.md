@@ -1,5 +1,5 @@
 # Naskah: Raga di Rumah, Pikiran Masih di Apotek
-Suara: (dipilih nanti) · ElevenLabs · bahasa Indonesia
+Suara: Jonathan Wiratama (QC3gSHMyKh8m20lGyUNZ) · model eleven_v4 · bahasa Indonesia · efek suara disintesis ffmpeg
 
 | # | Adegan (yang terlihat) | Kalimat VO | ±detik |
 |---|---|---|---|
