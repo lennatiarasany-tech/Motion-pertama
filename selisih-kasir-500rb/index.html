@@ -86,7 +86,7 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden}
     <div class="sheet">Karakter<small>dipakai di semua adegan</small></div>
     <div class="lb" style="left:90px;top:1010px">Sari<small>Kasir · Apotek A</small></div>
     <div class="lb" style="left:390px;top:1010px">Dimas<small>Apoteker · Apotek A</small></div>
-    <div class="lb" style="left:690px;top:1010px">Budi<small>Gudang · Apotek A</small></div>
+    <div class="lb" style="left:690px;top:1010px">Budi<small>Petugas · Apotek A</small></div>
     <div class="lb" style="left:240px;top:1700px">Rina<small>Kasir · Apotek B</small></div>
     <div class="lb" style="left:540px;top:1700px">Pak Hendra<small>Owner · Apotek B</small></div>
   </div>
@@ -204,7 +204,7 @@ function gradV(y0, y1, a, b) { const g = c.createLinearGradient(0, y0, 0, y1); g
 const ORANG = {
   sari:  {kulit:'#EDC29C', kulit2:'#D9A57E', rambut:'#3A2722', rambut2:'#5A3A30', jenis:'bob',   baju:'#2F5FC4', baju2:'#244C9E', dalam:'#F1F3F6', aks:'#E8B54A', tag:'#4BA299'},
   dimas: {kulit:'#D9A27A', kulit2:'#C08660', rambut:'#1F1A1A', rambut2:'#3A3030', jenis:'cepak', baju:'#F2F4F7', baju2:'#D6DCE4', dalam:'#2C59AE', kacamata:1},
-  budi:  {kulit:'#C08A62', kulit2:'#A57250', rambut:'#1F1A1A', rambut2:'#2E2626', jenis:'topi',  baju:'#4E5B6E', baju2:'#3E495A', rompi:'#E3B04B', topi:'#3F9590', topi2:'#2F7772'},
+  budi:  {kulit:'#C08A62', kulit2:'#A57250', rambut:'#1F1A1A', rambut2:'#2E2626', jenis:'jambul', baju:'#3F9A90', baju2:'#2F7A72', dalam:'#F1F3F6', tag:'#F1F3F6'},
   rina:  {kulit:'#E6B48C', kulit2:'#CC9670', jenis:'hijab', hijab:'#4BA299', hijab2:'#3B8880', baju:'#F2F4F7', baju2:'#D6DCE4', dalam:'#3064D1'},
   hendra:{kulit:'#CF9A72', kulit2:'#B57F58', rambut:'#2B2523', rambut2:'#6B625E', jenis:'rapi', baju:'#2C59AE', baju2:'#22478C', dalam:'#F1F3F6', kumis:1},
 };
@@ -289,7 +289,7 @@ function orang(o) {
   c.fillStyle = g; c.beginPath(); c.moveTo(-1.1 * bw, 380 * s); c.lineTo(-1.02 * bw, 70 * s); c.quadraticCurveTo(-bw, 0, -.55 * bw, -4 * s); c.lineTo(.55 * bw, -4 * s); c.quadraticCurveTo(bw, 0, 1.02 * bw, 70 * s); c.lineTo(1.1 * bw, 380 * s); c.closePath(); c.fill();
   // detail baju
   if (C.dalam) { c.fillStyle = C.dalam; c.beginPath(); c.moveTo(-.42 * bw, -4 * s); c.lineTo(0, 120 * s); c.lineTo(.42 * bw, -4 * s); c.fill(); }
-  if (C.jenis === 'bob' || C.jenis === 'rapi') { c.fillStyle = C.dalam === '#F1F3F6' ? '#fff' : C.dalam; c.beginPath(); c.moveTo(-.3 * bw, -4 * s); c.lineTo(0, 75 * s); c.lineTo(.3 * bw, -4 * s); c.fill(); }
+  if (C.jenis === 'bob' || C.jenis === 'rapi' || C.jenis === 'jambul') { c.fillStyle = C.dalam === '#F1F3F6' ? '#fff' : C.dalam; c.beginPath(); c.moveTo(-.3 * bw, -4 * s); c.lineTo(0, 75 * s); c.lineTo(.3 * bw, -4 * s); c.fill(); }
   if (C.tag) { c.fillStyle = C.tag; rr(-.75 * bw, 110 * s, 70 * s, 22 * s, 8 * s); c.fill(); }
   if (C.jenis === 'cepak' || C.jenis === 'hijab') { c.fillStyle = '#3064D1'; rr(.42 * bw, 95 * s, 12 * s, 50 * s, 5 * s); c.fill(); c.fillStyle = '#C9D3E0'; rr(-.8 * bw, 105 * s, 64 * s, 18 * s, 6 * s); c.fill(); }
   if (C.rompi) { c.fillStyle = C.rompi; [-1, 1].forEach(sg => { c.beginPath(); c.moveTo(sg * .3 * bw, -2 * s); c.lineTo(sg * .95 * bw, 40 * s); c.lineTo(sg * 1.08 * bw, 380 * s); c.lineTo(sg * .22 * bw, 380 * s); c.closePath(); c.fill(); });
@@ -317,7 +317,9 @@ function orang(o) {
     if (C.jenis === 'rapi') { c.fillStyle = C.rambut2; c.beginPath(); c.ellipse(-.9 * R, -.25 * R, .18 * R, .35 * R, 0, 0, 7); c.ellipse(.9 * R, -.25 * R, .18 * R, .35 * R, 0, 0, 7); c.fill(); }
     else { c.beginPath(); for (let i = 0; i < 5; i++) { c.moveTo(-.7 * R + i * .32 * R, -.45 * R); c.lineTo(-.55 * R + i * .32 * R, -.25 * R); c.lineTo(-.4 * R + i * .32 * R, -.45 * R); } c.fill(); } }
   if (C.jenis === 'topi') { c.fillStyle = C.rambut; c.fillRect(-R, -.3 * R, .25 * R, .5 * R); c.fillRect(.75 * R, -.3 * R, .25 * R, .5 * R); }
+  if (C.jenis === 'jambul') { c.fillStyle = C.rambut; c.beginPath(); c.ellipse(.05 * R, -.95 * R, 1.3 * R, .6 * R, -.06, 0, 7); c.fill(); c.fillRect(-R, -.5 * R, .2 * R, .45 * R); c.fillRect(.8 * R, -.5 * R, .2 * R, .45 * R); }
   c.restore();
+  if (C.jenis === 'jambul') { c.fillStyle = C.rambut; c.beginPath(); c.ellipse(.05 * R, -.88 * R, .78 * R, .2 * R, -.22, 0, 7); c.fill(); c.fillStyle = C.rambut2; c.beginPath(); c.ellipse(-.1 * R, -.93 * R, .35 * R, .06 * R, -.22, 0, 7); c.fill(); }
   if (C.jenis === 'topi') { const tg = c.createLinearGradient(-R, 0, R, 0); tg.addColorStop(0, C.topi2); tg.addColorStop(.5, C.topi); tg.addColorStop(1, C.topi2);
     c.fillStyle = tg; c.beginPath(); c.arc(0, -.28 * R, 1.04 * R, Math.PI, 2 * Math.PI); c.fill();
     c.fillStyle = C.topi2; c.beginPath(); c.ellipse(.35 * R, -.28 * R, 1.3 * R, .16 * R, -.04, 0, 7); c.fill(); ell(0, -1.3 * R, .09 * R, .07 * R, C.topi2); }
