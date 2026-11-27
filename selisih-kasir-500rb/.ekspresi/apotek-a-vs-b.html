@@ -1,0 +1,236 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- aset lokal: GSAP + font Plus Jakarta Sans (render offline, tidak tergantung CDN) -->
+<script src="../assets/lib/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Plus Jakarta Sans';font-weight:500;font-style:normal;src:url(../assets/lib/font/plus-jakarta-sans-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Plus Jakarta Sans';font-weight:600;font-style:normal;src:url(../assets/lib/font/plus-jakarta-sans-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Plus Jakarta Sans';font-weight:700;font-style:normal;src:url(../assets/lib/font/plus-jakarta-sans-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Plus Jakarta Sans';font-weight:800;font-style:normal;src:url(../assets/lib/font/plus-jakarta-sans-latin-800-normal.woff2) format('woff2')}
+</style>
+<style>
+#stage{background:#1B2B3B;font-family:'Plus Jakarta Sans',Inter,sans-serif}
+#world{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#txt{position:absolute;inset:0;transform-origin:50% 45%;z-index:20}
+#fx{position:absolute;inset:0;pointer-events:none;z-index:30}
+.tx{position:absolute;left:0;width:100%;text-align:center;color:#fff;will-change:transform,opacity}
+.xb{font-weight:800;letter-spacing:-.02em;line-height:1}
+.sb{font-weight:600}
+.w{display:inline-block;margin:0 .12em;transform-origin:50% 90%}
+.glw{position:relative;display:inline-block}
+.glw span{position:absolute;left:0;top:0;mix-blend-mode:screen}
+.hl{position:relative;display:inline-block;padding:0 .14em}
+.hl i{position:absolute;left:0;top:8%;height:88%;border-radius:.14em;z-index:-1}
+.card{position:absolute;border-radius:36px}
+.row{position:absolute;left:0;display:flex;align-items:center;gap:26px;font-weight:600;font-size:44px;color:#fff;white-space:nowrap}
+.ic{flex:none;width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:44px;color:#fff}
+.btn{position:absolute;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+.ph{position:absolute;left:0;width:100%;text-align:center;color:#8A97A6;font-weight:600;font-size:40px}
+#haze{position:absolute;inset:0;z-index:15;pointer-events:none}
+.kk{font-weight:700;font-size:40px;letter-spacing:.01em;color:#7D8DA6;margin-bottom:12px}
+.hd{font-weight:800;line-height:1.06;color:#1B2B3B;letter-spacing:-.015em}
+.pill{position:absolute;left:0;top:0;display:flex;align-items:center;gap:18px;background:#fff;border-radius:999px;padding:12px 32px 12px 12px;box-shadow:0 10px 28px rgba(27,43,59,.14);font-weight:600;font-size:32px;color:#1B2B3B;white-space:nowrap}
+.pill .ic{width:58px;height:58px;font-size:30px}
+.bubble{position:absolute;background:#fff;border-radius:22px;padding:14px 26px;box-shadow:0 10px 28px rgba(27,43,59,.16);font-weight:700;font-size:38px;color:#1B2B3B;white-space:nowrap;transform-origin:20% 100%}
+.uicard{position:absolute;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 18px 46px rgba(27,43,59,.16)}
+.uicard .uh,.uicard .ur{display:grid;grid-template-columns:150px 1fr 1fr;align-items:center;padding:0 34px;text-align:center}
+.uicard .uh{background:#3064D1;color:#fff;font-weight:800;font-size:30px;height:84px}
+.uicard .ur{height:110px;font-size:40px;color:#1B2B3B;border-top:2px solid #EEF2F7}
+.uicard .ul{text-align:left;font-size:32px;font-weight:600;color:#7D8DA6}
+#mfSub .sw{transform:none!important}
+#mfSub .sf>span{background:rgba(43,53,69,.94)!important;padding:.42em 1.05em .48em!important;border-radius:999px!important;line-height:1.35}
+</style>
+
+<style>body{margin:0;background:#EEF3FB;font-family:'Plus Jakarta Sans',sans-serif}h1{margin:0;padding:40px 50px 6px;color:#1B2B3B;font-size:44px;font-weight:800}p{margin:0 50px 20px;color:#5C6773;font-size:24px;font-weight:600}
+.g{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;padding:10px 50px 50px}.c{background:#fff;border-radius:22px;text-align:center;padding:8px 0 16px}.c b{display:block;color:#1B2B3B;font-size:20px;font-weight:700}.r{grid-column:1/-1;font-weight:800;font-size:26px;margin-top:10px}</style></head>
+<body style="width:2000px"><h1>Karakter Apotek A vs Apotek B</h1><p>Apotek A (masalah): 4 petugas baru, seragam abu + kerah merah. Apotek B (solusi): karakter asli dari paket kamu, tidak diubah.</p><div class="g" id="g"></div>
+<script>const lerp=(a,b,k)=>a+(b-a)*k,clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),seg=(t,a,b)=>clamp((t-a)/(b-a));const E={io:k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2,back:k=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2);}};
+const nz=()=>0,hash=n=>{const s=Math.sin(n*127.1+31.7)*43758.5453;return s-Math.floor(s);};function rng(s){return()=>.5}
+/* == 1. WAKTU & PALET == */
+const WAKTU = {s1:0, s2:4, s3:9, s4:15, s5:21, s6:25, s7:29, s8:32, s9:42, s10:49, s11:52, akhir:59,
+  /* adegan 8: centang muncul mengikuti VO (perkiraan, disetel ulang setelah VO) */
+  c1:32.7, c2:35.0, c3:37.9, c4:40.0};
+const P = {navy:'#1B2B3B', biru:'#3064D1', biruTua:'#2C59AE', teal:'#4BA299', hijau:'#5BAC72',
+  abu:'#5C6773', abu2:'#8A97A6', merah:'#E5484D', putih:'#FFFFFF', tinta:'#1B2B3B'};
+const FONT = "'Plus Jakarta Sans',Inter,sans-serif";
+
+/* == 2. KARAKTER ==
+   Dibangun ulang 1:1 dari file SVG user (koordinat lokal 0..400 × 0..863, kaki di y 863).
+   Ekspresi = angka yang bisa diinterpolasi (transisi 5 frame), lengan = sudut bahu/siku. */
+const KULIT = {owner:['#E3A67E','#C98863'], kasir:['#C98A5E','#AE7248'], faktur:['#B97A50','#9C6340'], asisten:['#D9976E','#BF7C55']};
+const CH = {
+  owner: {
+    skin: KULIT.owner, leg:'#1B2B3B', shoe:'#2B2F3A', sleeve:'#FFFFFF', sleeveSt:'#C9D3E3',
+    back: `<path d="M134,165 Q130,86 200,84 Q270,86 266,165 L284,340 Q200,358 116,340 Z" fill="#1E2233"/>`,
+    body: `<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L286,610 L114,610 Z" fill="#FFFFFF" stroke="#D5DDEA" stroke-width="2"/>
+<path d="M172,262 L228,262 L214,420 L186,420 Z" fill="#3064D1"/>
+<path d="M172,262 L200,330 L186,420 L166,300 Z" fill="#EEF2F8"/><path d="M228,262 L200,330 L214,420 L234,300 Z" fill="#EEF2F8"/>
+<line x1="200" y1="420" x2="200" y2="610" stroke="#D5DDEA" stroke-width="3"/>
+<rect x="146" y="470" width="40" height="44" rx="6" fill="#EEF2F8"/><rect x="214" y="470" width="40" height="44" rx="6" fill="#EEF2F8"/>
+<rect x="218" y="330" width="34" height="42" rx="5" fill="#fff" stroke="#2C59AE" stroke-width="2"/><rect x="218" y="330" width="34" height="11" rx="4" fill="#2C59AE"/><rect x="225" y="350" width="20" height="4" rx="2" fill="#B8C4D6"/><rect x="225" y="359" width="14" height="4" rx="2" fill="#B8C4D6"/>`,
+    headBase: s => `<ellipse cx="200" cy="170" rx="60" ry="70" fill="${s[0]}"/>`,
+    headTop: `<path d="M138,168 Q130,92 200,92 Q270,92 262,168 Q252,124 214,118 Q192,146 150,152 Q141,158 138,168 Z" fill="#1E2233"/>`
+  },
+  kasir: {
+    skin: KULIT.kasir, leg:'#1B2B3B', shoe:'#2B2F3A', sleeve:'#4BA299',
+    back: '',
+    body: `<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L280,545 L120,545 Z" fill="#4BA299"/>
+<path d="M150,262 L250,262 L262,545 L138,545 Z" fill="#FFFFFF" opacity="0.92"/>
+<rect x="168" y="420" width="64" height="40" rx="6" fill="#4BA299" opacity="0.25"/>`,
+    headBase: s => `<ellipse cx="200" cy="170" rx="60" ry="70" fill="${s[0]}"/>
+<path d="M128,178 Q126,88 200,86 Q274,88 272,178 Q276,260 300,330 Q200,365 100,330 Q124,260 128,178 Z" fill="#2C59AE"/>
+<ellipse cx="200" cy="178" rx="54" ry="62" fill="${s[0]}"/>
+<path d="M146,160 Q150,112 200,110 Q250,112 254,160 Q236,128 200,126 Q164,128 146,160 Z" fill="#2C59AE"/>`,
+    headTop: ''
+  },
+  faktur: {
+    skin: KULIT.faktur, leg:'#2F3E52', shoe:'#22262F', sleeve:'#5BAC72',
+    back: '',
+    body: `<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L280,545 L120,545 Z" fill="#5BAC72"/>
+<path d="M176,262 L224,262 L200,300 Z" fill="#FFFFFF"/><line x1="200" y1="300" x2="200" y2="360" stroke="#4A9A60" stroke-width="3"/>
+<rect x="214" y="300" width="36" height="8" rx="3" fill="#FFFFFF" opacity="0.8"/>`,
+    headBase: s => `<ellipse cx="200" cy="170" rx="60" ry="70" fill="${s[0]}"/>`,
+    headTop: `<path d="M138,168 Q134,90 200,88 Q266,90 262,168 Q256,124 200,120 Q148,124 138,168 Z" fill="#1E2233"/>`
+  },
+  /* tokoh ke-4 (baru, dibuat dengan rangka & gaya yang sama): asisten apoteker berseragam biru tua */
+  asisten: {
+    skin: KULIT.asisten, leg:'#2F3E52', shoe:'#22262F', sleeve:'#2C59AE',
+    back: '',
+    body: `<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L280,545 L120,545 Z" fill="#2C59AE"/>
+<path d="M172,262 L228,262 L200,296 Z" fill="#DCE6F7"/>
+<rect x="150" y="318" width="40" height="10" rx="4" fill="#FFFFFF" opacity=".85"/>`,
+    headBase: s => `<ellipse cx="200" cy="170" rx="60" ry="70" fill="${s[0]}"/>`,
+    headTop: `<path d="M140,160 Q138,96 200,94 Q262,96 260,160 Q254,132 232,126 Q214,136 196,126 Q176,136 160,128 Q146,138 140,160 Z" fill="#2A2420"/>`
+  }
+};
+
+
+/* petugas APOTEK A — tokoh baru (rangka & gaya sama), dibedakan dari tokoh brand di Apotek B */
+function petugasA(o) {
+  const sk = o.skin, rb = o.rambut;
+  const body = o.jas
+    ? `<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L286,610 L114,610 Z" fill="#EEF1F5" stroke="#C9D3E3" stroke-width="2"/>
+<path d="M172,262 L228,262 L214,400 L186,400 Z" fill="${o.kerah}"/><path d="M172,262 L200,330 L186,400 L166,300 Z" fill="#DCE3EC"/><path d="M228,262 L200,330 L214,400 L234,300 Z" fill="#DCE3EC"/>
+<line x1="200" y1="400" x2="200" y2="610" stroke="#C9D3E3" stroke-width="3"/><rect x="216" y="330" width="34" height="14" rx="4" fill="${o.kerah}"/>`
+    : `<path d="M132,292 Q132,262 166,262 L234,262 Q268,262 268,292 L280,545 L120,545 Z" fill="${o.baju}"/>
+<path d="M170,262 L200,300 L230,262 L218,262 L200,286 L182,262 Z" fill="${o.kerah}"/><rect x="152" y="262" width="96" height="12" rx="5" fill="${o.kerah}"/>
+<rect x="214" y="318" width="38" height="14" rx="4" fill="#FFFFFF" opacity=".9"/><rect x="214" y="318" width="10" height="14" rx="3" fill="${o.kerah}"/>`;
+  const back = o.gaya === 'bob' ? `<path d="M134,170 Q128,90 200,88 Q272,90 266,170 L272,262 Q200,276 128,262 Z" fill="${rb}"/>`
+    : o.gaya === 'kuncir' ? `<path d="M244,112 Q312,128 300,236 Q292,292 270,300 Q282,220 252,150 Z" fill="${rb}"/><circle cx="252" cy="118" r="14" fill="${o.kerah}"/>` : '';
+  let headBase = s => `<ellipse cx="200" cy="170" rx="60" ry="70" fill="${s[0]}"/>`;
+  if (o.gaya === 'hijab') headBase = s => `<ellipse cx="200" cy="170" rx="60" ry="70" fill="${s[0]}"/>
+<path d="M128,178 Q126,88 200,86 Q274,88 272,178 Q276,260 300,330 Q200,365 100,330 Q124,260 128,178 Z" fill="${rb}"/>
+<ellipse cx="200" cy="178" rx="54" ry="62" fill="${s[0]}"/><path d="M146,160 Q150,112 200,110 Q250,112 254,160 Q236,128 200,126 Q164,128 146,160 Z" fill="${rb}"/>`;
+  let top = '';
+  if (o.gaya === 'bob') top = `<path d="M138,166 Q134,92 200,92 Q266,92 262,166 L256,140 Q230,132 200,134 Q170,132 144,140 Z" fill="${rb}"/>`;
+  if (o.gaya === 'kuncir') top = `<path d="M138,168 Q134,90 200,88 Q266,90 262,168 Q252,118 206,114 Q160,118 138,168 Z" fill="${rb}"/>`;
+  if (o.gaya === 'keriting') top = [[142, 150], [146, 124], [160, 104], [182, 92], [206, 88], [230, 94], [248, 110], [258, 132], [260, 154]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="22" fill="${rb}"/>`).join('');
+  if (o.kacamata) top += `<g fill="none" stroke="#3E4752" stroke-width="4"><circle cx="178" cy="175" r="16"/><circle cx="222" cy="175" r="16"/><path d="M194,173 Q200,168 206,173"/></g>`;
+  if (o.kumis) top += `<path d="M182,197 Q192,190 200,195 Q208,190 218,197 Q208,203 200,199 Q192,203 182,197 Z" fill="${rb}"/>`;
+  return {skin: sk, leg: o.leg || '#3E4752', shoe: '#2B2F3A', sleeve: o.jas ? '#EEF1F5' : o.baju, sleeveSt: o.jas ? '#C9D3E3' : null, back, body, headBase, headTop: top};
+}
+CH.aOwner = petugasA({jas: true, kerah: '#B5434F', skin: ['#F0B994', '#D69B76'], rambut: '#4A3328', gaya: 'bob', kacamata: true});
+CH.aKasir = petugasA({baju: '#7A8695', kerah: '#C9505A', skin: ['#D9976E', '#BF7C55'], rambut: '#1E2233', gaya: 'kuncir'});
+CH.aFaktur = petugasA({baju: '#5C6773', kerah: '#C9505A', skin: ['#8E5B3D', '#74482F'], rambut: '#1A1614', gaya: 'keriting', kumis: true, leg: '#2F3740'});
+CH.aAsisten = petugasA({baju: '#8A97A6', kerah: '#C9505A', skin: ['#E3A67E', '#C98863'], rambut: '#9B3D4A', gaya: 'hijab'});
+
+/* ekspresi: open(bukaan mata) wide(mata bulat kaget) happy(^ ^) squint(sipit) lid(kelopak lelah)
+   browY browIn(+ cemas, − marah/fokus) asym(alis miring curiga) mouth(-1 cemberut..1 senyum, >1.2 nyengir)
+   mOpen(mulut "O") sweat blush look lookY */
+const EX0 = {open:1,wide:0,happy:0,squint:0,lid:0,browY:0,browIn:0,asym:0,mouth:1,mOpen:0,sweat:0,blush:0,look:0,lookY:0};
+const EX = {
+  netral:{}, sibuk:{mouth:1.1,look:.4},
+  senyum:{happy:1,mouth:1.1,blush:.3},
+  kaget:{wide:1,browY:-8,mOpen:.85,mouth:0},
+  panik:{wide:1,open:.92,browY:-6,browIn:1,mOpen:.5,mouth:-.3,sweat:1},
+  fokus:{open:.78,squint:.35,browY:4,browIn:-1,mouth:-.15},
+  frustrasi:{open:.7,squint:.55,browY:5,browIn:-1.3,mouth:-.9,sweat:.7},
+  lelah:{open:.42,lid:1,browY:3,browIn:.6,mouth:-.35,lookY:1},
+  menguap:{open:0,lid:1,browY:-2,browIn:.6,mOpen:1.1,mouth:0},
+  sedih:{open:.8,browIn:1.3,browY:2,mouth:-1,lookY:1},
+  curiga:{open:1,squint:1,asym:1,mouth:0,look:-1},
+  lega:{happy:1,browIn:.5,mouth:1,blush:.3},
+  senang:{happy:1,mouth:1.4,blush:.6,browY:-2},
+  pede:{open:.95,browY:-2,asym:-.35,mouth:1.25,look:.3}
+};
+const ex = n => Object.assign({}, EX0, EX[n] || {});
+/* daftar kunci [[detik, nama|objek], ...] → interpolasi 0,17 dtk (5 frame) */
+function kunciEx(t, ks, d = .17) {
+  let cur = ex(typeof ks[0][1] === 'string' ? ks[0][1] : 'netral'); if (typeof ks[0][1] === 'object') cur = Object.assign(ex('netral'), ks[0][1]);
+  for (let i = 1; i < ks.length; i++) {
+    const [tt, n] = ks[i]; if (t < tt) break;
+    const tgt = typeof n === 'string' ? ex(n) : Object.assign(ex('netral'), n), k = E.io(seg(t, tt, tt + d)), o = {};
+    for (const key in cur) o[key] = lerp(cur[key], tgt[key], k); cur = o;
+  }
+  return cur;
+}
+/* pose lengan: [bahuKiri, sikuKiri, bahuKanan, sikuKanan] (derajat); tangan: 'jempol' | 'tunjuk' */
+const POSE = {diri:[10,-4,-10,4], kaget:[32,160,-32,-160], jempol:[10,-4,-28,-150], tunjukKiri:[78,14,-10,4],
+  tunjukKanan:[10,-4,-112,18], dagu:[10,-4,-30,-150], lemas:[4,-2,-4,2], pinggang:[40,-95,-10,4], ketik:[30,-70,-30,70]};
+function kunciPose(t, ks, d = .3) {
+  let cur = (typeof ks[0][1] === 'string' ? POSE[ks[0][1]] : ks[0][1]).slice();
+  for (let i = 1; i < ks.length; i++) { const [tt, n] = ks[i]; if (t < tt) break;
+    const tgt = typeof n === 'string' ? POSE[n] : n, k = E.back(seg(t, tt, tt + d)); cur = cur.map((v, j) => lerp(v, tgt[j], k)); }
+  return cur;
+}
+
+function mata(cx, e) {
+  const lx = e.look * 4.5, ly = e.lookY * 2.5, st = `stroke="${P.tinta}" stroke-linecap="round" fill="none"`;
+  if (e.happy > .5) return `<path d="M${cx - 9},176 Q${cx},166 ${cx + 9},176" ${st} stroke-width="4"/>`;
+  if (e.wide > .5) return `<ellipse cx="${cx}" cy="172" rx="10" ry="${12.5 * Math.max(.15, e.open)}" fill="#fff" stroke="${P.tinta}" stroke-width="2.5"/>` +
+    (e.open > .3 ? `<circle cx="${cx + lx}" cy="${173 + ly}" r="5" fill="${P.tinta}"/>` : '');
+  const ry = 8.5 * e.open * (1 - e.squint * .55);
+  if (ry < 1.8) return `<path d="M${cx - 8},176 L${cx + 8},176" ${st} stroke-width="4"/>`;
+  let s = `<ellipse cx="${cx + lx}" cy="${174 + ly + (1 - e.open) * 2}" rx="${6.5 + e.squint}" ry="${ry}" fill="${P.tinta}"/>`;
+  if (ry > 4.5) s += `<circle cx="${cx + lx + 2}" cy="${171 + ly}" r="2.2" fill="#fff"/>`;
+  if (e.lid > .3) s += `<path d="M${cx - 10},${174 + ly - ry + 1} L${cx + 10},${174 + ly - ry + 1}" ${st} stroke-width="4"/>`;
+  return s;
+}
+function wajah(e, skin) {
+  const st = `stroke="${P.tinta}" stroke-width="4" stroke-linecap="round" fill="none"`, y = e.browY, bi = e.browIn * 7, a = e.asym;
+  let s = mata(178, e) + mata(222, e);
+  s += `<path d="M166,${152 + y + a * 5} Q177,${145 + y + a * 7} 189,${150 + y - bi + a * 9}" ${st}/>`;
+  s += `<path d="M211,${150 + y - bi - a * 5} Q223,${145 + y - a * 6} 234,${152 + y - a * 3}" ${st}/>`;
+  if (e.mOpen > .12) s += `<ellipse cx="200" cy="${208 + e.mOpen * 2}" rx="${7 + 3 * e.mOpen}" ry="${11 * e.mOpen}" fill="#7A2E3A"/>`;
+  else if (e.mouth > 1.2) s += `<path d="M183,200 Q200,224 217,200 Z" fill="#7A2E3A"/><path d="M186,201 L214,201 L212,206 L188,206 Z" fill="#fff"/>`;
+  else s += `<path d="M${186 + Math.max(0, -e.mouth) * 2},${206 - Math.max(0, -e.mouth) * 2} Q200,${206 + e.mouth * 10} ${214 - Math.max(0, -e.mouth) * 2},${206 - Math.max(0, -e.mouth) * 2}" ${st}/>`;
+  s += `<path d="M200,182 Q195,192 202,194" stroke="${skin[1]}" stroke-width="3" stroke-linecap="round" fill="none"/>`;
+  s += `<circle cx="166" cy="196" r="9" fill="#F07A7A" opacity="${.3 + .35 * e.blush}"/><circle cx="234" cy="196" r="9" fill="#F07A7A" opacity="${.3 + .35 * e.blush}"/>`;
+  if (e.sweat > .05) s += `<path d="M262,128 Q270,146 262,152 Q254,146 262,128 Z" fill="#9FD3F5" opacity="${e.sweat}" stroke="#6FB4E3" stroke-width="1.5"/>`;
+  return s;
+}
+function lengan(c, x, up, fore, tangan) {
+  const sk = c.skin[0], st = c.sleeveSt ? `stroke="${c.sleeveSt}" stroke-width="2"` : '';
+  const jari = tangan === 'jempol' ? `<rect x="4" y="112" width="13" height="40" rx="6.5" fill="${sk}"/>` : tangan === 'tunjuk' ? `<rect x="-6" y="115" width="12" height="46" rx="6" fill="${sk}"/>` : '';
+  return `<g transform="translate(${x},285) rotate(${up})"><rect x="-17" y="-12" width="34" height="142" rx="17" fill="${c.sleeve}" ${st}/>
+<g transform="translate(0,125) rotate(${fore})"><rect x="-15" y="-14" width="30" height="122" rx="15" fill="${c.sleeve}" ${st}/>
+<rect x="-15" y="88" width="30" height="14" rx="5" fill="#000" opacity="0.08"/>${jari}<circle cx="0" cy="118" r="19" fill="${sk}"/></g></g>`;
+}
+/* o: {x,y(kaki),s,t,e(ekspresi),pose[4],tL,tR(tangan),tilt,arah(1/-1),seed,turun(bahu turun)} */
+function tokoh(id, o) {
+  const c = CH[id], t = o.t, sd = o.seed || 0, e = Object.assign({}, o.e);
+  /* kedip acak, ±3 dtk */
+  const ph = (t + hash(sd) * 3.1) % (2.6 + hash(sd + 9) * 1.6);
+  if (ph < .14 && e.happy < .5) e.open *= Math.abs(ph - .07) / .07;
+  const napas = Math.sin(t * 2.3 + sd) * 2.2, tilt = (o.tilt || 0) + nz(t * .6, sd) * 2.2, turun = o.turun || 0;
+  const p = o.pose || POSE.diri, s = o.s || 1, ar = o.arah || 1;
+  const head = `<g transform="translate(0,${napas * .6 + turun * 10}) rotate(${tilt} 200 240)">`;
+  return `<g transform="translate(${o.x} ${o.y}) scale(${s * ar} ${s}) translate(-200 -863)">
+${c.back ? head + c.back + '</g>' : ''}
+<rect x="140" y="520" width="56" height="320" rx="14" fill="${c.leg}"/><rect x="204" y="520" width="56" height="320" rx="14" fill="${c.leg}"/><rect x="196" y="520" width="8" height="60" fill="${c.leg}"/>
+<ellipse cx="164" cy="848" rx="36" ry="15" fill="${c.shoe}"/><ellipse cx="236" cy="848" rx="36" ry="15" fill="${c.shoe}"/>
+<g transform="translate(0,${napas * .35 + turun * 6})">${c.body}</g>
+${head}<rect x="183" y="222" width="34" height="48" rx="10" fill="${c.skin[1]}"/>
+<circle cx="141" cy="178" r="13" fill="${c.skin[1]}"/><circle cx="259" cy="178" r="13" fill="${c.skin[1]}"/>
+${c.headBase(c.skin)}${wajah(e, c.skin)}${c.headTop}</g>
+<g transform="translate(0,${napas * .35 + turun * 8})">${lengan(c, 138, p[0], p[1], o.tL)}${lengan(c, 262, p[2], p[3], o.tR)}</g>
+</g>`;
+}
+
+
+const G=document.getElementById('g');
+const ROWS=[['aOwner','Apotek A · Apoteker (baru)','#E5484D'],['aKasir','Apotek A · Kasir (baru)','#E5484D'],['aFaktur','Apotek A · Karyawan (baru)','#E5484D'],['aAsisten','Apotek A · Asisten (baru)','#E5484D'],['owner','Apotek B · Bu Owner (asli)','#3064D1'],['kasir','Apotek B · Kasir (asli)','#3064D1']];
+const N=['netral','kaget','panik','fokus','frustrasi','lelah','curiga'],NB=['netral','senyum','pede','lega','senang','fokus','sibuk'];
+ROWS.forEach(([id,nm,w])=>{const r=document.createElement('div');r.className='r';r.style.color=w;r.textContent=nm;G.appendChild(r);
+ (id.startsWith('a')?N:NB).forEach(n=>{const pose=n==='kaget'||n==='panik'?POSE.kaget:n==='senang'||n==='pede'?POSE.jempol:n==='lelah'?POSE.lemas:n==='fokus'?POSE.dagu:POSE.diri;
+  const c=document.createElement('div');c.className='c';c.innerHTML=`<svg viewBox="40 40 320 330" width="240" height="248">${tokoh(id,{x:200,y:863,s:1,t:1.3,seed:0,e:ex(n),pose,tR:(n==='senang'||n==='pede')?'jempol':null,turun:n==='lelah'?1:0})}</svg><b>${n}</b>`;G.appendChild(c);});});
+</script></body></html>
